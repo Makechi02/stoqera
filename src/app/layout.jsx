@@ -5,19 +5,33 @@ import {ToastContainer, Zoom} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
-	title: "IMS",
-	description: "A Inventory management system",
+    title: "Invisio - Streamline Your Inventory Management",
+    description: "Invisio is a modern inventory management system designed to help businesses of all sizes track, manage, and report their inventory effortlessly.",
+    keywords: [
+        "Invisio",
+        "inventory management system",
+        "IMS",
+        "inventory tracking",
+        "business software",
+        "inventory analytics",
+        "streamline inventory",
+    ],
+    authors: [
+        { name: "Makechi Eric", url: "https://github.com/Makechi02" },
+    ],
 };
 
+export const viewport = {
+    themeColor: "#14B8A6",
+}
+
 export default function RootLayout({children}) {
-	return (
-		<html lang="en" className={`${figtree} ${gfs_didot} font-figtree antialiased`}>
-		<body>
-		<main>
-			{children}
-			<ToastContainer transition={Zoom}/>
-		</main>
-		</body>
-		</html>
-	);
+    return (
+        <html lang="en" className={`${figtree} ${gfs_didot} font-figtree antialiased`}>
+        <body>
+        {children}
+        <ToastContainer transition={Zoom}/>
+        </body>
+        </html>
+    );
 }

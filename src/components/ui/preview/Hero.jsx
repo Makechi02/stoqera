@@ -3,29 +3,29 @@ import Link from "next/link";
 
 const Hero = () => {
     return (
-        <section className={`bg-gradient-to-b min-h-screen from-gray-100 to-white py-16 md:py-20`}>
-            <div className={`container mx-auto px-6 text-center`}>
-                <h1 className={`text-3xl md:text-5xl font-bold font-gfs_didot text-gray-800 mb-4 animate__animated animate__fadeIn`}>
-                    Effortlessly Manage Your Inventory
+        <section className={`min-h-svh bg-gradient-to-b from-gray-900 to-secondary text-white py-16 md:py-20 flex flex-col items-center md:justify-center`}>
+            <div className={`mx-auto max-w-screen-xl px-6 text-center`}>
+                <h1 className={`text-4xl md:text-6xl font-bold font-gfs_didot mb-4 animate__animated animate__fadeIn`}>
+                    Invisio: Revolutionize Your Business Operations
                 </h1>
 
-                <p className={`text-base md:text-lg text-gray-600 mb-8 animate__animated animate__fadeIn animate__delay-1s`}>
-                    Your go-to solution for seamless stock control and management.
+                <p className={`max-w-screen-md mx-auto text-base md:text-lg my-8 animate__animated animate__fadeIn animate__delay-1s`}>
+                    Say goodbye to manual tracking and outdated systems. Invisio offers powerful tools to manage your inventory, monitor sales, and analyze performance—all in one seamless platform designed to scale with your business.
                 </p>
 
-                <div className={`flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4`}>
+                <div className={`flex flex-wrap justify-center items-center gap-4`}>
                     <Link
                         href={`/accounts/login`}
-                        className={`bg-indigo-400 text-white font-semibold py-3 px-6 rounded-md shadow-md hover:bg-indigo-500 hover:scale-105 transform transition-transform duration-300`}
+                        className={`bg-primary text-text font-semibold py-3 px-6 rounded-md shadow-md hover:scale-105 transform transition-transform duration-300`}
                     >
-                        Get Started
+                        Get Started Today
                     </Link>
 
                     <Link
-                        href={`/learn-more`}
-                        className={`border-2 border-indigo-400 text-indigo-400 font-semibold py-3 px-6 rounded-md hover:bg-indigo-50 hover:scale-105 transform transition-transform duration-300`}
+                        href={`/info/learn-more`}
+                        className={`border-2 border-primary text-primary font-semibold py-3 px-6 rounded-md hover:scale-105 transform transition-transform duration-300`}
                     >
-                        Learn More
+                        See How It Works
                     </Link>
                 </div>
 

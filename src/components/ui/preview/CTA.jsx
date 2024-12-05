@@ -2,18 +2,32 @@ import Link from "next/link";
 
 const CTA = () => {
     return (
-        <section className={`bg-indigo-600 text-white py-16 animate__animated animate__fadeIn`}>
-            <div className={`container mx-auto px-6 text-center`}>
-                <h2 className={`text-3xl md:text-4xl font-bold font-gfs_didot mb-4`}>Ready to Take Control of Your Inventory?</h2>
-                <p className={`mb-6`}>
-                    Sign up today and experience the benefits of our intuitive inventory management system!
-                </p>
-                <Link
-                    href={`/accounts/login`}
-                    className={`bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-200 transition duration-300`}
-                >
-                    Get Started
-                </Link>
+        <section
+            className={`px-4 text-center animate__animated animate__fadeIn`}>
+            <div className={`max-w-screen-xl mx-auto rounded-2xl bg-gray-900 text-white px-6 py-16`}>
+                <div className={`max-w-screen-md mx-auto`}>
+                    <h2 className={`text-4xl md:text-4xl font-bold font-gfs_didot my-6`}>
+                        Upgrade Your Business with Our Cutting-Edge Inventory Management Solutions!
+                    </h2>
+                    <p className={`mb-6 text-xl`}>
+                        Experience the future of transactions! Schedule a demo today and witness how our inventory
+                        management system solution can revolutionize your business.
+                    </p>
+                </div>
+                <div className={`flex flex-wrap gap-4 justify-center items-center`}>
+                    <Link
+                        href={`/accounts/login`}
+                        className={`bg-primary text-text font-semibold py-3 px-6 rounded-md shadow-md hover:scale-105 transform transition-transform duration-300`}
+                    >
+                        Purchase Now
+                    </Link>
+                    <Link
+                        href={`/info/learn-more`}
+                        className={`border-2 border-primary text-primary font-semibold py-3 px-6 rounded-md hover:scale-105 transform transition-transform duration-300`}
+                    >
+                        Start Free Trial
+                    </Link>
+                </div>
             </div>
         </section>
     );

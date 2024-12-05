@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    @apply scroll-smooth scroll-m-8;
+}
+
 .page-heading {
     @apply font-gfs_didot font-extrabold text-2xl sm:text-3xl;
 }
