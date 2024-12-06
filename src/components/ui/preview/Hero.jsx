@@ -3,7 +3,10 @@ import Link from "next/link";
 
 const Hero = () => {
     return (
-        <section className={`min-h-svh bg-gradient-to-b from-surface to-secondary text-white py-16 md:py-20 flex flex-col items-center md:justify-center`}>
+        <section
+            id={`home`}
+            className={`min-h-svh bg-gradient-to-b from-surface to-secondary text-white py-16 md:py-20 flex flex-col items-center md:justify-center`}
+        >
             <div className={`mx-auto max-w-screen-xl px-6 text-center`}>
                 <h1 className={`text-4xl md:text-6xl font-bold font-gfs_didot mb-4 animate__animated animate__fadeIn`}>
                     Invisio: Revolutionize Your Business Operations

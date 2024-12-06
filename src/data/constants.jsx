@@ -76,11 +76,12 @@ export const footerLinks = [
 ];
 
 export const navLinks = [
-    {href: '#', text: 'Home'},
-    {href: '#features', text: 'Features'},
-    {href: '#pricing', text: 'Pricing'},
-    {href: '#faq', text: 'FAQ'},
-    {href: '#contact', text: 'Contact'}
+    {href: 'home', text: 'Home'},
+    {href: 'features', text: 'Features'},
+    {href: 'pricing', text: 'Pricing'},
+    {href: 'faq', text: 'FAQ'},
+    {href: 'contact', text: 'Contact'}
+];
 ];
 
 export const socialLinks = [

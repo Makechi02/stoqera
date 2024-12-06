@@ -4,6 +4,7 @@ import {useState} from "react";
 import {Logo} from "@/components/ui";
 import Link from "next/link";
 import {MobileNavigation, PrimaryNavigation} from "@/components/ui/Navigation";
+import {FaTimes} from "react-icons/fa";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,25 +46,27 @@ const Header = () => {
 
                         <div className={`block md:hidden`}>
                             <button
-                                className={`rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75 dark:bg-gray-800 dark:text-white dark:hover:text-white/75`}
+                                className={`rounded p-2 transition text-white`}
                                 onClick={toggleMenu}
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    className={`h-5 w-5`}
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-                                </svg>
+                                {isMenuOpen ? <FaTimes/> : (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        className={`h-5 w-5`}
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                                    </svg>
+                                )}
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {isMenuOpen && <MobileNavigation/>}
+                {isMenuOpen && <MobileNavigation toggleMenu={toggleMenu}/>}
             </div>
         </header>
     );
