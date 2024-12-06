@@ -1,11 +1,4 @@
-import {
-    Benefits,
-    CTA,
-    FAQ,
-    Footer,
-    Hero,
-    Pricing
-} from "@/components/ui/preview";
+import {Benefits, Contact, CTA, FAQ, Footer, Hero, OurUsers, Pricing} from "@/components/ui/preview";
 import {Header} from "@/components/ui";
 
 const Home = () => {
@@ -14,9 +7,11 @@ const Home = () => {
             <Header/>
             <Hero/>
             <Benefits/>
+            <OurUsers/>
             <Pricing/>
             <CTA/>
             <FAQ/>
+            <Contact/>
             <Footer/>
         </main>
     )

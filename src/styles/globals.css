@@ -6,6 +6,10 @@
     @apply scroll-smooth scroll-m-8;
 }
 
+.preview-input {
+    @apply p-3 border-2 border-gray-400 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+}
+
 .page-heading {
     @apply font-gfs_didot font-extrabold text-2xl sm:text-3xl;
 }

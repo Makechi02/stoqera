@@ -83,6 +83,15 @@ export const navLinks = [
     {href: 'contact', text: 'Contact'}
 ];
 
+export const ourUsers = [
+    'Retail Stores',
+    'eCommerce Businesses',
+    'Grocery Stores',
+    'Convenience Stores',
+    'Hospitality and Hotels',
+    'And Many More..'
+];
+
 export const pricingPlans = [
     {
         title: 'Basic',
