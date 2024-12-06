@@ -13,6 +13,7 @@ module.exports = {
                 background: '#FAF8F6',   // Light Cream
                 text: '#1F2937',         // Dark Charcoal
                 error: '#DC2626',        // Crimson
+                surface: '#111827'
             },
             fontFamily: {
                 figtree: ['var(--font-figtree), sans-serif'],

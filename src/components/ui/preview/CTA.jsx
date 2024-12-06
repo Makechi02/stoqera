@@ -4,7 +4,7 @@ const CTA = () => {
     return (
         <section
             className={`px-4 text-center animate__animated animate__fadeIn`}>
-            <div className={`max-w-screen-xl mx-auto rounded-2xl bg-gray-900 text-white px-6 py-16`}>
+            <div className={`max-w-screen-xl mx-auto rounded-2xl bg-surface text-white px-6 py-16`}>
                 <div className={`max-w-screen-md mx-auto`}>
                     <h2 className={`text-4xl md:text-4xl font-bold font-gfs_didot my-6`}>
                         Upgrade Your Business with Our Cutting-Edge Inventory Management Solutions!

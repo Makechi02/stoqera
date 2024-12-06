@@ -11,11 +11,11 @@ const Header = () => {
     const toggleMenu = () => setIsMenuOpen((prevState) => !prevState);
 
     return (
-        <header className={`bg-gray-900 sticky top-0 z-10`}>
+        <header className={`bg-surface sticky top-0 z-10`}>
             <div className={`mx-auto max-w-screen-xl px-4 md:px-2`}>
                 <div className={`flex h-16 items-center justify-between`}>
                     <div className={`md:flex md:items-center md:gap-12`}>
-                        <Link href={`#`} className={`block text-teal-600 dark:text-teal-600`}>
+                        <Link href={`#`} className={`block`}>
                             <span className="sr-only">Home</span>
                             <Logo/>
                         </Link>
