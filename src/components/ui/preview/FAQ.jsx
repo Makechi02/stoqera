@@ -11,7 +11,7 @@ const FAQ = () => {
     };
 
     return (
-        <section className={`py-16 bg-gray-50`} id={`faq`}>
+        <section className={`py-16`} id={`faq`}>
             <div className={`container mx-auto px-6 text-center`}>
                 <div>
                     <p className={`font-bold text-primary text-2xl my-6`}>Have any Question?</p>
