@@ -132,7 +132,7 @@ export const pricingPlans = [
 
 export const socialLinks = [
     {
-        href: '#',
+        href: 'https://web.facebook.com/people/Finviq/61569784992823',
         sr_only_text: 'Facebook',
         icon: <FaFacebook/>,
     },
@@ -147,7 +147,7 @@ export const socialLinks = [
         icon: <FaTwitter/>,
     },
     {
-        href: '#',
+        href: 'https://github.com/Makechi02/Finviq',
         sr_only_text: 'GitHub',
         icon: <FaGithub/>,
     }
