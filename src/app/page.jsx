@@ -1,12 +1,20 @@
-import {Benefits, CTA, FAQ, Footer, Hero} from "@/components/ui/preview";
+import {
+    Benefits,
+    CTA,
+    FAQ,
+    Footer,
+    Hero,
+    Pricing
+} from "@/components/ui/preview";
 import {Header} from "@/components/ui";
 
 const Home = () => {
     return (
-        <main className={`bg-background`}>
+        <main className={`bg-background text-text`}>
             <Header/>
             <Hero/>
             <Benefits/>
+            <Pricing/>
             <CTA/>
             <FAQ/>
             <Footer/>

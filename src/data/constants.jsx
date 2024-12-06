@@ -82,6 +82,43 @@ export const navLinks = [
     {href: 'faq', text: 'FAQ'},
     {href: 'contact', text: 'Contact'}
 ];
+
+export const pricingPlans = [
+    {
+        title: 'Basic',
+        sr_only_text: 'plan',
+        amount: 'Ksh. 1000',
+        billing: '/ month',
+        most_popular: false,
+        features: [
+            'Single user',
+            'Basic inventory tracking'
+        ]
+    },
+    {
+        title: 'Standard',
+        sr_only_text: 'plan',
+        amount: 'Ksh. 3000',
+        billing: '/ month',
+        most_popular: true,
+        features: [
+            'Up to 5 users',
+            'Reporting',
+            'Integrations'
+        ]
+    },
+    {
+        title: 'Premium',
+        sr_only_text: 'plan',
+        amount: 'Ksh. 8000',
+        billing: '/ month',
+        most_popular: false,
+        features: [
+            'Unlimited users',
+            'API',
+            'Priority support'
+        ]
+    }
 ];
 
 export const socialLinks = [
