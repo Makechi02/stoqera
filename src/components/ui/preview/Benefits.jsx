@@ -4,7 +4,7 @@ const Benefits = () => {
     return (
         <section className={`py-8 md:py-16 max-w-screen-xl mx-auto px-4 text-center`} id={`features`}>
             <div className={`my-8`}>
-                <p className={`font-bold text-primary text-2xl my-6`}>Grow your business with Invisio</p>
+                <p className={`font-bold text-primary text-2xl my-6`}>Grow your business with Finviq</p>
                 <h2 className={`max-w-screen-md mx-auto text-3xl md:text-4xl font-bold font-gfs_didot text-gray-800`}>
                     Why Choose Our Inventory Management System?
                 </h2>

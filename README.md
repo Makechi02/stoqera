@@ -1,6 +1,6 @@
-# Inventory Management System (IMS) - Frontend
+# Finviq (IMS) - Frontend
 
-This repository contains the frontend of the **Inventory Management System (IMS)** built using **Next.js**. The frontend interacts with the backend API (built using **Spring Boot**) to manage items, categories, suppliers, users, and other inventory-related operations.
+This repository contains the frontend of **Finviq (IMS)** built using **Next.js**. The frontend interacts with the backend API (built using **Spring Boot**) to manage items, categories, suppliers, users, and other inventory-related operations.
 
 ## Features
 

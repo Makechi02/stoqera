@@ -9,11 +9,11 @@ const Hero = () => {
         >
             <div className={`mx-auto max-w-screen-xl px-6 text-center`}>
                 <h1 className={`text-4xl md:text-6xl font-bold font-gfs_didot mb-4 animate__animated animate__fadeIn`}>
-                    Invisio: Revolutionize Your Business Operations
+                    Finviq: Revolutionize Your Business Operations
                 </h1>
 
                 <p className={`max-w-screen-md mx-auto text-base md:text-lg my-8 animate__animated animate__fadeIn animate__delay-1s`}>
-                    Say goodbye to manual tracking and outdated systems. Invisio offers powerful tools to manage your inventory, monitor sales, and analyze performance—all in one seamless platform designed to scale with your business.
+                    Say goodbye to manual tracking and outdated systems. Finviq offers powerful tools to manage your inventory, monitor sales, and analyze performance—all in one seamless platform designed to scale with your business.
                 </p>
 
                 <div className={`flex flex-wrap justify-center items-center gap-4`}>

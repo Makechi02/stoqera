@@ -5,10 +5,10 @@ import {ToastContainer, Zoom} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
-    title: "Invisio - Streamline Your Inventory Management",
-    description: "Invisio is a modern inventory management system designed to help businesses of all sizes track, manage, and report their inventory effortlessly.",
+    title: "Finviq - Streamline Your Inventory Management",
+    description: "Finviq is a modern inventory management system designed to help businesses of all sizes track, manage, and report their inventory effortlessly.",
     keywords: [
-        "Invisio",
+        "Finviq",
         "inventory management system",
         "IMS",
         "inventory tracking",

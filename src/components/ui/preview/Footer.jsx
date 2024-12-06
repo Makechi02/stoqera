@@ -12,7 +12,7 @@ const Footer = () => {
                     <div>
                         <div className={`text-primary flex items-center gap-2`}>
                             <Logo/>
-                            <p className={`font-bold font-gfs_didot text-3xl`}>Invisio</p>
+                            <p className={`font-bold font-gfs_didot text-3xl`}>Finviq</p>
                         </div>
 
                         <p className={`mt-4 max-w-xs text-gray-500 dark:text-gray-400`}>
@@ -58,7 +58,7 @@ const Footer = () => {
                 </div>
 
                 <p className={`text-sm text-gray-500 dark:text-gray-400`}>
-                    &copy; {new Date().getFullYear()}. Invisio. All rights reserved.
+                    &copy; {new Date().getFullYear()}. Finviq. All rights reserved.
                 </p>
             </div>
         </footer>
