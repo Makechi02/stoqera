@@ -1,6 +1,43 @@
 import {FaChartLine, FaPlug, FaSync, FaUserFriends} from "react-icons/fa";
 import {FaFacebook, FaGithub, FaInstagram, FaTwitter} from "react-icons/fa6";
 
+export const adminNavLinks = [
+    {
+        href: '/dashboard/admin',
+        text: 'dashboard',
+        type: 'link'
+    },
+    {
+        text: 'inventory',
+        type: 'dropdown',
+        subLinks: [
+            {href: '/dashboard/admin/items', text: 'items'},
+            {href: '/dashboard/admin/categories', text: 'categories'}
+        ]
+    },
+    {
+        text: 'sales',
+        type: 'dropdown',
+        subLinks: [
+            {href: '/dashboard/admin/customers', text: 'customers'},
+            {href: '/dashboard/admin/orders', text: 'sales orders'}
+        ]
+    },
+    {
+        text: 'purchases',
+        type: 'dropdown',
+        subLinks: [
+            {href: '/dashboard/admin/suppliers', text: 'suppliers'},
+            {href: '/dashboard/admin/orders', text: 'purchases orders'}
+        ]
+    },
+    {
+        href: '/dashboard/admin/users',
+        text: 'users',
+        type: 'link'
+    }
+];
+
 export const benefits = [
     {
         title: 'Real-Time Tracking',
