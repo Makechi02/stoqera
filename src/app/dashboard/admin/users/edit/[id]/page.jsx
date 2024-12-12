@@ -1,141 +1,50 @@
-"use client"
-
-import {useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
 import BackBtn from "@/components/ui/dashboard/BackBtn";
-import {toast} from "react-toastify";
-import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
-import {UserService} from "@/service";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import UpdateUserForm from "@/app/dashboard/admin/users/edit/[id]/UpdateUserForm";
 
-const Page = ({params}) => {
-    const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(false);
+async function getUserById(id) {
+    const {accessToken} = await getServerSession(authOptions);
 
-    const [name, setName] = useState(user.name);
-    const [email, setEmail] = useState(user.email);
-    const [role, setRole] = useState(user.role);
-    const router = useRouter();
-
-    const handleEditUser = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        if (name === '') {
-            toast.error("Name is blank");
-            setLoading(false);
-            return;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, {
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         }
+    });
 
-        if (email === '') {
-            toast.error("Email is blank");
-            setLoading(false);
-            return;
-        }
-
-        if (!role || role === "-- select role --") {
-            toast.error("Please select a role");
-            setLoading(false);
-            return;
-        }
-
-        try {
-            const updatedUser = {name, email, role};
-            const response = await UserService.updateUser(user.id, updatedUser);
-
-            if (response.status === 200) {
-                toast.success('User updated successfully');
-                setLoading(false);
-                router.back();
-            }
-        } catch (e) {
-            if (e.status === 400 || e.status === 409) {
-                toast.error(e.response.data);
-            } else {
-                console.error(e);
-                toast.error("Failed to update user. Try again");
-            }
-            setLoading(false);
-        }
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch user');
     }
 
-    useEffect(() => {
-        const fetchItemByID = () => {
-            UserService.getUserById(params.id)
-                .then(response => setUser(response.data))
-                .catch(error => {
-                    console.error(error);
-                    toast.error("Failed to fetch user. Try again")
-                });
-        }
-
-        fetchItemByID();
-    }, []);
-
-    useEffect(() => {
-        setName(user.name);
-        setEmail(user.email);
-        setRole(user.role);
-    }, [user]);
-
-    return (
-        <section className={`md:px-[10%]`}>
-            <BackBtn/>
-
-            <div className={`bg-white p-4 sm:p-8 rounded-lg mt-4 shadow-lg`}>
-                <h1 className={`page-heading`}>Edit User</h1>
-
-                <div className={`mt-4`}>
-                    {user.name ? (
-                        <form className={`flex flex-col gap-3`} onSubmit={handleEditUser}>
-                            <div className={`grid sm:grid-cols-2 gap-4`}>
-                                <div className={`input-box`}>
-                                    <label htmlFor={`name`} className={`dashboard-label`}>Name:</label>
-                                    <input
-                                        type={`text`}
-                                        id={`name`}
-                                        value={name}
-                                        autoComplete={`off`}
-                                        onChange={event => setName(event.target.value)}
-                                        className={`dashboard-input`}
-                                    />
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <label htmlFor={`email`} className={`dashboard-label`}>Email:</label>
-                                    <input
-                                        type={`email`}
-                                        id={`email`}
-                                        value={email}
-                                        autoComplete={`off`}
-                                        onChange={event => setEmail(event.target.value)}
-                                        className={`dashboard-input`}
-                                    />
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <label htmlFor={`role`} className={`dashboard-label`}>Role:</label>
-                                    <select
-                                        id={`role`}
-                                        value={role}
-                                        onChange={event => setRole(event.target.value)}
-                                        className={`dashboard-input`}
-                                    >
-                                        <option>-- select role --</option>
-                                        <option value={'USER'}>USER</option>
-                                        <option value={'ADMIN'}>ADMIN</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <SubmitBtn loading={loading} text={`Save Changes`} />
-                        </form>
-                        ) : (
-                        <p>Loading...</p>
-                    )}
-                </div>
-            </div>
-        </section>
-    )
+    return await response.json();
 }
 
-export default Page;
+export async function generateMetadata({params}) {
+    const user = await getUserById(params.id);
+
+    return {
+        title: `${user.name} - Finviq`
+    }
+}
+
+export default async function Page({params}) {
+    const user = await getUserById(params.id);
+
+    return (
+        <main>
+            <div className={`p-8 border-b`}>
+                <div className={`flex gap-4 items-center`}>
+                    <BackBtn/>
+                    <h1 className={`page-heading`}>Edit user</h1>
+                </div>
+            </div>
+
+            <div className={`my-4 max-w-screen-md mx-8`}>
+                {user.name ? <UpdateUserForm user={user}/> : <p>Loading...</p>}
+            </div>
+        </main>
+    )
+}

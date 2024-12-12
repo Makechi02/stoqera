@@ -15,7 +15,7 @@
 }
 
 .add-btn {
-    @apply bg-orange-600 hover:bg-orange-800 px-4 py-2 rounded-lg text-white;
+    @apply bg-primary hover:bg-primary/80 px-4 py-2 rounded-lg text-white;
 }
 
 .edit-btn {
@@ -59,7 +59,7 @@
 }
 
 .dashboard-submit-btn {
-    @apply mt-2 w-full bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+    @apply mt-2 w-full bg-primary text-white px-4 py-2 rounded-md shadow-sm hover:bg-primary/70 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
 }
 
 input[type='number'] {

@@ -1,112 +1,73 @@
 "use client"
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
+import {useEffect} from "react";
 import BackBtn from "@/components/ui/dashboard/BackBtn";
 import {toast} from "react-toastify";
+import {useFormState} from "react-dom";
+import {createUser} from "@/lib/userActions";
 import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
-import {UserAuthService} from "@/service";
 
 const Page = () => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [role, setRole] = useState("USER");
-    const [loading, setLoading] = useState(false);
+    const [message, dispatch] = useFormState(createUser, undefined);
 
-    const router = useRouter();
-
-    const handleAddUser = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        if (name === '') {
-            toast.error("Name is blank");
-            setLoading(false);
-            return;
-        }
-
-        if (email === '') {
-            toast.error("Email is blank");
-            setLoading(false);
-            return;
-        }
-
-        const newUser = {name, email, role, password: role.toLowerCase()};
-
-        try {
-            const response = await UserAuthService.saveUser(newUser);
-            if (response.status === 201) {
-                toast.success(response.data.message);
-                setLoading(false);
-                router.back();
-            }
-        } catch (error) {
-            const response = error?.response;
-            if (response?.status === 409) {
-                toast.error(response.data.message);
-            } else if (response?.status === 400) {
-                toast.error(response.data.errors.join(". "));
-            } else {
-                console.error(error);
-            }
-            setLoading(false);
-        }
-    }
+    useEffect(() => {
+        toast.error(message);
+    }, [message]);
 
     return (
-        <section className={`md:px-[10%]`}>
-            <BackBtn/>
-
-            <div className={`bg-white p-4 sm:p-8 rounded-lg mt-4 shadow-lg`}>
-                <h1 className={`page-heading`}>Add user</h1>
-
-                <div className={`mt-4`}>
-                    <form className={`flex flex-col gap-2`} onSubmit={handleAddUser}>
-                        <div className={`grid sm:grid-cols-2 gap-4`}>
-                            <div className={`input-box`}>
-                                <label htmlFor={`name`} className={`dashboard-label`}>Name:</label>
-                                <input
-                                    type={`text`}
-                                    id={`name`}
-                                    value={name}
-                                    autoComplete={`off`}
-                                    enterKeyHint={`next`}
-                                    onChange={event => setName(event.target.value)}
-                                    className={`dashboard-input`}
-                                />
-                            </div>
-
-                            <div className={`input-box`}>
-                                <label htmlFor={`email`} className={`dashboard-label`}>Email:</label>
-                                <input
-                                    type={`email`}
-                                    id={`email`}
-                                    value={email}
-                                    autoComplete={`off`}
-                                    enterKeyHint={`next`}
-                                    onChange={event => setEmail(event.target.value)}
-                                    className={`dashboard-input`}
-                                />
-                            </div>
-
-                            <div className={`input-box`}>
-                                <label htmlFor={`role`} className={`dashboard-label`}>Role:</label>
-                                <select
-                                    id={`role`}
-                                    value={role}
-                                    className={`dashboard-input`}
-                                    onChange={event => setRole(event.target.value)}
-                                >
-                                    <option value={`USER`}>USER</option>
-                                    <option value={`ADMIN`}>ADMIN</option>
-                                </select>
-                            </div>
-                        </div>
-                        <SubmitBtn loading={loading} text={"Add User"} />
-                    </form>
+        <main>
+            <div className={`p-8 border-b`}>
+                <div className={`flex gap-4 items-center`}>
+                    <BackBtn/>
+                    <h1 className={`page-heading`}>New user</h1>
                 </div>
             </div>
-        </section>
+
+            <div className={`my-4 max-w-screen-md mx-8`}>
+                <form className={`flex flex-col gap-2`} action={dispatch}>
+                    <div className={`grid sm:grid-cols-2 gap-4`}>
+                        <div className={`input-box`}>
+                            <label htmlFor={`name`} className={`dashboard-label`}>Name:</label>
+                            <input
+                                type={`text`}
+                                id={`name`}
+                                name={`name`}
+                                autoComplete={`off`}
+                                enterKeyHint={`next`}
+                                className={`dashboard-input`}
+                                required={true}
+                            />
+                        </div>
+
+                        <div className={`input-box`}>
+                            <label htmlFor={`email`} className={`dashboard-label`}>Email:</label>
+                            <input
+                                type={`email`}
+                                id={`email`}
+                                name={`email`}
+                                autoComplete={`off`}
+                                enterKeyHint={`next`}
+                                className={`dashboard-input`}
+                                required={true}
+                            />
+                        </div>
+
+                        <div className={`input-box`}>
+                            <label htmlFor={`role`} className={`dashboard-label`}>Role:</label>
+                            <select
+                                id={`role`}
+                                name={`role`}
+                                className={`dashboard-input`}
+                            >
+                                <option value={`USER`}>USER</option>
+                                <option value={`ADMIN`}>ADMIN</option>
+                            </select>
+                        </div>
+                    </div>
+                    <SubmitBtn text={`Add user`}/>
+                </form>
+            </div>
+        </main>
     )
 }
 

@@ -1,143 +1,72 @@
-"use client"
-
-import {FaPen} from "react-icons/fa";
-import {FaTrashCan} from "react-icons/fa6";
-import Link from "next/link";
-import {useEffect, useState} from "react";
-import {UserCard} from "@/components/ui/dashboard/admin/TableCards";
-import DateUtil from "@/utils/dateUtil";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
-import {useRouter, useSearchParams} from "next/navigation";
-import {showConfirmDialog} from "@/utils/sweetalertUtil";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {toast} from "react-toastify";
-import {UserService} from "@/service";
+import Link from "next/link";
+import UsersTable from "@/components/ui/dashboard/admin/users/UsersTable";
+import {Suspense} from "react";
+import TableSkeleton from "@/components/ui/TableSkeleton";
+import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
 
-const Page = () => {
-    const [loading, setLoading] = useState(true);
-    const [users, setUsers] = useState([]);
-    const searchParams = useSearchParams();
-    const query = searchParams.get("query");
-    const router = useRouter();
+async function getAllUsers(query) {
+    const {accessToken} = await getServerSession(authOptions);
+    const queryString = query ? `?query=${query}` : '';
 
-    const handleDelete = (user) => {
-        showConfirmDialog(
-            `Are you sure you want to delete user ${user.name}?`,
-            () => deleteUser(user)
-        );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users${queryString}`, {
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch users');
     }
 
-    const deleteUser = (user) => {
-        UserService.deleteUser(user.id)
-            .then(response => {
-                if (response.status === 200) {
-                    toast.success('User deleted successfully');
-                    router.refresh();
-                }
-            })
-            .catch(error => console.error(error));
-    }
-
-    useEffect(() => {
-        setLoading(true);
-        const fetchUsers = () => {
-            UserService.getAllUsers({query})
-                .then(response => {
-                    setUsers(response.data);
-                    setLoading(false);
-                })
-                .catch(error => {
-                    if (error.response.data === "No server response") {
-                        toast.error(error.response.data);
-                    }
-                    console.error(error);
-                    setLoading(false);
-                });
-        };
-
-        fetchUsers();
-    }, [query]);
-
-    return (
-        <div className={`bg-white py-4 p-4 rounded-lg shadow-lg`}>
-            <h1 className={`page-heading`}>Users</h1>
-
-            <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
-                <SearchForm/>
-                <Link href={`/dashboard/admin/users/add`} className={`add-btn`}>Add User</Link>
-            </div>
-
-            <div className={`mt-8`}>
-                {loading ? (
-                    <LoadingSpinner/>
-                ) : (
-                    <UsersTable users={users} handleDelete={handleDelete}/>
-                )}
-            </div>
-        </div>
-    )
+    return await response.json();
 }
 
-const UsersTable = ({users, handleDelete}) => {
+export const metadata = {
+    title: 'Users - Finviq'
+}
+
+export default async function Page({searchParams}) {
+    const {query} = searchParams;
+    const users = await getAllUsers(query);
+
     return (
-        users.length === 0 ? (
-            <div>
-                <p className={`text-center`}>No users found</p>
-            </div>
-        ) : (
-            <>
-                <div className={`overflow-x-auto`}>
-                    <table className={`min-w-full divide-y divide-gray-200 hidden sm:table`}>
-                        <thead className={`bg-gray-50`}>
-                        <tr>
-                            <th scope={`col`} className={`table-heading`}>S/No</th>
-                            <th scope={`col`} className={`table-heading`}>Name</th>
-                            <th scope={`col`} className={`table-heading`}>Email</th>
-                            <th scope={`col`} className={`table-heading`}>Role</th>
-                            <th scope={`col`} className={`table-heading`}>Added at</th>
-                            <th scope={`col`} className={`table-heading`}>Updated at</th>
-                            <th scope={`col`} className={`table-heading`}>Actions</th>
-                        </tr>
-                        </thead>
+        <main>
+            <div className={`p-8 border-b`}>
+                <h1 className={`page-heading`}>Users</h1>
 
-                        <tbody className={`bg-white divide-y divide-gray-200`}>
-                        {users?.map((user, index) => (
-                            <tr key={user.id}>
-                                <td className={`table-data`}>{index + 1}</td>
-                                <td className={`table-data`}>{user.name}</td>
-                                <td className={`table-data`}>{user.email}</td>
-                                <td className={`table-data`}>{user.role}</td>
-                                <td className={`table-data`}>{DateUtil.formatDate(user.createdAt)}</td>
-                                <td className={`table-data`}>{DateUtil.formatDate(user.updatedAt)}</td>
-                                <td className={`table-data flex`}>
-                                    <Link
-                                        title={`Edit`}
-                                        className={`edit-btn`}
-                                        href={`/dashboard/admin/users/edit/${user.id}`}
-                                    >
-                                        <FaPen/>
-                                    </Link>
-                                    <button
-                                        className={`ml-3 delete-btn`} title={`Delete`}
-                                        onClick={() => handleDelete(user)}
-                                    >
-                                        <FaTrashCan/>
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                {users.map((user, index) => (
-                    <div key={index} className={`sm:hidden`}>
-                        <UserCard user={user} handleDelete={handleDelete}/>
+                <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
+                    <SearchForm/>
+                    <div className={`flex gap-4 items-center`}>
+                        <Link href={`/dashboard/admin/users/add`} className={`add-btn flex items-center gap-2`}>
+                            <FaPlus/> New user
+                        </Link>
+                        {/* TODO: Handle invite user */}
+                        <button
+                            className={`px-3 py-2 rounded-lg border border-primary hover:bg-primary hover:text-white flex items-center gap-2`}
+                        >
+                            Invite user
+                        </button>
+                        {/* TODO: Handle more options menu */}
+                        <button
+                        className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                        >
+                            <FaEllipsisVertical/>
+                        </button>
                     </div>
-                ))}
-            </>
-        )
+                </div>
+            </div>
+
+            <div>
+                <Suspense fallback={<TableSkeleton/>}>
+                    <UsersTable users={users}/>
+                </Suspense>
+            </div>
+        </main>
     )
 }
-
-export default Page;

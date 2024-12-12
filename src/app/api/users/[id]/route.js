@@ -5,27 +5,6 @@ import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 
 const USERS_BASE_URL = 'https://prior-lauree-makechi-b2d9cdc0.koyeb.app/api/v1/users';
 
-export const GET = async (request, { params }) => {
-    const origin = request.headers.get('origin');
-    const headers = getCorsHeaders(origin);
-    const userId = params.id;
-
-    const {accessToken} = await getServerSession(authOptions);
-
-    try {
-        const response = await axios.get(`${USERS_BASE_URL}/${userId}`, {
-            headers: {
-                "Content-Type": 'application/json',
-                "Authorization": `Bearer ${accessToken}`
-            }
-        });
-        return new Response(JSON.stringify(response?.data), { headers });
-    } catch (e) {
-        console.error(e);
-        return new Response(`User with id ${userId} not found`, { status: 404, headers });
-    }
-};
-
 export const PUT = async (request, { params }) => {
     const origin = request.headers.get('origin');
     const headers = getCorsHeaders(origin);
