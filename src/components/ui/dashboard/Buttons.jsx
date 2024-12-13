@@ -3,6 +3,23 @@
 import {SmallLoadingSpinner} from "@/components/ui/LoadingSpinner";
 import {useFormStatus} from "react-dom";
 import {FaTrashCan} from "react-icons/fa6";
+import {useRouter} from "next/navigation";
+import {FaChevronLeft} from "react-icons/fa";
+
+export function BackBtn() {
+    const router = useRouter();
+
+    return (
+        <button
+            title={`Back`}
+            onClick={() => router.back()}
+            className={`hover:bg-secondary hover:text-gray-100 p-2 rounded-lg flex items-center gap-2 w-fit text-xl`}
+        >
+            <span className={`sr-only`}>Back</span>
+            <FaChevronLeft/>
+        </button>
+    )
+}
 
 export function SubmitBtn({loading, text}) {
     const {pending} = useFormStatus();

@@ -1,6 +1,6 @@
-import BackBtn from "@/components/ui/dashboard/BackBtn";
 import UpdateSupplierForm from "@/app/dashboard/admin/suppliers/[id]/edit/UpdateSupplierForm";
 import {getSupplierById} from "@/lib/supplierActions";
+import {BackBtn} from "@/components/ui/dashboard/Buttons";
 
 export default async function Page({params}) {
     const supplier = await getSupplierById(params.id);

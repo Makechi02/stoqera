@@ -1,7 +1,6 @@
 'use client'
 
-import BackBtn from "@/components/ui/dashboard/BackBtn";
-import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
+import {BackBtn, SubmitBtn} from "@/components/ui/dashboard/Buttons";
 import {useFormState} from "react-dom";
 import {createSupplier} from "@/lib/supplierActions";
 import {useEffect} from "react";

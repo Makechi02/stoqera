@@ -1,10 +1,9 @@
 "use client"
 
-import BackBtn from "@/components/ui/dashboard/BackBtn";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {toast} from "react-toastify";
-import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
+import {BackBtn, SubmitBtn} from "@/components/ui/dashboard/Buttons";
 import {CustomerService} from "@/service";
 
 const Page = () => {

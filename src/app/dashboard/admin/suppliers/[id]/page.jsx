@@ -2,9 +2,9 @@ import Link from "next/link";
 import {FaPen} from "react-icons/fa";
 import DateUtil from "@/utils/dateUtil";
 import {FaEllipsisVertical} from "react-icons/fa6";
-import BackBtn from "@/components/ui/dashboard/BackBtn";
 import {getSupplierById} from "@/lib/supplierActions";
 import DeleteSupplier from "@/components/ui/dashboard/admin/suppliers/DeleteSupplier";
+import {BackBtn} from "@/components/ui/dashboard/Buttons";
 
 export async function generateMetadata({params}) {
     const supplier = await getSupplierById(params.id);

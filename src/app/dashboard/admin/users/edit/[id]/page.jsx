@@ -1,7 +1,7 @@
-import BackBtn from "@/components/ui/dashboard/BackBtn";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import UpdateUserForm from "@/app/dashboard/admin/users/edit/[id]/UpdateUserForm";
+import {BackBtn} from "@/components/ui/dashboard/Buttons";
 
 async function getUserById(id) {
     const {accessToken} = await getServerSession(authOptions);
