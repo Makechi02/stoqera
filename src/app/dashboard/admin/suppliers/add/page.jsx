@@ -1,112 +1,73 @@
-"use client"
+'use client'
 
 import BackBtn from "@/components/ui/dashboard/BackBtn";
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {toast} from "react-toastify";
 import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
-import {SupplierService} from "@/service";
+import {useFormState} from "react-dom";
+import {createSupplier} from "@/lib/supplierActions";
+import {useEffect} from "react";
+import {toast} from "react-toastify";
 
 const Page = () => {
-    const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
-    const [loading, setLoading] = useState(false);
-    const router = useRouter();
+    const [message, dispatch] = useFormState(createSupplier, undefined);
 
-    const handleAddSupplier = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        if (name === '') {
-            toast.error("Supplier name is blank");
-            setLoading(false);
-            return;
-        }
-
-        if (phone === '') {
-            toast.error("Supplier contact is blank");
-            setLoading(false);
-            return;
-        }
-
-        if (address === '') {
-            toast.error("Supplier address is blank");
-            setLoading(false);
-            return;
-        }
-
-        try {
-            const newSupplier = {name, phone, address};
-            const response = await SupplierService.addSupplier(newSupplier);
-            if (response.status === 201) {
-                toast.success('New Supplier added successfully');
-                setLoading(false);
-                router.back();
-            }
-        } catch (e) {
-            if (e.status === 409) {
-                toast.error(e.response.data.error);
-            } else {
-                console.error(e);
-            }
-            setLoading(false);
-        }
-    }
+    useEffect(() => {
+        toast.error(message);
+    }, [message]);
 
     return (
-        <section className={`md:px-[10%]`}>
-            <BackBtn/>
-
-            <div className={`bg-white p-4 sm:p-8 rounded-lg mt-4 shadow-lg`}>
-                <h1 className={`page-heading`}>Add supplier</h1>
-
-                <div className={`mt-4`}>
-                    <form className={`flex flex-col gap-2`} onSubmit={handleAddSupplier}>
-                        <div className={`grid sm:grid-cols-2 gap-4`}>
-                            <div className={`input-box`}>
-                                <label htmlFor={`name`} className={`dashboard-label`}>Name:</label>
-                                <input
-                                    type={`text`}
-                                    id={`name`}
-                                    value={name}
-                                    autoComplete={`off`}
-                                    className={`dashboard-input`}
-                                    onChange={event => setName(event.target.value)}
-                                />
-                            </div>
-
-                            <div className={`input-box`}>
-                                <label htmlFor={`phone`} className={`dashboard-label`}>Phone:</label>
-                                <input
-                                    type={`text`}
-                                    id={`phone`}
-                                    value={phone}
-                                    autoComplete={`off`}
-                                    className={`dashboard-input`}
-                                    onChange={event => setPhone(event.target.value)}
-                                />
-                            </div>
-
-                            <div className={`input-box`}>
-                                <label htmlFor={`address`} className={`dashboard-label`}>Address:</label>
-                                <input
-                                    type={`text`}
-                                    id={`address`}
-                                    value={address}
-                                    enterKeyHint={`done`}
-                                    autoComplete={`off`}
-                                    className={`dashboard-input`}
-                                    onChange={event => setAddress(event.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <SubmitBtn loading={loading} text={`Add Supplier`} />
-                    </form>
+        <main>
+            <div className={`p-8 border-b`}>
+                <div className={`flex gap-4 items-center`}>
+                    <BackBtn/>
+                    <h1 className={`page-heading`}>New supplier</h1>
                 </div>
             </div>
-        </section>
+
+            <div className={`my-4 max-w-screen-md mx-8`}>
+                <form className={`flex flex-col gap-2`} action={dispatch}>
+                    <div className={`grid sm:grid-cols-2 gap-4`}>
+                        <div className={`input-box`}>
+                            <label htmlFor={`name`} className={`dashboard-label`}>Name:</label>
+                            <input
+                                type={`text`}
+                                id={`name`}
+                                name={`name`}
+                                required={true}
+                                autoComplete={`off`}
+                                className={`dashboard-input`}
+                            />
+                        </div>
+
+                        <div className={`input-box`}>
+                            <label htmlFor={`phone`} className={`dashboard-label`}>Phone:</label>
+                            <input
+                                type={`text`}
+                                id={`phone`}
+                                name={`phone`}
+                                required={true}
+                                autoComplete={`off`}
+                                className={`dashboard-input`}
+                            />
+                        </div>
+
+                        <div className={`input-box`}>
+                            <label htmlFor={`address`} className={`dashboard-label`}>Address:</label>
+                            <input
+                                type={`text`}
+                                id={`address`}
+                                name={`address`}
+                                required={true}
+                                enterKeyHint={`done`}
+                                autoComplete={`off`}
+                                className={`dashboard-input`}
+                            />
+                        </div>
+                    </div>
+
+                    <SubmitBtn text={`Add Supplier`}/>
+                </form>
+            </div>
+        </main>
     )
 }
 

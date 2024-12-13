@@ -1,74 +1,73 @@
-"use client"
-
-import {FaEye, FaPen} from "react-icons/fa";
-import {FaTrashCan} from "react-icons/fa6";
+import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
 import Link from "next/link";
-import {useEffect, useState} from "react";
-import {SupplierCard} from "@/components/ui/dashboard/admin/TableCards";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
-import {useRouter, useSearchParams} from "next/navigation";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {showConfirmDialog} from "@/utils/sweetalertUtil";
-import {toast} from "react-toastify";
-import {SupplierService} from "@/service";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import {Suspense} from "react";
+import TableSkeleton from "@/components/ui/TableSkeleton";
+import {FaEye, FaPen} from "react-icons/fa";
+import DeleteSupplier from "@/components/ui/dashboard/admin/suppliers/DeleteSupplier";
 
-const Page = () => {
-    const [suppliers, setSuppliers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const router = useRouter();
+async function getAllSuppliers(query) {
+    const {accessToken} = await getServerSession(authOptions);
+    const queryString = query ? `?query=${query}` : '';
 
-    const searchParams = useSearchParams();
-    const query = searchParams.get("query");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/suppliers${queryString}`, {
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
 
-    const handleDelete = (supplier) => {
-        showConfirmDialog(
-            `Are you sure you want to delete ${supplier.name} supplier?`,
-            () => deleteSupplier(supplier)
-        );
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch suppliers');
     }
 
-    const deleteSupplier = (supplier) => {
-        SupplierService.deleteSupplier(supplier.id)
-            .then(response => {
-                if (response.status === 200) {
-                    toast.success('Supplier deleted successfully');
-                    router.refresh();
-                }
-            })
-            .catch(error => console.error(error));
-    }
-
-    useEffect(() => {
-        const fetchSuppliers = () => {
-            setLoading(true);
-            SupplierService.getAllSuppliers({query})
-                .then(response => {
-                    setSuppliers(response.data);
-                    setLoading(false);
-                })
-                .catch(error => console.error(error));
-        };
-
-        fetchSuppliers();
-    }, [query]);
-
-    return (
-        <div className={`bg-white py-4 p-4 rounded-lg shadow-lg`}>
-            <h1 className={`page-heading`}>Suppliers</h1>
-
-            <div className={`mt-4 flex flex-wrap gap-2 justify-between items-center`}>
-                <SearchForm/>
-                <Link href={`/dashboard/admin/suppliers/add`} className={`add-btn`}>Add Supplier</Link>
-            </div>
-
-            <div className={`mt-8`}>
-                {loading ? <LoadingSpinner/> : <SuppliersTable suppliers={suppliers} handleDelete={handleDelete}/>}
-            </div>
-        </div>
-    )
+    return await response.json();
 }
 
-const SuppliersTable = ({suppliers, handleDelete}) => {
+export const metadata = {
+    title: 'Suppliers - Finviq'
+}
+
+export default async function Page({searchParams}) {
+    const {query} = searchParams;
+    const suppliers = await getAllSuppliers(query);
+
+    return (
+        <main>
+            <div className={`p-8 border-b`}>
+                <h1 className={`page-heading`}>Suppliers</h1>
+
+                <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
+                    <SearchForm/>
+                    <div className={`flex gap-4 items-center`}>
+                        <Link href={`/dashboard/admin/suppliers/add`} className={`add-btn flex items-center gap-2`}>
+                            <FaPlus/> New supplier
+                        </Link>
+
+                        {/* TODO: Handle more options menu */}
+                        <button
+                            className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                        >
+                            <FaEllipsisVertical/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <Suspense fallback={<TableSkeleton rows={10}/>}>
+                    <SuppliersTable suppliers={suppliers}/>
+                </Suspense>
+            </div>
+        </main>
+    );
+}
+
+function SuppliersTable({suppliers}) {
     return (
         suppliers.length === 0 ? (
             <div>
@@ -107,31 +106,19 @@ const SuppliersTable = ({suppliers, handleDelete}) => {
                                     <Link
                                         title={`Edit`}
                                         className={`edit-btn ml-3`}
-                                        href={`/dashboard/admin/suppliers/edit/${supplier.id}`}
+                                        href={`/dashboard/admin/suppliers/${supplier.id}/edit`}
                                     >
                                         <FaPen/>
                                     </Link>
-                                    <button
-                                        className={`ml-3 delete-btn`} title={`Delete`}
-                                        onClick={() => handleDelete(supplier)}
-                                    >
-                                        <FaTrashCan/>
-                                    </button>
+                                    <DeleteSupplier supplier={supplier}/>
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
                 </div>
-
-                {suppliers.map((supplier, index) => (
-                    <div key={index} className={`sm:hidden`}>
-                        <SupplierCard supplier={supplier} handleDelete={handleDelete}/>
-                    </div>
-                ))}
             </>
         )
     )
 }
 
-export default Page;

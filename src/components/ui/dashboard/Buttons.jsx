@@ -1,3 +1,5 @@
+'use client'
+
 import {SmallLoadingSpinner} from "@/components/ui/LoadingSpinner";
 import {useFormStatus} from "react-dom";
 import {FaTrashCan} from "react-icons/fa6";
@@ -16,7 +18,7 @@ export function SubmitBtn({loading, text}) {
     );
 }
 
-export function DeleteButton() {
+export function DeleteButton({text = ''}) {
     const {pending} = useFormStatus();
 
     return (
@@ -24,9 +26,14 @@ export function DeleteButton() {
             type={`submit`}
             disabled={pending}
             aria-disabled={pending}
-            className={`ml-3 delete-btn`} title={`Delete`}
+            className={`delete-btn ${text ? 'flex items-center gap-2' : 'ml-3'}`} title={`Delete`}
         >
-            {pending ? <SmallLoadingSpinner/> : <FaTrashCan/>}
+            {pending ? <SmallLoadingSpinner/> : (
+                <>
+                    <span><FaTrashCan/></span>
+                    <span>{text}</span>
+                </>
+            )}
         </button>
     )
 }

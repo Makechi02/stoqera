@@ -35,32 +35,6 @@ export const GET = async (request) => {
     }
 };
 
-export const POST = async (request) => {
-    const origin = request.headers.get('origin');
-    const headers = getCorsHeaders(origin);
-
-    const {accessToken} = await getServerSession(authOptions);
-    const newSupplier = await request.json();
-
-    try {
-        const response = await axios.post(`${SUPPLIERS_BASE_URL}`, newSupplier,{
-            headers: {
-                "Content-Type": 'application/json',
-                "Authorization": `Bearer ${accessToken}`
-            }
-        });
-
-        return new Response(JSON.stringify(response?.data), { status: 201, headers });
-    } catch (e) {
-        if (e.response.status === 409) {
-            return new Response(JSON.stringify({ error: e.response.data.message }), { status: 409, headers });
-        } else {
-            console.error(e);
-            return new Response("Failed to create a new supplier", { status: 500, headers });
-        }
-    }
-};
-
 export const OPTIONS = async (request) => {
     const origin = request.headers.get('origin');
     const headers = getCorsHeaders(origin);

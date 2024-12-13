@@ -8,10 +8,12 @@ const BackBtn = () => {
 
     return (
         <button
+            title={`Back`}
             onClick={() => router.back()}
-            className={`bg-[#333333] hover:bg-black text-gray-100 p-2 rounded-lg flex items-center gap-2 w-fit`}
+            className={`hover:bg-secondary hover:text-gray-100 p-2 rounded-lg flex items-center gap-2 w-fit text-xl`}
         >
-            <FaChevronLeft/> Back
+            <span className={`sr-only`}>Back</span>
+            <FaChevronLeft/>
         </button>
     )
 }

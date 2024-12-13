@@ -1,136 +1,96 @@
-"use client"
-
 import Link from "next/link";
 import {FaPen} from "react-icons/fa";
-import {useEffect, useState} from "react";
 import DateUtil from "@/utils/dateUtil";
-import {FaTrashCan} from "react-icons/fa6";
+import {FaEllipsisVertical} from "react-icons/fa6";
 import BackBtn from "@/components/ui/dashboard/BackBtn";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {showConfirmDialog} from "@/utils/sweetalertUtil";
-import {toast} from "react-toastify";
-import {useRouter} from "next/navigation";
-import {SupplierService} from "@/service";
+import {getSupplierById} from "@/lib/supplierActions";
+import DeleteSupplier from "@/components/ui/dashboard/admin/suppliers/DeleteSupplier";
 
-const Page = ({params}) => {
-    const [supplier, setSupplier] = useState({});
-    const router = useRouter();
+export async function generateMetadata({params}) {
+    const supplier = await getSupplierById(params.id);
 
-    const handleDelete = (supplier) => {
-        showConfirmDialog(
-            `Are you sure you want to delete ${supplier.name} supplier?`,
-            () => deleteSupplier(supplier)
-        );
+    return {
+        title: `${supplier.name} - Finviq`
     }
-
-    const deleteSupplier = (supplier) => {
-        SupplierService.deleteSupplier(supplier.id)
-            .then(response => {
-                if (response.status === 200) {
-                    toast.success('Supplier deleted successfully');
-                    router.refresh();
-                }
-            })
-            .catch(error => console.error(error));
-    }
-
-    useEffect(() => {
-        const fetchSupplierByID = () => {
-            SupplierService.getSupplierById(params.id)
-                .then(response => setSupplier(response.data))
-                .catch(error => console.error(error));
-        }
-
-        fetchSupplierByID();
-    }, []);
-
-    return (
-        <section className={`md:px-[10%]`}>
-            <BackBtn/>
-
-            <div className={`bg-white p-4 rounded-lg mt-4 shadow-lg`}>
-                <h1 className={`page-heading`}>Supplier Preview</h1>
-
-                <div className={`mt-4 flex flex-wrap justify-end items-center gap-4`}>
-                    <Link
-                        title={`Edit`}
-                        className={`edit-btn flex items-center gap-2`}
-                        href={`/dashboard/admin/suppliers/edit/${supplier.id}`}
-                    >
-                        <FaPen/> Edit Supplier
-                    </Link>
-
-                    <button
-                        title={`Delete`}
-                        className={`ml-3 delete-btn flex items-center gap-2`}
-                        onClick={() => handleDelete(supplier)}
-                    >
-                        <FaTrashCan/> Delete Supplier
-                    </button>
-                </div>
-
-                <div className={`mt-4`}>
-                    {supplier.name ? (
-                        <div className={`flex flex-col gap-3`}>
-                            <div className={`grid sm:grid-cols-2 gap-4`}>
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Name:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{supplier.name}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Phone:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{supplier.phone}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Address:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{supplier.address}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Added At:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{DateUtil.formatDate(supplier.addedAt)}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Added By:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{supplier?.addedBy?.name}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Updated At:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{DateUtil.formatDate(supplier.updatedAt)}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Updated By:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{supplier?.updatedBy?.name}</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    ) : (
-                        <LoadingSpinner/>
-                    )}
-                </div>
-            </div>
-        </section>
-    )
 }
 
-export default Page;
+export default async function Page({params}) {
+    const supplier = await getSupplierById(params.id);
+
+    return (
+        <main>
+            <div className={`p-8 border-b`}>
+                <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
+                    <div className={`flex items-center gap-4`}>
+                        <BackBtn/>
+                        <h1 className={`page-heading`}>{supplier.name}</h1>
+                    </div>
+
+                    <div className={`flex gap-4 items-center`}>
+                        <Link
+                            title={`Edit supplier`}
+                            className={`add-btn flex items-center gap-2`}
+                            href={`/dashboard/admin/suppliers/${supplier.id}/edit`}
+                        >
+                            <FaPen/> Edit Supplier
+                        </Link>
+
+                        <DeleteSupplier supplier={supplier} text={`Delete supplier`}/>
+
+                        {/* TODO: Handle more options menu */}
+                        <button
+                            className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                        >
+                            <FaEllipsisVertical/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`py-8 px-8 max-w-screen-md`}>
+                <div className={`space-y-4`}>
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Supplier details</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Name:</span>
+                            <span>{supplier.name}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Phone:</span>
+                            <span>{supplier.phone}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Address:</span>
+                            <span>{supplier.address}</span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Metadata</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Added at:</span>
+                            <span>{DateUtil.formatDate(supplier.addedAt)}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Added by:</span>
+                            <span>{supplier.addedBy.name}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Last updated at:</span>
+                            <span>{DateUtil.formatDate(supplier.updatedAt)}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Last updated by:</span>
+                            <span>{supplier.updatedBy.name}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    )
+}
