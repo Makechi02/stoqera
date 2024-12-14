@@ -19,6 +19,9 @@ export const metadata = {
     authors: [
         { name: "Makechi Eric", url: "https://github.com/Makechi02" },
     ],
+    verification: {
+        google: 'bQPyIAZERspa3jutIVff6Ihh6UntNx1H408VQYHIO2I'
+    }
 };
 
 export const viewport = {
