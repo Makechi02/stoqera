@@ -1,150 +1,106 @@
-"use client"
-
 import Link from "next/link";
 import {FaPen} from "react-icons/fa";
-import {useEffect, useState} from "react";
 import DateUtil from "@/utils/dateUtil";
-import {FaTrashCan} from "react-icons/fa6";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {showConfirmDialog} from "@/utils/sweetalertUtil";
-import {toast} from "react-toastify";
-import {useRouter} from "next/navigation";
-import {CustomerService} from "@/service";
+import {FaEllipsisVertical} from "react-icons/fa6";
 import {BackBtn} from "@/components/ui/dashboard/Buttons";
+import {getCustomerById} from "@/lib/customerActions";
+import DeleteCustomer from "@/components/ui/dashboard/admin/customers/DeleteCustomer";
 
-const Page = ({params}) => {
-    const [customer, setCustomer] = useState({});
-    const router = useRouter();
+export async function generateMetadata({params}) {
+    const customer = await getCustomerById(params.id);
 
-    const handleDelete = (customer) => {
-        showConfirmDialog(
-            `Are you sure you want to delete ${customer.name} customer?`,
-            () => deleteCustomer(customer)
-        );
+    return {
+        title: `${customer.name} - Finviq`
     }
-
-    const deleteCustomer = (customer) => {
-        CustomerService.deleteCustomer(customer.id)
-            .then(response => {
-                if (response.status === 200) {
-                    toast.success('Customer deleted successfully');
-                    router.refresh();
-                }
-            })
-            .catch(error => console.error(error));
-    }
-
-    useEffect(() => {
-        const fetchCustomerByID = () => {
-            CustomerService.getCustomerById(params.id)
-                .then(response => setCustomer(response.data))
-                .catch(error => console.error(error));
-        }
-
-        fetchCustomerByID();
-    }, []);
-
-    return (
-        <section className={`md:px-[10%]`}>
-            <BackBtn/>
-
-            <div className={`bg-white p-4 rounded-lg mt-4 shadow-lg`}>
-                <h1 className={`page-heading`}>Customer Preview</h1>
-
-                <div className={`mt-4 flex flex-wrap justify-end items-center gap-4`}>
-                    <Link
-                        title={`Edit`}
-                        className={`edit-btn flex items-center gap-2`}
-                        href={`/dashboard/admin/customers/edit/${customer.id}`}
-                    >
-                        <FaPen/> Edit Customer
-                    </Link>
-
-                    <button
-                        title={`Delete`}
-                        className={`ml-3 delete-btn flex items-center gap-2`}
-                        onClick={() => handleDelete(customer)}
-                    >
-                        <FaTrashCan/> Delete Customer
-                    </button>
-                </div>
-
-                <div className={`mt-4`}>
-                    {customer.name ? (
-                        <div className={`flex flex-col gap-3`}>
-                            <div className={`grid sm:grid-cols-2 gap-4`}>
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Name:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{customer.name}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Contact Person:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{customer.contactPerson}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Email:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{customer.email}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Phone:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{customer.phone}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Address:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{customer.address}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Added At:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{DateUtil.formatDate(customer.addedAt)}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Added By:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{customer?.addedBy?.name}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Updated At:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{DateUtil.formatDate(customer.updatedAt)}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Updated By:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{customer?.updatedBy?.name}</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    ) : (
-                        <LoadingSpinner/>
-                    )}
-                </div>
-            </div>
-        </section>
-    )
 }
 
-export default Page;
+export default async function Page({params}) {
+    const customer = await getCustomerById(params.id);
+
+    return (
+        <main>
+            <div className={`p-8 border-b`}>
+                <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
+                    <div className={`flex items-center gap-4`}>
+                        <BackBtn/>
+                        <h1 className={`page-heading`}>{customer.name}</h1>
+                    </div>
+
+                    <div className={`flex gap-4 items-center`}>
+                        <Link
+                            title={`Edit customer`}
+                            className={`add-btn flex items-center gap-2`}
+                            href={`/dashboard/admin/customers/${customer.id}/edit`}
+                        >
+                            <FaPen/> Edit customer
+                        </Link>
+
+                        <DeleteCustomer customer={customer} text={`Delete customer`}/>
+
+                        {/* TODO: Handle more options menu */}
+                        <button
+                            className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                        >
+                            <FaEllipsisVertical/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`py-8 px-8 max-w-screen-md`}>
+                <div className={`space-y-4`}>
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Customer details</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Name:</span>
+                            <span>{customer.name}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Contact Person:</span>
+                            <span>{customer.contactPerson}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Email:</span>
+                            <span>{customer.email}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Phone:</span>
+                            <span>{customer.phone}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Address:</span>
+                            <span>{customer.address}</span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Metadata</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Added at:</span>
+                            <span>{DateUtil.formatDate(customer.addedAt)}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Added by:</span>
+                            <span>{customer.addedBy.name}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Last updated at:</span>
+                            <span>{DateUtil.formatDate(customer.updatedAt)}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Last updated by:</span>
+                            <span>{customer.updatedBy.name}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    )
+}

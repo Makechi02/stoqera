@@ -1,74 +1,73 @@
-"use client"
-
 import {FaEye, FaPen} from "react-icons/fa";
-import {FaTrashCan} from "react-icons/fa6";
+import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
 import Link from "next/link";
-import {useEffect, useState} from "react";
-import {CustomerCard} from "@/components/ui/dashboard/admin/TableCards";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
-import {useRouter, useSearchParams} from "next/navigation";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {showConfirmDialog} from "@/utils/sweetalertUtil";
-import {toast} from "react-toastify";
-import {CustomerService} from "@/service";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import {Suspense} from "react";
+import TableSkeleton from "@/components/ui/TableSkeleton";
+import DeleteCustomer from "@/components/ui/dashboard/admin/customers/DeleteCustomer";
 
-const Page = () => {
-    const [customers, setCustomers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const router = useRouter();
+async function getAllCustomers(query) {
+    const {accessToken} = await getServerSession(authOptions);
+    const queryString = query ? `?query=${query}` : '';
 
-    const searchParams = useSearchParams();
-    const query = searchParams.get("query");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/customers${queryString}`, {
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
 
-    const handleDelete = (customer) => {
-        showConfirmDialog(
-            `Are you sure you want to delete ${customer.name} customer?`,
-            () => deleteCustomer(customer)
-        );
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch customers');
     }
 
-    const deleteCustomer = (customer) => {
-        CustomerService.deleteCustomer(customer.id)
-            .then(response => {
-                if (response.status === 200) {
-                    toast.success('Customer deleted successfully');
-                    router.refresh();
-                }
-            })
-            .catch(error => console.error(error));
-    }
+    return await response.json();
+}
 
-    useEffect(() => {
-        const fetchCustomer = () => {
-            setLoading(true);
-            CustomerService.getAllCustomers({query})
-                .then(response => {
-                    setCustomers(response.data);
-                    setLoading(false);
-                })
-                .catch(error => console.error(error));
-        };
+export const metadata = {
+    title: 'Customers - Finviq'
+}
 
-        fetchCustomer();
-    }, [query]);
+export default async function Page({searchParams}) {
+    const {query} = searchParams;
+    const customers = await getAllCustomers(query);
 
     return (
-        <div className={`bg-white py-4 p-4 rounded-lg shadow-lg`}>
-            <h1 className={`page-heading`}>Customers</h1>
+        <main>
+            <div className={`p-8 border-b`}>
+                <h1 className={`page-heading`}>Customers</h1>
 
-            <div className={`mt-4 flex flex-wrap gap-2 justify-between items-center`}>
-                <SearchForm/>
-                <Link href={`/dashboard/admin/customers/add`} className={`add-btn`}>Add Customer</Link>
+                <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
+                    <SearchForm/>
+                    <div className={`flex gap-4 items-center`}>
+                        <Link href={`/dashboard/admin/customers/add`} className={`add-btn flex items-center gap-2`}>
+                            <FaPlus/> New customer
+                        </Link>
+
+                        {/* TODO: Handle more options menu */}
+                        <button
+                            className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                        >
+                            <FaEllipsisVertical/>
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div className={`mt-8`}>
-                {loading ? <LoadingSpinner/> : <CustomersTable customers={customers} handleDelete={handleDelete} />}
+            <div>
+                <Suspense fallback={<TableSkeleton rows={10} columns={5}/>}>
+                    <CustomersTable customers={customers}/>
+                </Suspense>
             </div>
-        </div>
+        </main>
     )
 }
 
-const CustomersTable = ({customers, handleDelete}) => {
+const CustomersTable = ({customers}) => {
     return (
         customers.length === 0 ? (
             <div>
@@ -107,31 +106,19 @@ const CustomersTable = ({customers, handleDelete}) => {
                                     <Link
                                         title={`Edit`}
                                         className={`edit-btn ml-3`}
-                                        href={`/dashboard/admin/customers/edit/${customer.id}`}
+                                        href={`/src/app/dashboard/admin/customers/${customer.id}/edit`}
                                     >
                                         <FaPen/>
                                     </Link>
-                                    <button
-                                        className={`ml-3 delete-btn`} title={`Delete`}
-                                        onClick={() => handleDelete(customer)}
-                                    >
-                                        <FaTrashCan/>
-                                    </button>
+
+                                    <DeleteCustomer customer={customer}/>
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
                 </div>
-
-                {customers.map((customer, index) => (
-                    <div key={index} className={`sm:hidden`}>
-                        <CustomerCard customer={customer} handleDelete={handleDelete}/>
-                    </div>
-                ))}
             </>
         )
     )
 }
-
-export default Page;
