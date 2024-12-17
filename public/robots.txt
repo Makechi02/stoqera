@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+
+# Host
+Host: https://finviq.vercel.app
+
+# Sitemaps
+Sitemap: https://finviq.vercel.app/sitemap.xml
