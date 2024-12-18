@@ -1,77 +1,79 @@
-"use client"
-
 import {FaPen} from "react-icons/fa";
-import {FaTrashCan} from "react-icons/fa6";
+import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
 import Link from "next/link";
-import {useEffect, useState} from "react";
-import {CategoryCard} from "@/components/ui/dashboard/admin/TableCards";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
-import {useRouter, useSearchParams} from "next/navigation";
 import DateUtil from "@/utils/dateUtil";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {showConfirmDialog} from "@/utils/sweetalertUtil";
-import {toast} from "react-toastify";
-import {CategoryService} from "@/service";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import {Suspense} from "react";
+import TableSkeleton from "@/components/ui/TableSkeleton";
+import DeleteCategory from "@/components/ui/dashboard/admin/categories/DeleteCategory";
 
-const Page = () => {
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+async function getAllCategories(query) {
+    const {accessToken} = await getServerSession(authOptions);
+    const queryString = query ? `?query=${query}` : '';
 
-    const searchParams = useSearchParams();
-    const query = searchParams.get("query");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/categories${queryString}`, {
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
 
-    const router = useRouter();
-
-    const handleDelete = (category) => {
-        showConfirmDialog(
-            `Are you sure you want to delete the ${category.name} category?`,
-            () => deleteCategory(category)
-        );
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch categories');
     }
 
+    return await response.json();
+}
 
-    const deleteCategory = (category) => {
-        CategoryService.deleteCategory(category.id)
-            .then(response => {
-                if (response.status === 200) {
-                    toast.success('Category deleted successfully');
-                    router.refresh();
-                }
-            })
-            .catch(error => console.error(error));
-    }
+export const metadata = {
+    title: 'Categories - Finviq'
+}
 
-    useEffect(() => {
-        const fetchCategories = () => {
-            setLoading(true);
-            CategoryService.getAllCategories({query})
-                .then(response => {
-                    setCategories(response.data);
-                    setLoading(false);
-                })
-                .catch(error => console.error(error));
-        };
+export default async function Page({searchParams}) {
+    const {query} = searchParams;
+    const categories = await getAllCategories(query);
 
-        fetchCategories();
-    }, [query]);
+    const columns = [
+        {key: 'name', header: 'Name'}
+    ];
 
     return (
-        <div className={`bg-white py-4 p-4 rounded-lg shadow-lg`}>
-            <h1 className={`page-heading`}>Categories</h1>
+        <main>
+            <div className={`p-8 border-b`}>
+                <h1 className={`page-heading`}>Categories</h1>
 
-            <div className={`mt-4 flex flex-wrap gap-2 justify-between items-center`}>
-                <SearchForm/>
-                <Link href={`/dashboard/admin/categories/add`} className={`add-btn`}>Add Category</Link>
+                <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
+                    <SearchForm/>
+                    <div className={`flex gap-4 items-center`}>
+                        <Link href={`/dashboard/admin/categories/add`} className={`add-btn flex items-center gap-2`}>
+                            <FaPlus/> New category
+                        </Link>
+
+                        {/* TODO: Handle more options menu */}
+                        <button
+                            className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                        >
+                            <FaEllipsisVertical/>
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div className={`mt-8`}>
-                {loading ? <LoadingSpinner/> : <CategoriesTable categories={categories} handleDelete={handleDelete}/>}
+            <div>
+                <Suspense fallback={<TableSkeleton/>}>
+                    <CategoriesTable categories={categories}/>
+                </Suspense>
             </div>
-        </div>
+
+        </main>
     )
 }
 
-const CategoriesTable = ({categories, handleDelete}) => {
+const CategoriesTable = ({categories}) => {
     return (
         categories.length === 0 ? (
             <div>
@@ -106,31 +108,19 @@ const CategoriesTable = ({categories, handleDelete}) => {
                                     <Link
                                         title={`Edit`}
                                         className={`edit-btn`}
-                                        href={`/dashboard/admin/categories/edit/${category.id}`}
+                                        href={`/dashboard/admin/categories/${category.id}/edit`}
                                     >
                                         <FaPen/>
                                     </Link>
-                                    <button
-                                        className={`ml-3 delete-btn`} title={`Delete`}
-                                        onClick={() => handleDelete(category)}
-                                    >
-                                        <FaTrashCan/>
-                                    </button>
+
+                                    <DeleteCategory category={category}/>
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
                 </div>
-
-                {categories.map((category, index) => (
-                    <div key={index} className={`sm:hidden`}>
-                        <CategoryCard category={category} handleDelete={handleDelete}/>
-                    </div>
-                ))}
             </>
         )
     )
 }
-
-export default Page;

@@ -6,22 +6,6 @@ const CategoryService = {
     getAllCategories: (params) => {
         const queryString = params?.query ? `?query=${params.query}` : '';
         return axios.get(`${CATEGORIES_API_BASE_URL}/${queryString}`);
-    },
-
-    addCategory: (category) => {
-        return axios.post(CATEGORIES_API_BASE_URL, category);
-    },
-
-    getCategoryById: (id) => {
-        return axios.get(`${CATEGORIES_API_BASE_URL}/${id}`);
-    },
-
-    updateCategory: (id, category) => {
-        return axios.put(`${CATEGORIES_API_BASE_URL}/${id}`, category);
-    },
-
-    deleteCategory: (id) => {
-        return axios.delete(`${CATEGORIES_API_BASE_URL}/${id}`);
     }
 };
 
