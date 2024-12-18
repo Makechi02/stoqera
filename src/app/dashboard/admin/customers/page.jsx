@@ -106,7 +106,7 @@ const CustomersTable = ({customers}) => {
                                     <Link
                                         title={`Edit`}
                                         className={`edit-btn ml-3`}
-                                        href={`/src/app/dashboard/admin/customers/${customer.id}/edit`}
+                                        href={`/dashboard/admin/customers/${customer.id}/edit`}
                                     >
                                         <FaPen/>
                                     </Link>
