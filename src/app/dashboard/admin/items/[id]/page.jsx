@@ -1,172 +1,132 @@
-"use client"
-
 import Link from "next/link";
 import {FaPen} from "react-icons/fa";
-import {useEffect, useState} from "react";
 import DateUtil from "@/utils/dateUtil";
-import {FaTrashCan} from "react-icons/fa6";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {showConfirmDialog} from "@/utils/sweetalertUtil";
-import {useRouter} from "next/navigation";
-import {toast} from "react-toastify";
-import {ItemService} from "@/service";
+import {FaEllipsisVertical, FaTrashCan} from "react-icons/fa6";
 import {BackBtn} from "@/components/ui/dashboard/Buttons";
+import {getItemById} from "@/lib/itemActions";
 
-const Page = ({params}) => {
-    const [item, setItem] = useState({});
-    const router = useRouter();
+export async function generateMetadata({params}) {
+    const item = await getItemById(params.id);
 
-    const handleDelete = (item) => {
-        showConfirmDialog(
-            `Are you sure you want to delete this item?`,
-            () => deleteItem(item)
-        );
-    };
-
-    const deleteItem = (item) => {
-        ItemService.deleteItem(item.id)
-            .then(response => {
-                if (response.status === 200) {
-                    toast.success('Item deleted successfully');
-                    router.push("/dashboard/admin/items");
-                }
-            })
-            .catch(error => console.error(error));
-    };
-
-    useEffect(() => {
-        const fetchItemByID = () => {
-            ItemService.getItemById(params.id)
-                .then(response => setItem(response.data))
-                .catch(error => console.error(error));
-        }
-
-        fetchItemByID();
-    }, []);
-
-    return (
-        <section className={`md:px-[10%]`}>
-            <BackBtn/>
-
-            <div className={`bg-white p-4 rounded-lg mt-4 shadow-lg`}>
-                <h1 className={`page-heading`}>Item Preview</h1>
-
-                <div className={`mt-4 flex flex-wrap justify-end items-center gap-4`}>
-                    <Link
-                        title={`Edit`}
-                        className={`edit-btn flex items-center gap-2`}
-                        href={`/dashboard/admin/items/edit/${item.id}`}
-                    >
-                        <FaPen/>
-                        Edit Item
-                    </Link>
-
-                    <button
-                        title={`Delete`}
-                        className={`ml-3 delete-btn flex items-center gap-2`}
-                        onClick={() => handleDelete(item)}
-                    >
-                        <FaTrashCan/> Delete Item
-                    </button>
-                </div>
-
-                <div className={`mt-4`}>
-                    {item.name ? (
-                        <div className={`flex flex-col gap-3`}>
-                            <div className={`grid sm:grid-cols-2 gap-4`}>
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Name:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.name}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Brand:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.brand}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Model:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.model}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Quantity:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.quantity}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Price:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.price}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Stock Alert:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.stockAlert}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Category:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.category?.name ? item.category.name : 'unknown'}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Supplier:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.supplier?.name ? item.supplier.name : 'unknown'}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Created At:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{DateUtil.formatDate(item.createdAt)}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Created By:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.createdBy.name}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Updated At:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{DateUtil.formatDate(item.updatedAt)}</p>
-                                    </div>
-                                </div>
-
-                                <div className={`input-box`}>
-                                    <p className={`dashboard-label`}>Updated By:</p>
-                                    <div className={`dashboard-input`}>
-                                        <p>{item.updatedBy.name}</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    ) : (
-                        <LoadingSpinner/>
-                    )}
-                </div>
-            </div>
-        </section>
-    )
+    return {
+        title: `${item.name} - Finviq`
+    }
 }
 
-export default Page;
+export default async function Page({params}) {
+    const item = await getItemById(params.id);
+
+    return (
+        <main>
+            <div className={`p-8 border-b`}>
+                <div className={`mt-4 flex flex-wrap gap-4 justify-between items-center`}>
+                    <div className={`flex items-center gap-4`}>
+                        <BackBtn/>
+                        <h1 className={`page-heading`}>{item.name}</h1>
+                    </div>
+
+                    <div className={`flex gap-4 items-center`}>
+                        <Link
+                            title={`Edit item`}
+                            className={`add-btn flex items-center gap-2`}
+                            href={`/dashboard/admin/items/${item.id}/edit`}
+                        >
+                            <FaPen/> Edit item
+                        </Link>
+
+                        <Link
+                            title={`Delete item`}
+                            className={`delete-btn flex items-center gap-2`}
+                            href={`/dashboard/admin/items/${item.id}/delete`}
+                        >
+                            <FaTrashCan/> Delete item
+                        </Link>
+
+                        {/* TODO: Handle more options menu */}
+                        <button
+                            className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                        >
+                            <FaEllipsisVertical/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`py-8 px-8 max-w-screen-md`}>
+                <div className={`space-y-4`}>
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Item details</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Name:</span>
+                            <span>{item.name}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Brand:</span>
+                            <span>{item.brand}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Model:</span>
+                            <span>{item.model}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Category:</span>
+                            <span>{item.category?.name ? item.category.name : 'unknown'}</span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Item pricing</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Cost price:</span>
+                            <span>{item.costPrice}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Retail Price:</span>
+                            <span>{item.retailPrice}</span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Stock</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Quantity:</span>
+                            <span>{item.quantity}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Stock alert:</span>
+                            <span>{item.stockAlert}</span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 className={`font-bold font-gfs_didot text-2xl mb-2`}>Metadata</h2>
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Created at:</span>
+                            <span>{DateUtil.formatDate(item.createdAt)}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Created by:</span>
+                            <span>{item.createdBy.name}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Last updated at:</span>
+                            <span>{DateUtil.formatDate(item.updatedAt)}</span>
+                        </p>
+
+                        <p className={`space-x-2`}>
+                            <span className={`font-bold`}>Last updated by:</span>
+                            <span>{item.updatedBy.name}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    )
+}

@@ -58,7 +58,7 @@ export const ItemCard = ({item, handleDelete}) => {
                     <Link title={`View`} className={`edit-btn`} href={`/dashboard/admin/items/${item.id}`}>
                         <FaEye />
                     </Link>
-                    <Link title={`Edit`} className={`ml-3 edit-btn`} href={`/dashboard/admin/items/edit/${item.id}`}>
+                    <Link title={`Edit`} className={`ml-3 edit-btn`} href={`/dashboard/admin/items/${item.id}/edit`}>
                         <FaPen/>
                     </Link>
                     <button className={`ml-3 delete-btn`} title={`Delete`} onClick={handleDelete}><FaTrashCan/></button>

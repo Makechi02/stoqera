@@ -21,20 +21,6 @@ export function BackBtn() {
     )
 }
 
-export function SubmitBtn({loading, text}) {
-    const {pending} = useFormStatus();
-
-    return (
-        <button type={`submit`} disabled={pending} aria-disabled={pending} className={`dashboard-submit-btn`}>
-            {pending ? (
-                <span className={`flex gap-2 items-center justify-center`}>
-                    Loading <SmallLoadingSpinner/>
-                </span>
-            ) : text}
-        </button>
-    );
-}
-
 export function DeleteButton({text = ''}) {
     const {pending} = useFormStatus();
 
@@ -53,4 +39,18 @@ export function DeleteButton({text = ''}) {
             )}
         </button>
     )
+}
+
+export function SubmitBtn({text}) {
+    const {pending} = useFormStatus();
+
+    return (
+        <button type={`submit`} disabled={pending} aria-disabled={pending} className={`dashboard-submit-btn`}>
+            {pending ? (
+                <span className={`flex gap-2 items-center justify-center`}>
+                    Loading <SmallLoadingSpinner/>
+                </span>
+            ) : text}
+        </button>
+    );
 }

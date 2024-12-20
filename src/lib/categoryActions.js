@@ -7,6 +7,26 @@ import {redirect} from "next/navigation";
 
 const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/categories`;
 
+export async function getAllCategories(query) {
+    const {accessToken} = await getServerSession(authOptions);
+    const queryString = query ? `?query=${query}` : '';
+
+    const response = await fetch(`${API_BASE_URL}${queryString}`, {
+        cache: 'force-cache',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch categories');
+    }
+
+    return await response.json();
+}
+
 export async function getCategoryById(id) {
     const {accessToken} = await getServerSession(authOptions);
 

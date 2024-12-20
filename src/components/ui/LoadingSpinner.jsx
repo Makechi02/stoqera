@@ -8,8 +8,8 @@ const LoadingSpinner = () => {
 
 export const SmallLoadingSpinner = () => {
     return (
-        <div className={`flex items-center justify-center h-fit`}>
-            <div className={`w-4 aspect-square border-t-4 border-white border-solid rounded-full animate-spin`}></div>
+        <div className={`flex items-center justify-center h-fit border-inherit`}>
+            <div className={`w-4 aspect-square border-t-4 border-inherit border-solid rounded-full animate-spin`}></div>
         </div>
     )
 }
