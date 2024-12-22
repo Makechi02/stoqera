@@ -32,8 +32,7 @@ const SideContent = ({user}) => {
                 <ul className={`mt-6 space-y-1`}>
                     {adminNavLinks.map((link, index) => {
                         if (link.type === 'link') {
-
-                            const isActive = link.href === "/dashboard/admin" ? pathname === link.href : pathname.startsWith(link.href);
+                            const isActive = link.href === "/admin" ? pathname === link.href : pathname.startsWith(link.href);
 
                             return (
                                 <li key={index} className={`capitalize`}>
@@ -87,7 +86,7 @@ const SideContent = ({user}) => {
 
             <div className={`sticky inset-x-0 bottom-0 border-t border-secondary`}>
                 <Link
-                    href={`/dashboard/admin/profile`}
+                    href={`/admin/profile`}
                     className={`flex items-center gap-2 bg-secondary text-white p-4 hover:bg-gray-50 hover:text-black`}
                 >
                     <div

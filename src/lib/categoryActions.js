@@ -80,8 +80,8 @@ export async function createCategory(prevState, formData) {
             return 'Failed to add category. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/categories');
-        redirect('/dashboard/admin/categories');
+        revalidatePath('/admin/categories');
+        redirect('/admin/categories');
     }
 }
 
@@ -114,8 +114,8 @@ export async function updateCategory(id, prevState, formData) {
         console.error(error);
         return 'Failed to update category. Try again';
     } else {
-        revalidatePath('/dashboard/admin/categories');
-        redirect('/dashboard/admin/categories');
+        revalidatePath('/admin/categories');
+        redirect('/admin/categories');
     }
 }
 
@@ -140,7 +140,7 @@ export async function deleteCategory(id) {
             return 'Failed to delete category. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/categories');
-        redirect('/dashboard/admin/categories');
+        revalidatePath('/admin/categories');
+        redirect('/admin/categories');
     }
 }

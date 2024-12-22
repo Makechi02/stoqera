@@ -43,7 +43,7 @@ const Login = () => {
             const role = session.user.role;
 
             setLoading(false);
-            router.push(role === 'USER' ? "/dashboard/user" : "/dashboard/admin");
+            router.push(role === 'USER' ? "/dashboard/user" : "/admin");
         }
     };
 

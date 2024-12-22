@@ -55,8 +55,8 @@ export async function createUser(prevState, formData) {
             return 'Failed to add user. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/users');
-        redirect('/dashboard/admin/users');
+        revalidatePath('/admin/users');
+        redirect('/admin/users');
     }
 }
 
@@ -101,8 +101,8 @@ export async function updateUser(id, prevState, formData) {
         console.error(error);
         return 'Failed to update user. Try again';
     } else {
-        revalidatePath('/dashboard/admin/users');
-        redirect('/dashboard/admin/users');
+        revalidatePath('/admin/users');
+        redirect('/admin/users');
     }
 }
 
@@ -127,7 +127,7 @@ export async function deleteUser(id, _) {
             return 'Failed to delete user. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/users');
-        redirect('/dashboard/admin/users');
+        revalidatePath('/admin/users');
+        redirect('/admin/users');
     }
 }

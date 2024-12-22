@@ -55,10 +55,10 @@ export const ItemCard = ({item, handleDelete}) => {
             <div className={`flex flex-wrap gap-2 justify-between items-center text-sm font-medium text-gray-500 mt-2`}>
                 <span>Actions:</span>
                 <div className={`flex`}>
-                    <Link title={`View`} className={`edit-btn`} href={`/dashboard/admin/items/${item.id}`}>
+                    <Link title={`View`} className={`edit-btn`} href={`/admin/items/${item.id}`}>
                         <FaEye />
                     </Link>
-                    <Link title={`Edit`} className={`ml-3 edit-btn`} href={`/dashboard/admin/items/${item.id}/edit`}>
+                    <Link title={`Edit`} className={`ml-3 edit-btn`} href={`/admin/items/${item.id}/edit`}>
                         <FaPen/>
                     </Link>
                     <button className={`ml-3 delete-btn`} title={`Delete`} onClick={handleDelete}><FaTrashCan/></button>
@@ -120,10 +120,10 @@ export const CustomerCard = ({customer, handleDelete}) => {
             <div className={`flex flex-wrap gap-2 justify-between items-center text-sm font-medium text-gray-500 mt-2`}>
                 <span>Actions:</span>
                 <div className={`flex`}>
-                    <Link title={`View`} className={`edit-btn`} href={`/dashboard/admin/customers/${customer.id}`}>
+                    <Link title={`View`} className={`edit-btn`} href={`/src/app/admin/customers/${customer.id}`}>
                         <FaEye/>
                     </Link>
-                    <Link title={`Edit`} className={`ml-3 edit-btn`} href={`/dashboard/admin/customers/edit/${customer.id}`}>
+                    <Link title={`Edit`} className={`ml-3 edit-btn`} href={`/src/app/admin/customers/edit/${customer.id}`}>
                         <FaPen/>
                     </Link>
                     <button className={`ml-3 delete-btn`} title={`Delete`} onClick={handleDelete}><FaTrashCan/></button>

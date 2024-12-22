@@ -81,8 +81,8 @@ export async function createCustomer(prevState, formData) {
             return 'Failed to add customer. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/customers');
-        redirect('/dashboard/admin/customers');
+        revalidatePath('/admin/customers');
+        redirect('/admin/customers');
     }
 }
 
@@ -136,8 +136,8 @@ export async function updateCustomer(id, prevState, formData) {
         console.error(error);
         return 'Failed to update customer. Try again';
     } else {
-        revalidatePath('/dashboard/admin/customers');
-        redirect('/dashboard/admin/customers');
+        revalidatePath('/admin/customers');
+        redirect('/admin/customers');
     }
 }
 
@@ -162,7 +162,7 @@ export async function deleteCustomer(id, _) {
             return 'Failed to delete customer. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/customers');
-        redirect('/dashboard/admin/customers');
+        revalidatePath('/admin/customers');
+        redirect('/admin/customers');
     }
 }

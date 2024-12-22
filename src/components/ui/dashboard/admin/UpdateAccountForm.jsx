@@ -77,7 +77,7 @@ const UpdateAccountForm = ({user}) => {
 
             <p className={`text-sm`}>
                 Change your account details below, or
-                <Link href={`/dashboard/${user.role.toLowerCase()}/profile/security#change-password`}
+                <Link href={`/${user.role.toLowerCase()}/profile/security#change-password`}
                       className={`underline`}> click here </Link>
                 to change your password
             </p>

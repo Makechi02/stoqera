@@ -123,8 +123,8 @@ export async function createItem(prevState, formData) {
             return 'Failed to add item. Please try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/items');
-        redirect('/dashboard/admin/items');
+        revalidatePath('/admin/items');
+        redirect('/admin/items');
     }
 }
 
@@ -206,8 +206,8 @@ export async function updateItem(id, prevState, formData) {
         console.error(error);
         return 'Failed to update item. Try again';
     } else {
-        revalidatePath('/dashboard/admin/items');
-        redirect('/dashboard/admin/items');
+        revalidatePath('/admin/items');
+        redirect('/admin/items');
     }
 }
 
@@ -232,7 +232,7 @@ export async function deleteItem(id) {
             return 'Failed to delete item. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/items');
-        redirect('/dashboard/admin/items');
+        revalidatePath('/admin/items');
+        redirect('/admin/items');
     }
 }

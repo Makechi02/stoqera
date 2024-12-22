@@ -6,8 +6,8 @@ import {signOut} from "next-auth/react";
 
 const ProfileNavbar = () => {
     const profileNavLinks = [
-        {href: "/dashboard/admin/profile", text: "personal information"},
-        {href: "/dashboard/admin/profile/security", text: "security"}
+        {href: "/admin/profile", text: "personal information"},
+        {href: "/admin/profile/security", text: "security"}
     ];
 
     const handleLogout = async () => {

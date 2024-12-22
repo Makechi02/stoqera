@@ -72,8 +72,8 @@ export async function createSupplier(prevState, formData) {
             return 'Failed to add supplier. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/suppliers');
-        redirect('/dashboard/admin/suppliers');
+        revalidatePath('/admin/suppliers');
+        redirect('/admin/suppliers');
     }
 }
 
@@ -118,8 +118,8 @@ export async function updateSupplier(id, prevState, formData) {
         console.error(error);
         return 'Failed to update supplier. Try again';
     } else {
-        revalidatePath('/dashboard/admin/suppliers');
-        redirect('/dashboard/admin/suppliers');
+        revalidatePath('/admin/suppliers');
+        redirect('/admin/suppliers');
     }
 }
 

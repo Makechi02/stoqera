@@ -68,7 +68,7 @@ export default function UsersTable({users}) {
                                     <Link
                                         title={`Edit`}
                                         className={`edit-btn`}
-                                        href={`/dashboard/admin/users/edit/${user.id}`}
+                                        href={`/admin/users/edit/${user.id}`}
                                     >
                                         <FaPen/>
                                     </Link>
