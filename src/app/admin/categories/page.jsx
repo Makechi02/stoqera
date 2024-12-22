@@ -37,10 +37,6 @@ export default async function Page({searchParams}) {
     const {query} = searchParams;
     const categories = await getAllCategories(query);
 
-    const columns = [
-        {key: 'name', header: 'Name'}
-    ];
-
     return (
         <main>
             <div className={`p-8 border-b`}>
