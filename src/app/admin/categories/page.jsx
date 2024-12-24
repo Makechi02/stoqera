@@ -28,10 +28,6 @@ async function getAllCategories(query) {
     return await response.json();
 }
 
-export const metadata = {
-    title: 'Categories - Finviq'
-}
-
 export default async function Page(props) {
     const searchParams = await props.searchParams;
     const {query} = searchParams;
