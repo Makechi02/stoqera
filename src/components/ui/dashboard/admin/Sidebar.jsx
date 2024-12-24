@@ -4,30 +4,67 @@ import {Logo} from "@/components/ui";
 import {adminNavLinks} from "@/data/constants";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
+import {useState} from "react";
+import {FaChevronLeft, FaChevronRight} from "react-icons/fa6";
+import {FaBars} from "react-icons/fa";
 
 const Sidebar = ({user, children}) => {
+    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+    const toggleDrawer = () => setIsDrawerOpen(prevState => !prevState);
+
     return (
         <div>
-            <SideContent user={user}/>
-            <div className={`absolute bg-background text-text left-60 right-0 overflow-y-auto min-h-svh`}>
+            <SideContent user={user} isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer}/>
+            <div
+                className={`sm:absolute bg-background text-text overflow-y-auto min-h-svh transition-all duration-500 ${isDrawerOpen ? 'left-60 right-0' : 'left-0 w-full'}`}>
+                {!isDrawerOpen && (
+                    <div className={`absolute top-9 -left-4 hidden sm:block`}>
+                        <button
+                            onClick={toggleDrawer}
+                            className={`bg-primary size-10 text-base pr-2 rounded-lg flex justify-end items-center`}
+                        >
+                            <FaChevronRight/>
+                        </button>
+                    </div>
+                )}
+                <div className={`sm:hidden bg-surface w-full flex items-center justify-between px-8`}>
+                    <Logo/>
+                    <button
+                        title={`Toggle drawer`}
+                        onClick={toggleDrawer}
+                        className={`rounded-lg flex justify-center items-center text-white`}
+                    >
+                        <FaBars/>
+                    </button>
+                </div>
                 {children}
             </div>
         </div>
     );
 }
 
-const SideContent = ({user}) => {
+const SideContent = ({user, isDrawerOpen, toggleDrawer}) => {
     const firstLetter = user.name.charAt(0).toUpperCase();
     const secondLetter = user.name.split(" ")[1]?.charAt(0).toUpperCase();
 
     const pathname = usePathname();
 
     return (
-        <aside className={`fixed left-0 top-0 h-svh w-60 flex flex-col justify-between border-e bg-surface`}>
+        <aside className={`fixed top-0 h-svh flex flex-col justify-between border-e bg-surface transition-all duration-500 overflow-x-hidden
+                          ${isDrawerOpen ? 'w-60 left-0' : 'w-0 -left-60'}`}>
             <div className={`px-4 py-6`}>
-                <span className={`h-10 w-32 text-xs`}>
+                <div className={`text-xs relative`}>
                     <Logo/>
-                </span>
+                    <div className={`absolute -right-6 top-3`}>
+                        <button
+                            title={`Close drawer`}
+                            onClick={toggleDrawer}
+                            className={`bg-primary size-10 text-base rounded-lg flex justify-center sm:justify-start items-center sm:pl-2`}
+                        >
+                            <FaChevronLeft/>
+                        </button>
+                    </div>
+                </div>
 
                 <ul className={`mt-6 space-y-1`}>
                     {adminNavLinks.map((link, index) => {
