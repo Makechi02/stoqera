@@ -1,4 +1,4 @@
-import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
+import {FaEllipsisVertical, FaPlus, FaTrashCan} from "react-icons/fa6";
 import Link from "next/link";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
 import {getServerSession} from "next-auth";
@@ -6,7 +6,6 @@ import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import {Suspense} from "react";
 import TableSkeleton from "@/components/ui/TableSkeleton";
 import {FaEye, FaPen} from "react-icons/fa";
-import DeleteSupplier from "@/components/ui/dashboard/admin/suppliers/DeleteSupplier";
 
 async function getAllSuppliers(query) {
     const {accessToken} = await getServerSession(authOptions);
@@ -111,7 +110,14 @@ function SuppliersTable({suppliers}) {
                                     >
                                         <FaPen/>
                                     </Link>
-                                    <DeleteSupplier supplier={supplier}/>
+
+                                    <Link
+                                        title={`Delete supplier`}
+                                        className={`delete-btn ml-3`}
+                                        href={`/admin/suppliers/${supplier.id}/delete`}
+                                    >
+                                        <FaTrashCan/>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}

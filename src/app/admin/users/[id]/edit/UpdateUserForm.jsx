@@ -7,7 +7,6 @@ import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
 
 export default function UpdateUserForm({user}) {
     const updateUserWithId = updateUser.bind(null, user.id);
-
     const [message, dispatch] = useActionState(updateUserWithId, undefined);
 
     useEffect(() => {

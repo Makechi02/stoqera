@@ -32,6 +32,7 @@ export default function Page() {
                                 name={`name`}
                                 autoComplete={`off`}
                                 required={true}
+                                aria-required={true}
                                 className={`dashboard-input`}
                             />
                         </div>
@@ -44,6 +45,7 @@ export default function Page() {
                                 name={`contactPerson`}
                                 autoComplete={`off`}
                                 required={true}
+                                aria-required={true}
                                 className={`dashboard-input`}
                             />
                         </div>
@@ -56,6 +58,7 @@ export default function Page() {
                                 name={`email`}
                                 autoComplete={`off`}
                                 required={true}
+                                aria-required={true}
                                 className={`dashboard-input`}
                             />
                         </div>
@@ -68,6 +71,7 @@ export default function Page() {
                                 name={`phone`}
                                 autoComplete={`off`}
                                 required={true}
+                                aria-required={true}
                                 className={`dashboard-input`}
                             />
                         </div>
@@ -81,6 +85,7 @@ export default function Page() {
                                 enterKeyHint={`done`}
                                 autoComplete={`off`}
                                 required={true}
+                                aria-required={true}
                                 className={`dashboard-input`}
                             />
                         </div>

@@ -1,9 +1,8 @@
 import Link from "next/link";
 import {FaPen} from "react-icons/fa";
 import DateUtil from "@/utils/dateUtil";
-import {FaEllipsisVertical} from "react-icons/fa6";
+import {FaEllipsisVertical, FaTrashCan} from "react-icons/fa6";
 import {getSupplierById} from "@/lib/supplierActions";
-import DeleteSupplier from "@/components/ui/dashboard/admin/suppliers/DeleteSupplier";
 import {BackBtn} from "@/components/ui/dashboard/Buttons";
 
 export async function generateMetadata(props) {
@@ -37,7 +36,13 @@ export default async function Page(props) {
                             <FaPen/> Edit Supplier
                         </Link>
 
-                        <DeleteSupplier supplier={supplier} text={`Delete supplier`}/>
+                        <Link
+                            title={`Delete supplier`}
+                            className={`delete-btn flex items-center gap-2`}
+                            href={`/admin/suppliers/${supplier.id}/delete`}
+                        >
+                            <FaTrashCan/> Delete supplier
+                        </Link>
 
                         {/* TODO: Handle more options menu */}
                         <button

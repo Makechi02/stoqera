@@ -20,9 +20,5 @@ export const UserAuthService = {
 export const UserService = {
     updateUser: (id, user) => {
         return axios.put(`${USERS_API_BASE_URL}/${id}`, user);
-    },
-
-    deleteUser: (id) => {
-        return axios.delete(`${USERS_API_BASE_URL}/${id}`);
     }
 };

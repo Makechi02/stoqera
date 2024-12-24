@@ -33,26 +33,6 @@ export const PUT = async (request, props) => {
     }
 };
 
-export const DELETE = async (request, props) => {
-    const params = await props.params;
-    const origin = request.headers.get('origin');
-    const headers = getCorsHeaders(origin);
-    const {accessToken} = await getServerSession(authOptions);
-
-    try {
-        const response = await axios.delete(`${USERS_BASE_URL}/${params.id}`, {
-            headers: {
-                "Content-Type": 'application/json',
-                "Authorization": `Bearer ${accessToken}`
-            }
-        });
-        return new Response(response.data, { status: 200, headers });
-    } catch (e) {
-        console.error(e);
-        return new Response("Failed to delete user", { status: 500, headers });
-    }
-};
-
 export const OPTIONS = async (request) => {
     const origin = request.headers.get('origin');
     const headers = getCorsHeaders(origin);

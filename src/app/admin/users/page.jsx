@@ -1,31 +1,11 @@
-import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
 import Link from "next/link";
-import UsersTable from "@/components/ui/dashboard/admin/users/UsersTable";
 import {Suspense} from "react";
 import TableSkeleton from "@/components/ui/TableSkeleton";
-import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
-
-async function getAllUsers(query) {
-    const {accessToken} = await getServerSession(authOptions);
-    const queryString = query ? `?query=${query}` : '';
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users${queryString}`, {
-        cache: 'no-store',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        }
-    });
-
-    if (!response.ok) {
-        console.error(response);
-        throw new Error('Failed to fetch users');
-    }
-
-    return await response.json();
-}
+import {FaEllipsisVertical, FaPlus, FaTrashCan} from "react-icons/fa6";
+import {getAllUsers} from "@/lib/userActions";
+import DateUtil from "@/utils/dateUtil";
+import {FaPen} from "react-icons/fa";
 
 export const metadata = {
     title: 'Users - Finviq'
@@ -55,7 +35,7 @@ export default async function Page(props) {
                         </button>
                         {/* TODO: Handle more options menu */}
                         <button
-                        className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
+                            className={`bg-gray-200 hover:bg-gray-300 py-3 px-2 rounded-lg`}
                         >
                             <FaEllipsisVertical/>
                         </button>
@@ -69,5 +49,61 @@ export default async function Page(props) {
                 </Suspense>
             </div>
         </main>
+    )
+}
+
+function UsersTable({users}) {
+    return (
+        users.length === 0 ? (
+            <div>
+                <p className={`text-center`}>No users found</p>
+            </div>
+        ) : (
+            <div className={`overflow-x-auto`}>
+                <table className={`min-w-full divide-y divide-gray-200 hidden sm:table`}>
+                    <thead className={`bg-gray-50`}>
+                    <tr>
+                        <th scope={`col`} className={`table-heading`}>S/No</th>
+                        <th scope={`col`} className={`table-heading`}>Name</th>
+                        <th scope={`col`} className={`table-heading`}>Email</th>
+                        <th scope={`col`} className={`table-heading`}>Role</th>
+                        <th scope={`col`} className={`table-heading`}>Added at</th>
+                        <th scope={`col`} className={`table-heading`}>Updated at</th>
+                        <th scope={`col`} className={`table-heading`}>Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody className={`bg-white divide-y divide-gray-200`}>
+                    {users?.map((user, index) => (
+                        <tr key={user.id}>
+                            <td className={`table-data`}>{index + 1}</td>
+                            <td className={`table-data`}>{user.name}</td>
+                            <td className={`table-data`}>{user.email}</td>
+                            <td className={`table-data`}>{user.role}</td>
+                            <td className={`table-data`}>{DateUtil.formatDate(user.createdAt)}</td>
+                            <td className={`table-data`}>{DateUtil.formatDate(user.updatedAt)}</td>
+                            <td className={`table-data flex`}>
+                                <Link
+                                    title={`Edit`}
+                                    className={`edit-btn`}
+                                    href={`/admin/users/${user.id}/edit`}
+                                >
+                                    <FaPen/>
+                                </Link>
+
+                                <Link
+                                    title={`Delete user`}
+                                    className={`delete-btn ml-3`}
+                                    href={`/admin/users/${user.id}/delete`}
+                                >
+                                    <FaTrashCan/>
+                                </Link>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+        )
     )
 }

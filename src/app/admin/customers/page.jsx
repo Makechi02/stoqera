@@ -1,12 +1,11 @@
 import {FaEye, FaPen} from "react-icons/fa";
-import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
+import {FaEllipsisVertical, FaPlus, FaTrashCan} from "react-icons/fa6";
 import Link from "next/link";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import {Suspense} from "react";
 import TableSkeleton from "@/components/ui/TableSkeleton";
-import DeleteCustomer from "@/components/ui/dashboard/admin/customers/DeleteCustomer";
 
 async function getAllCustomers(query) {
     const {accessToken} = await getServerSession(authOptions);
@@ -112,7 +111,13 @@ function CustomersTable({customers}) {
                                         <FaPen/>
                                     </Link>
 
-                                    <DeleteCustomer customer={customer}/>
+                                    <Link
+                                        title={`Delete customer`}
+                                        className={`delete-btn ml-3`}
+                                        href={`/admin/customers/${customer.id}/delete`}
+                                    >
+                                        <FaTrashCan/>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}

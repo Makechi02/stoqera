@@ -1,5 +1,5 @@
 import {FaPen} from "react-icons/fa";
-import {FaEllipsisVertical, FaPlus} from "react-icons/fa6";
+import {FaEllipsisVertical, FaPlus, FaTrashCan} from "react-icons/fa6";
 import Link from "next/link";
 import SearchForm from "@/components/ui/dashboard/admin/SearchForm";
 import DateUtil from "@/utils/dateUtil";
@@ -7,7 +7,6 @@ import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import {Suspense} from "react";
 import TableSkeleton from "@/components/ui/TableSkeleton";
-import DeleteCategory from "@/components/ui/dashboard/admin/categories/DeleteCategory";
 
 async function getAllCategories(query) {
     const {accessToken} = await getServerSession(authOptions);
@@ -110,7 +109,13 @@ const CategoriesTable = ({categories}) => {
                                         <FaPen/>
                                     </Link>
 
-                                    <DeleteCategory category={category}/>
+                                    <Link
+                                        title={`Delete category`}
+                                        className={`delete-btn ml-3`}
+                                        href={`/admin/categories/${category.id}/delete`}
+                                    >
+                                        <FaTrashCan/>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}

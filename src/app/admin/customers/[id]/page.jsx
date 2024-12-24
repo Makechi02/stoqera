@@ -1,10 +1,9 @@
 import Link from "next/link";
 import {FaPen} from "react-icons/fa";
 import DateUtil from "@/utils/dateUtil";
-import {FaEllipsisVertical} from "react-icons/fa6";
+import {FaEllipsisVertical, FaTrashCan} from "react-icons/fa6";
 import {BackBtn} from "@/components/ui/dashboard/Buttons";
 import {getCustomerById} from "@/lib/customerActions";
-import DeleteCustomer from "@/components/ui/dashboard/admin/customers/DeleteCustomer";
 
 export async function generateMetadata(props) {
     const params = await props.params;
@@ -37,7 +36,13 @@ export default async function Page(props) {
                             <FaPen/> Edit customer
                         </Link>
 
-                        <DeleteCustomer customer={customer} text={`Delete customer`}/>
+                        <Link
+                            title={`Delete customer`}
+                            className={`delete-btn flex items-center gap-2`}
+                            href={`/admin/customers/${customer.id}/delete`}
+                        >
+                            <FaTrashCan/> Delete customer
+                        </Link>
 
                         {/* TODO: Handle more options menu */}
                         <button

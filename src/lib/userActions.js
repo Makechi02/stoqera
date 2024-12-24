@@ -5,6 +5,45 @@ import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import {revalidatePath} from "next/cache";
 import {redirect} from "next/navigation";
 
+export async function getAllUsers(query) {
+    const {accessToken} = await getServerSession(authOptions);
+    const queryString = query ? `?query=${query}` : '';
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users${queryString}`, {
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch users');
+    }
+
+    return await response.json();
+}
+
+export async function getUserById(id) {
+    const {accessToken} = await getServerSession(authOptions);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, {
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    if (!response.ok) {
+        console.error(response);
+        throw new Error('Failed to fetch user');
+    }
+
+    return await response.json();
+}
+
 export async function createUser(prevState, formData) {
     const name = formData.get('name') || '';
     const email = formData.get('email') || '';
