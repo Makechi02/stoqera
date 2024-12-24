@@ -2,7 +2,8 @@ import UpdateSupplierForm from "@/app/admin/suppliers/[id]/edit/UpdateSupplierFo
 import {getSupplierById} from "@/lib/supplierActions";
 import {BackBtn} from "@/components/ui/dashboard/Buttons";
 
-export default async function Page({params}) {
+export default async function Page(props) {
+    const params = await props.params;
     const supplier = await getSupplierById(params.id);
 
     return (

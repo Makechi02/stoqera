@@ -144,7 +144,7 @@ export async function deleteSupplier(id, _) {
             return 'Failed to delete supplier. Try again';
         }
     } else {
-        revalidatePath('/dashboard/admin/suppliers');
-        redirect('/dashboard/admin/suppliers');
+        revalidatePath('/admin/suppliers');
+        redirect('/admin/suppliers');
     }
 }

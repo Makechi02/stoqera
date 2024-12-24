@@ -1,13 +1,12 @@
 "use client"
 
-import {useEffect} from "react";
+import {useActionState, useEffect} from "react";
 import {toast} from "react-toastify";
-import {useFormState} from "react-dom";
 import {createUser} from "@/lib/userActions";
 import {BackBtn, SubmitBtn} from "@/components/ui/dashboard/Buttons";
 
 const Page = () => {
-    const [message, dispatch] = useFormState(createUser, undefined);
+    const [message, dispatch] = useActionState(createUser, undefined);
 
     useEffect(() => {
         toast.error(message);

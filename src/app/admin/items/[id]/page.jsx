@@ -5,7 +5,8 @@ import {FaEllipsisVertical, FaTrashCan} from "react-icons/fa6";
 import {BackBtn} from "@/components/ui/dashboard/Buttons";
 import {getItemById} from "@/lib/itemActions";
 
-export async function generateMetadata({params}) {
+export async function generateMetadata(props) {
+    const params = await props.params;
     const item = await getItemById(params.id);
 
     return {
@@ -13,7 +14,8 @@ export async function generateMetadata({params}) {
     }
 }
 
-export default async function Page({params}) {
+export default async function Page(props) {
+    const params = await props.params;
     const item = await getItemById(params.id);
 
     return (

@@ -2,7 +2,8 @@ import {BackBtn} from "@/components/ui/dashboard/Buttons";
 import UpdateCustomerForm from "@/app/admin/customers/[id]/edit/UpdateCustomerForm";
 import {getCustomerById} from "@/lib/customerActions";
 
-const Page = async ({params}) => {
+const Page = async props => {
+    const params = await props.params;
     const customer = await getCustomerById(params.id);
 
     return (

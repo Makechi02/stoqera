@@ -31,7 +31,8 @@ export const metadata = {
     title: 'Users - Finviq'
 }
 
-export default async function Page({searchParams}) {
+export default async function Page(props) {
+    const searchParams = await props.searchParams;
     const {query} = searchParams;
     const users = await getAllUsers(query);
 

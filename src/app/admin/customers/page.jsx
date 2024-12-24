@@ -32,7 +32,8 @@ export const metadata = {
     title: 'Customers - Finviq'
 }
 
-export default async function Page({searchParams}) {
+export default async function Page(props) {
+    const searchParams = await props.searchParams;
     const {query} = searchParams;
     const customers = await getAllCustomers(query);
 
@@ -67,10 +68,10 @@ export default async function Page({searchParams}) {
     )
 }
 
-const CustomersTable = ({customers}) => {
+function CustomersTable({customers}) {
     return (
         customers.length === 0 ? (
-            <div>
+            <div className={`my-16 font-bold text-xl`}>
                 <p className={`text-center`}>No customers found</p>
             </div>
         ) : (

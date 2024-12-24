@@ -1,9 +1,8 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import {useActionState, useEffect, useState} from "react";
 import {BackBtn, SubmitBtn} from "@/components/ui/dashboard/Buttons";
 import {getAllCategories} from "@/lib/categoryActions";
-import {useFormState} from "react-dom";
 import {createItem} from "@/lib/itemActions";
 import {toast} from "react-toastify";
 
@@ -20,7 +19,7 @@ export default function Page() {
             .then(() => console.log('Finished fetching categories'));
     }, []);
 
-    const [message, dispatch] = useFormState(createItem, undefined);
+    const [message, dispatch] = useActionState(createItem, undefined);
 
     useEffect(() => {
         toast.error(message);

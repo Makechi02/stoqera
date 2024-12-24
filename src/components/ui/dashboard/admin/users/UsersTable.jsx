@@ -9,8 +9,7 @@ import {UserService} from "@/service";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
 import {deleteUser} from "@/lib/userActions";
-import {useFormState} from "react-dom";
-import {useEffect} from "react";
+import {useActionState, useEffect} from "react";
 import {DeleteButton} from "@/components/ui/dashboard/Buttons";
 
 export default function UsersTable({users}) {
@@ -92,7 +91,7 @@ export default function UsersTable({users}) {
 
 const DeleteUser = ({user}) => {
     const deleteUserWithId = deleteUser.bind(null, user.id);
-    const [message, dispatch] = useFormState(deleteUserWithId, undefined);
+    const [message, dispatch] = useActionState(deleteUserWithId, undefined);
 
     useEffect(() => {
         toast.error(message);

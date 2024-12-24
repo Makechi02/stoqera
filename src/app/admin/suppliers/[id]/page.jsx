@@ -6,7 +6,8 @@ import {getSupplierById} from "@/lib/supplierActions";
 import DeleteSupplier from "@/components/ui/dashboard/admin/suppliers/DeleteSupplier";
 import {BackBtn} from "@/components/ui/dashboard/Buttons";
 
-export async function generateMetadata({params}) {
+export async function generateMetadata(props) {
+    const params = await props.params;
     const supplier = await getSupplierById(params.id);
 
     return {
@@ -14,7 +15,8 @@ export async function generateMetadata({params}) {
     }
 }
 
-export default async function Page({params}) {
+export default async function Page(props) {
+    const params = await props.params;
     const supplier = await getSupplierById(params.id);
 
     return (

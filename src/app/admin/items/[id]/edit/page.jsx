@@ -3,7 +3,8 @@ import {getItemById} from "@/lib/itemActions";
 import {getAllCategories} from "@/lib/categoryActions";
 import UpdateItemForm from "@/app/admin/items/[id]/edit/UpdateItemForm";
 
-const Page = async ({params}) => {
+const Page = async props => {
+    const params = await props.params;
     const item = await getItemById(params.id);
     const categories = await getAllCategories();
 

@@ -33,7 +33,8 @@ export const metadata = {
     title: 'Categories - Finviq'
 }
 
-export default async function Page({searchParams}) {
+export default async function Page(props) {
+    const searchParams = await props.searchParams;
     const {query} = searchParams;
     const categories = await getAllCategories(query);
 
@@ -72,7 +73,7 @@ export default async function Page({searchParams}) {
 const CategoriesTable = ({categories}) => {
     return (
         categories.length === 0 ? (
-            <div>
+            <div className={`my-16 font-bold text-xl`}>
                 <p className={`text-center`}>No categories found</p>
             </div>
         ) : (

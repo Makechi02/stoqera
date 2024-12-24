@@ -1,15 +1,14 @@
 'use client'
 
 import {updateUser} from "@/lib/userActions";
-import {useFormState} from "react-dom";
-import {useEffect} from "react";
+import {useActionState, useEffect} from "react";
 import {toast} from "react-toastify";
 import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
 
 export default function UpdateUserForm({user}) {
     const updateUserWithId = updateUser.bind(null, user.id);
 
-    const [message, dispatch] = useFormState(updateUserWithId, undefined);
+    const [message, dispatch] = useActionState(updateUserWithId, undefined);
 
     useEffect(() => {
         toast.error(message);

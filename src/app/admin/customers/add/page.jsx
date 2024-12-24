@@ -1,13 +1,12 @@
 'use client'
 
-import {useEffect} from "react";
+import {useActionState, useEffect} from "react";
 import {toast} from "react-toastify";
 import {BackBtn, SubmitBtn} from "@/components/ui/dashboard/Buttons";
-import {useFormState} from "react-dom";
 import {createCustomer} from "@/lib/customerActions";
 
 export default function Page() {
-    const [message, dispatch] = useFormState(createCustomer, undefined);
+    const [message, dispatch] = useActionState(createCustomer, undefined);
 
     useEffect(() => {
         toast.error(message);

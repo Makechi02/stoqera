@@ -5,7 +5,8 @@ import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 
 const USERS_BASE_URL = 'https://prior-lauree-makechi-b2d9cdc0.koyeb.app/api/v1/users';
 
-export const PUT = async (request, { params }) => {
+export const PUT = async (request, props) => {
+    const params = await props.params;
     const origin = request.headers.get('origin');
     const headers = getCorsHeaders(origin);
     const updatedUser = await request.json();
@@ -32,7 +33,8 @@ export const PUT = async (request, { params }) => {
     }
 };
 
-export const DELETE = async (request, { params }) => {
+export const DELETE = async (request, props) => {
+    const params = await props.params;
     const origin = request.headers.get('origin');
     const headers = getCorsHeaders(origin);
     const {accessToken} = await getServerSession(authOptions);

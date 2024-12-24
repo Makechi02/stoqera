@@ -1,15 +1,13 @@
 'use client'
 
-import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
-import {useFormState} from "react-dom";
-import {useEffect} from "react";
+import {useActionState, useEffect} from "react";
 import {toast} from "react-toastify";
 import {updateCategory} from "@/lib/categoryActions";
+import {SubmitBtn} from "@/components/ui/dashboard/Buttons";
 
 export default function UpdateCategoryForm({category}) {
     const updateCategoryWithId = updateCategory.bind(null, category.id);
-
-    const [message, dispatch] = useFormState(updateCategoryWithId, undefined);
+    const [message, dispatch] = useActionState(updateCategoryWithId, undefined);
 
     useEffect(() => {
         toast.error(message);

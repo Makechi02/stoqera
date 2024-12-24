@@ -1,13 +1,14 @@
 'use client'
 
 import {deleteItem, getItemById} from "@/lib/itemActions";
-import {useEffect, useState} from "react";
+import {use, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {useFormState, useFormStatus} from "react-dom";
 import {SmallLoadingSpinner} from "@/components/ui/LoadingSpinner";
 import {toast} from "react-toastify";
 
-export default function Page({params}) {
+export default function Page(props) {
+    const params = use(props.params);
     const [item, setItem] = useState(null);
     const router = useRouter();
 

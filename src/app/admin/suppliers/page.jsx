@@ -32,7 +32,8 @@ export const metadata = {
     title: 'Suppliers - Finviq'
 }
 
-export default async function Page({searchParams}) {
+export default async function Page(props) {
+    const searchParams = await props.searchParams;
     const {query} = searchParams;
     const suppliers = await getAllSuppliers(query);
 
@@ -70,7 +71,7 @@ export default async function Page({searchParams}) {
 function SuppliersTable({suppliers}) {
     return (
         suppliers.length === 0 ? (
-            <div>
+            <div className={`my-16 font-bold text-xl`}>
                 <p className={`text-center`}>No suppliers found</p>
             </div>
         ) : (
@@ -98,7 +99,7 @@ function SuppliersTable({suppliers}) {
                                     <Link
                                         title={`Preview`}
                                         className={`edit-btn`}
-                                        href={`/src/app/admin/suppliers/${supplier.id}`}
+                                        href={`/admin/suppliers/${supplier.id}`}
                                     >
                                         <FaEye/>
                                     </Link>
@@ -106,7 +107,7 @@ function SuppliersTable({suppliers}) {
                                     <Link
                                         title={`Edit`}
                                         className={`edit-btn ml-3`}
-                                        href={`/src/app/admin/suppliers/${supplier.id}/edit`}
+                                        href={`/admin/suppliers/${supplier.id}/edit`}
                                     >
                                         <FaPen/>
                                     </Link>

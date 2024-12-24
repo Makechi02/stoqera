@@ -22,7 +22,8 @@ async function getUserById(id) {
     return await response.json();
 }
 
-export async function generateMetadata({params}) {
+export async function generateMetadata(props) {
+    const params = await props.params;
     const user = await getUserById(params.id);
 
     return {
@@ -30,7 +31,8 @@ export async function generateMetadata({params}) {
     }
 }
 
-export default async function Page({params}) {
+export default async function Page(props) {
+    const params = await props.params;
     const user = await getUserById(params.id);
 
     return (

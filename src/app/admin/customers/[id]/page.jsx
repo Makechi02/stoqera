@@ -6,7 +6,8 @@ import {BackBtn} from "@/components/ui/dashboard/Buttons";
 import {getCustomerById} from "@/lib/customerActions";
 import DeleteCustomer from "@/components/ui/dashboard/admin/customers/DeleteCustomer";
 
-export async function generateMetadata({params}) {
+export async function generateMetadata(props) {
+    const params = await props.params;
     const customer = await getCustomerById(params.id);
 
     return {
@@ -14,7 +15,8 @@ export async function generateMetadata({params}) {
     }
 }
 
-export default async function Page({params}) {
+export default async function Page(props) {
+    const params = await props.params;
     const customer = await getCustomerById(params.id);
 
     return (

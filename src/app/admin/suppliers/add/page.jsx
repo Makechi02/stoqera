@@ -1,13 +1,12 @@
 'use client'
 
 import {BackBtn, SubmitBtn} from "@/components/ui/dashboard/Buttons";
-import {useFormState} from "react-dom";
 import {createSupplier} from "@/lib/supplierActions";
-import {useEffect} from "react";
+import {useActionState, useEffect} from "react";
 import {toast} from "react-toastify";
 
 const Page = () => {
-    const [message, dispatch] = useFormState(createSupplier, undefined);
+    const [message, dispatch] = useActionState(createSupplier, undefined);
 
     useEffect(() => {
         toast.error(message);
@@ -63,7 +62,7 @@ const Page = () => {
                         </div>
                     </div>
 
-                    <SubmitBtn text={`Add Supplier`}/>
+                    <SubmitBtn text={`Add supplier`}/>
                 </form>
             </div>
         </main>

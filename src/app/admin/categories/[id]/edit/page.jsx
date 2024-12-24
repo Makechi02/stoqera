@@ -3,7 +3,8 @@ import {getCategoryById} from "@/lib/categoryActions";
 import UpdateCategoryForm from "@/app/admin/categories/[id]/edit/UpdateCategoryForm";
 
 export default async function Page({params}) {
-    const category = await getCategoryById(params.id);
+    const {id} = await params;
+    const category = await getCategoryById(id);
 
     return (
         <main>

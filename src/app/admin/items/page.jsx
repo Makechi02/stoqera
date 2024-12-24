@@ -10,7 +10,8 @@ export const metadata = {
     title: 'Items - Finviq'
 }
 
-export default async function Page({searchParams}) {
+export default async function Page(props) {
+    const searchParams = await props.searchParams;
     const {query, page} = searchParams;
     const currentPage = Number(page) || 1;
 
