@@ -2,6 +2,7 @@ import {Footer} from "@/components/ui/preview";
 import Link from "next/link";
 import {Header} from "@/components/ui";
 import {aboutNavLinks} from "@/data/constants";
+import Introduction from "@/app/about/Introduction";
 
 export const metadata = {
     title: 'About - Finviq'
@@ -12,7 +13,7 @@ export default function Page() {
         <div>
             <Header navLinks={aboutNavLinks} />
             <div
-                className={`h-[30vh] md:h-[50vh] bg-gradient-to-b from-surface to-secondary text-white flex flex-col items-center justify-center`}>
+                className={`h-[30vh] md:h-[40vh] bg-gradient-to-b from-surface to-secondary text-white flex flex-col items-center justify-center`}>
                 <div className={`mx-auto max-w-screen-xl px-6 text-center`}>
                     <h1 className={`text-4xl md:text-6xl font-bold font-gfs_didot mb-4 animate__animated animate__fadeIn`}>
                         About Finviq
@@ -21,33 +22,7 @@ export default function Page() {
             </div>
 
             <main className={`container mx-auto py-8 space-y-8`}>
-                <section id={`introduction`} className={`space-y-2 text-center`}>
-                    <h2 className={`font-bold font-gfs_didot text-3xl`}>Introduction</h2>
-                    <div className={`max-w-screen-lg mx-auto`}>
-                        <h3 className={`font-medium text-2xl`}>Overview of Finviq</h3>
-                        <p>
-                            Welcome to Finviq, the ultimate inventory management system designed to streamline
-                            operations, improve stock control, and enhance business efficiency. Whether you're a
-                            small
-                            business, retail chain, or large enterprise, Finviq provides the tools to manage your
-                            inventory seamlessly. Our cloud-based inventory solution offers real-time stock
-                            tracking,
-                            automated inventory updates, and intuitive reporting features, ensuring you always stay
-                            ahead in your supply chain management.
-                        </p>
-                    </div>
-
-                    <div className={`max-w-screen-lg mx-auto`}>
-                        <h3 className={`font-medium text-2xl`}>Mission statement</h3>
-                        <p>
-                            At Finviq, our mission is to deliver a comprehensive, user-friendly inventory management
-                            software that simplifies your business operations. We focus on providing real-time
-                            inventory
-                            visibility, reducing operational costs, and helping businesses scale efficiently with an
-                            easy-to-use inventory tracking system.
-                        </p>
-                    </div>
-                </section>
+                <Introduction/>
 
                 <section id={`features`}>
                     <h2 className={`font-bold font-gfs_didot text-3xl`}>Key Features</h2>
