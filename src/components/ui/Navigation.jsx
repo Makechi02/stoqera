@@ -1,30 +1,29 @@
 'use client'
 
 import Link from "next/link";
-import {navLinks} from "@/data/constants";
 import {useEffect, useState} from "react";
 
-export const PrimaryNavigation = () => {
+export const PrimaryNavigation = ({navLinks}) => {
     return (
         <nav aria-label={`Global`}>
             <ul className={`flex items-center gap-6`}>
-                <NavLinks/>
+                <NavLinks navLinks={navLinks}/>
             </ul>
         </nav>
     )
 }
 
-export const MobileNavigation = ({toggleMenu}) => {
+export const MobileNavigation = ({navLinks, toggleMenu}) => {
     return (
         <nav aria-label={`Mobile`} className={`md:hidden`}>
             <ul className={`mt-4 pb-4 space-y-2`}>
-                <NavLinks toggleMenu={toggleMenu}/>
+                <NavLinks navLinks={navLinks} toggleMenu={toggleMenu}/>
             </ul>
         </nav>
     )
 }
 
-const NavLinks = ({toggleMenu = () => {}}) => {
+const NavLinks = ({navLinks, toggleMenu = () => {}}) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const changeActive = (index) => setActiveIndex(index);
 

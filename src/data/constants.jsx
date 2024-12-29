@@ -1,6 +1,14 @@
 import {FaChartLine, FaPlug, FaSync, FaUserFriends} from "react-icons/fa";
 import {FaFacebook, FaGithub, FaInstagram, FaTwitter} from "react-icons/fa6";
 
+export const aboutNavLinks = [
+    {href: 'introduction', text: 'Intro'},
+    {href: 'features', text: 'Features'},
+    {href: 'benefits', text: 'Benefits'},
+    {href: 'testimonials', text: 'Testimonials'},
+    {href: 'roadmap', text: 'Roadmap'}
+];
+
 export const adminNavLinks = [
     {
         href: '/admin',
@@ -113,7 +121,7 @@ export const footerLinks = [
 ];
 
 export const navLinks = [
-    {href: '(home)', text: 'Home'},
+    {href: 'home', text: 'Home'},
     {href: 'features', text: 'Features'},
     {href: 'pricing', text: 'Pricing'},
     {href: 'faq', text: 'FAQ'},

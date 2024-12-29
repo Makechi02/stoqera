@@ -1,6 +1,7 @@
 import {Footer} from "@/components/ui/preview";
-import {Logo} from "@/components/ui";
 import Link from "next/link";
+import {Header} from "@/components/ui";
+import {aboutNavLinks} from "@/data/constants";
 
 export const metadata = {
     title: 'About - Finviq'
@@ -9,7 +10,7 @@ export const metadata = {
 export default function Page() {
     return (
         <div>
-            <Header/>
+            <Header navLinks={aboutNavLinks} />
             <div
                 className={`h-[30vh] md:h-[50vh] bg-gradient-to-b from-surface to-secondary text-white flex flex-col items-center justify-center`}>
                 <div className={`mx-auto max-w-screen-xl px-6 text-center`}>
@@ -340,52 +341,5 @@ export default function Page() {
 
             <Footer/>
         </div>
-    )
-}
-
-function Header() {
-    return (
-        <header className={`bg-surface sticky top-0 z-10`}>
-            <div className={`mx-auto max-w-screen-xl px-4 md:px-2 flex justify-between items-center gap-8`}>
-                <Logo/>
-
-                <nav>
-                    <ul className={`md:flex md:items-center gap-6 text-white`}>
-                        <li>
-                            <Link href={`#introduction`} className={`hover:text-primary block`}>Intro</Link>
-                        </li>
-                        <li>
-                            <Link href={`#features`} className={`hover:text-primary block`}>Features</Link>
-                        </li>
-                        <li>
-                            <Link href={`#benefits`} className={`hover:text-primary block`}>Benefits</Link>
-                        </li>
-                        <li>
-                            <Link href={`#testimonials`} className={`hover:text-primary block`}>Testimonials</Link>
-                        </li>
-                        <li>
-                            <Link href={`#roadmap`} className={`hover:text-primary block`}>Roadmap</Link>
-                        </li>
-                    </ul>
-                </nav>
-
-                <div className={`sm:flex sm:gap-4`}>
-                    <Link
-                        href={`/accounts/login`}
-                        className={`px-5 py-2.5 font-medium text-white hover:text-primary`}
-                    >
-                        Login
-                    </Link>
-                    <div className={`hidden sm:flex`}>
-                        <Link
-                            href={`/accounts/register`}
-                            className={`rounded-md bg-primary px-5 py-2.5 font-medium hover:scale-105`}
-                        >
-                            Register
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </header>
     )
 }
