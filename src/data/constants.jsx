@@ -84,6 +84,44 @@ export const faqs = [
     }
 ];
 
+export const features = [
+    {
+        title: 'Inventory Tracking',
+        description: 'With Finviq\'s real-time inventory management, you can automatically track stock levels across' +
+            ' all your locations and warehouses. The system ensures accurate stock levels reduces human error, and' +
+            ' helps prevent stockouts and overstocking. Our inventory tracking software integrates with your ' +
+            'existing workflows to offer seamless inventory control.',
+    },
+    {
+        title: 'Supplier and Customer Management',
+        description: 'Efficient supplier management is crucial for maintaining smooth business operations. Finviq ' +
+            'helps businesses manage supplier relationships, track supplier orders, and monitor payment statuses. ' +
+            'Additionally, our customer relationship management (CRM) feature ensures you keep detailed records of' +
+            ' customers and their purchase histories, improving customer satisfaction and retention.',
+    },
+    {
+        title: 'Order Management',
+        description: 'Finviq\'s order management system (OMS) ensures that every order is processed accurately and ' +
+            'promptly. You can easily create, track, and fulfill orders, all while maintaining full visibility into' +
+            ' their status. Whether managing purchase orders or sales orders, Finviq allows for end-to-end order ' +
+            'management with minimal manual intervention.',
+    },
+    {
+        title: 'Analytics and Reporting',
+        description: 'Our powerful inventory analytics and business intelligence tools help you generate customized' +
+            ' reports and insights on stock levels, sales performance, and order trends. Finviq\'s data-driven ' +
+            'inventory management allows you to make informed decisions and optimize your stock levels, reducing ' +
+            'excess inventory and improving cash flow.',
+    },
+    {
+        title: 'User Permissions',
+        description: 'Finviq offers customizable user roles, including administrators, managers, and staff, ensuring' +
+            ' that everyone in your organization has the right level of access. You can restrict access to sensitive' +
+            ' data, giving your team the ability to collaborate efficiently while maintaining data security and ' +
+            'role-based access controls.',
+    }
+];
+
 export const footerLinks = [
     {
         title: 'Services',
