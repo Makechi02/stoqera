@@ -4,6 +4,7 @@ import {Header} from "@/components/ui";
 import {aboutNavLinks} from "@/data/constants";
 import Introduction from "@/app/about/Introduction";
 import Features from "@/app/about/Features";
+import TechnologyStack from "@/app/about/TechnologyStack";
 
 export const metadata = {
     title: 'About - Finviq'
@@ -25,51 +26,7 @@ export default function Page() {
             <main className={`container mx-auto py-8 space-y-8`}>
                 <Introduction/>
                 <Features/>
-
-                <section id={`technology-stack`}>
-                    <h2 className={`font-bold font-gfs_didot text-3xl`}>Technology Stack</h2>
-                    <div>
-                        <h3>Backend</h3>
-                        <p>
-                            Built on Spring Boot, Finviq’s backend offers a secure, scalable, and high-performance
-                            foundation for your inventory management needs. The Spring Boot framework ensures that
-                            your
-                            data is always accessible, secure, and processed efficiently, providing robust backend
-                            support for businesses of all sizes.
-                        </p>
-                    </div>
-                    <div>
-                        <h3>Frontend</h3>
-                        <p>
-                            Our Next.js frontend ensures fast load times and a responsive interface, creating a
-                            seamless
-                            user experience. Server-side rendering (SSR) guarantees that your pages load quickly,
-                            improving performance and SEO rankings.
-                        </p>
-                    </div>
-                    <div>
-                        <h3>Database</h3>
-                        <p>
-                            Finviq utilizes MongoDB, a flexible NoSQL database that offers unmatched scalability.
-                            With
-                            MongoDB's document-oriented structure, businesses can easily scale as their inventory
-                            grows
-                            without worrying about database performance. NoSQL databases like MongoDB allow Finviq
-                            to
-                            handle large amounts of unstructured data while maintaining high performance.
-                        </p>
-                    </div>
-                    <div>
-                        <h3>Security</h3>
-                        <p>
-                            Security is a priority at Finviq. Our system implements the latest data encryption
-                            techniques and multi-factor authentication (MFA) to keep your business data secure. With
-                            regular security audits, we ensure that your inventory management system is always
-                            protected
-                            against potential threats.
-                        </p>
-                    </div>
-                </section>
+                <TechnologyStack/>
 
                 <section id={`benefits`}>
                     <h2 className={`font-bold font-gfs_didot text-3xl`}>Benefits</h2>
