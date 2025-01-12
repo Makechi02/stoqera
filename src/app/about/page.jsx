@@ -5,6 +5,7 @@ import {aboutNavLinks} from "@/data/constants";
 import Introduction from "@/app/about/Introduction";
 import Features from "@/app/about/Features";
 import TechnologyStack from "@/app/about/TechnologyStack";
+import Benefits from "@/app/about/Benefits";
 
 export const metadata = {
     title: 'About - Finviq'
@@ -27,63 +28,7 @@ export default function Page() {
                 <Introduction/>
                 <Features/>
                 <TechnologyStack/>
-
-                <section id={`benefits`}>
-                    <h2 className={`font-bold font-gfs_didot text-3xl`}>Benefits</h2>
-                    <ul>
-                        <li>
-                            <h3>Increased Efficiency</h3>
-                            <p>
-                                Finviq’s automated inventory management system reduces manual work and minimizes
-                                errors,
-                                allowing
-                                your business to focus on growth. With features like real-time stock updates,
-                                automated
-                                order
-                                fulfillment, and instant reporting, Finviq helps you run your operations more
-                                smoothly
-                                and
-                                efficiently.
-                            </p>
-                        </li>
-                        <li>
-                            <h3>Real-time Updates</h3>
-                            <p>
-                                Stay on top of your stock with real-time inventory updates. Whether you’re in the
-                                office
-                                or on the
-                                go, Finviq ensures that you always have the most up-to-date information on your
-                                inventory levels,
-                                sales, and orders.
-                            </p>
-                        </li>
-                        <li>
-                            <h3>Customization</h3>
-                            <p>
-                                Finviq offers a highly customizable inventory management solution that adapts to
-                                your
-                                business's
-                                unique needs. You can create custom categories, set specific alerts, and tailor the
-                                system to meet
-                                your operational requirements. This flexibility makes Finviq the ideal choice for
-                                businesses across
-                                industries, including retail, manufacturing, and wholesale.
-                            </p>
-                        </li>
-                        <li>
-                            <h3>User-Friendly Interface</h3>
-                            <p>
-                                The user-friendly interface of Finviq ensures that both tech-savvy and non-technical
-                                users can
-                                easily navigate and manage inventory without extensive training. With a clean design
-                                and
-                                intuitive
-                                layout, our cloud-based inventory system allows users to stay productive from day
-                                one.
-                            </p>
-                        </li>
-                    </ul>
-                </section>
+                <Benefits/>
 
                 <section id={`target-audience`}>
                     <h2 className={`font-bold font-gfs_didot text-3xl`}>Target Audience</h2>
