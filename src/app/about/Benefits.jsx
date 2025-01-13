@@ -21,7 +21,7 @@ export default function Benefits() {
     ];
 
     return (
-        <section id={`benefits`} className={`py-8 md:py-16 px-4`}>
+        <section id={`benefits`} className={`py-8 px-4`}>
             <div className={`my-8 text-center`}>
                 <p className={`font-bold text-primary text-lg`}>Why choose us</p>
                 <h2 className={`text-3xl md:text-4xl font-bold font-gfs_didot text-gray-800`}>Benefits of our system</h2>
