@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://finviq.vercel.app/403</loc>
         <changefreq>monthly</changefreq>
@@ -21,8 +22,63 @@
         <priority>0.5</priority>
     </url>
     <url>
+        <loc>https://finviq.vercel.app/docs</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/faqs</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
         <loc>https://finviq.vercel.app/info/learn-more</loc>
         <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/policy/privacy</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/policy/cookies</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/services/inventory-tracking</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/services/order-management</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/services/customer-insights</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/services/supplier-management</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/services/inventory-tracking</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/support</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://finviq.vercel.app/terms</loc>
+        <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
 </urlset>

@@ -134,9 +134,7 @@ export const footerLinks = [
     {
         title: 'Company',
         links: [
-            {href: '/about', text: 'About Us'},
-            {href: '/team', text: 'Meet The Team'},
-            {href: '/contact', text: 'Contact Us'}
+            {href: '/about', text: 'About Us'}
         ]
     },
     {
@@ -151,8 +149,8 @@ export const footerLinks = [
         title: 'Legal',
         links: [
             {href: '/terms', text: 'Terms of Service'},
-            {href: '/privacy', text: 'Privacy Policy'},
-            {href: '/cookies', text: 'Cookie Policy'}
+            {href: '/policy/privacy', text: 'Privacy Policy'},
+            {href: '/policy/cookies', text: 'Cookie Policy'}
         ]
     }
 ];

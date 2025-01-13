@@ -19,7 +19,18 @@ const config = {
         {loc: "/about", changefreq: 'monthly', priority: 0.5,},
         {loc: "/accounts/forgot-password", changefreq: "monthly", priority: 0.5},
         {loc: "/accounts/login", changefreq: "monthly", priority: 0.5},
+        {loc: "/docs", changefreq: "monthly", priority: 0.5},
+        {loc: "/faqs", changefreq: "monthly", priority: 0.6},
         {loc: "/info/learn-more", changefreq: "weekly", priority: 0.6},
+        {loc: "/policy/privacy", changefreq: "monthly", priority: 0.7},
+        {loc: "/policy/cookies", changefreq: "monthly", priority: 0.7},
+        {loc: "/services/inventory-tracking", changefreq: "monthly", priority: 0.7},
+        {loc: "/services/order-management", changefreq: "monthly", priority: 0.7},
+        {loc: "/services/customer-insights", changefreq: "monthly", priority: 0.7},
+        {loc: "/services/supplier-management", changefreq: "monthly", priority: 0.7},
+        {loc: "/services/inventory-tracking", changefreq: "monthly", priority: 0.6},
+        {loc: "/support", changefreq: "monthly", priority: 0.6},
+        {loc: "/terms", changefreq: "monthly", priority: 0.6},
     ],
     transform: async (config, path) => {
         if (path === "/") {
