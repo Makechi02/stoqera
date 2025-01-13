@@ -6,7 +6,7 @@ import Link from "next/link";
 import {MobileNavigation, PrimaryNavigation} from "@/components/ui/Navigation";
 import {FaTimes} from "react-icons/fa";
 
-const Header = () => {
+const Header = ({navLinks}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => setIsMenuOpen((prevState) => !prevState);
@@ -16,14 +16,14 @@ const Header = () => {
             <div className={`mx-auto max-w-screen-xl px-4 md:px-2`}>
                 <div className={`flex h-16 items-center justify-between`}>
                     <div className={`md:flex md:items-center md:gap-12`}>
-                        <Link href={`#`} className={`block`}>
-                            <span className="sr-only">Home</span>
+                        <Link href={`/`} className={`block`}>
+                            <span className={`sr-only`}>Home</span>
                             <Logo/>
                         </Link>
                     </div>
 
                     <div className={`hidden md:block`}>
-                        <PrimaryNavigation/>
+                        <PrimaryNavigation navLinks={navLinks}/>
                     </div>
 
                     <div className={`flex items-center gap-4`}>
@@ -66,7 +66,7 @@ const Header = () => {
                     </div>
                 </div>
 
-                {isMenuOpen && <MobileNavigation toggleMenu={toggleMenu}/>}
+                {isMenuOpen && <MobileNavigation navLinks={navLinks} toggleMenu={toggleMenu}/>}
             </div>
         </header>
     );
