@@ -6,6 +6,7 @@ import Introduction from "@/app/about/Introduction";
 import Features from "@/app/about/Features";
 import TechnologyStack from "@/app/about/TechnologyStack";
 import Benefits from "@/app/about/Benefits";
+import TargetAudience from "@/app/about/TargetAudience";
 
 export const metadata = {
     title: 'About - Finviq'
@@ -29,44 +30,7 @@ export default function Page() {
                 <Features/>
                 <TechnologyStack/>
                 <Benefits/>
-
-                <section id={`target-audience`}>
-                    <h2 className={`font-bold font-gfs_didot text-3xl`}>Target Audience</h2>
-                    <div>
-                        <h3>Small to Medium Enterprises (SMEs)</h3>
-                        <p>
-                            Finviq is designed for small and medium-sized businesses that need a scalable inventory
-                            management
-                            system without the complexity and high costs of enterprise-level solutions. Whether
-                            you're
-                            managing
-                            a small retail store or a growing e-commerce business, Finviq helps you maintain control
-                            over your
-                            stock and order processes.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3>Industries We Serve</h3>
-                        <ul>
-                            <li>
-                                <strong>Retail</strong>: Finviq is perfect for retail businesses that need to manage
-                                multiple product categories,
-                                sales tracking, and inventory replenishment across different locations.
-                            </li>
-                            <li>
-                                <strong>Manufacturing</strong>: Manufacturers can use Finviq to track raw materials,
-                                work-in-progress, and finished
-                                goods, ensuring production runs smoothly.
-                            </li>
-                            <li>
-                                <strong>Wholesale & Distribution</strong>: Finviq streamlines wholesale inventory
-                                management, helping businesses optimize their supply chain and improve vendor
-                                relationships.
-                            </li>
-                        </ul>
-                    </div>
-                </section>
+                <TargetAudience/>
 
                 <section id={`testimonials`}>
                     <h2 className={`font-bold font-gfs_didot text-3xl`}>Testimonials / Case studies</h2>
