@@ -5,7 +5,6 @@ export const aboutNavLinks = [
     {href: 'introduction', text: 'Intro'},
     {href: 'features', text: 'Features'},
     {href: 'benefits', text: 'Benefits'},
-    {href: 'testimonials', text: 'Testimonials'},
     {href: 'roadmap', text: 'Roadmap'}
 ];
 
