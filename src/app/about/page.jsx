@@ -7,6 +7,7 @@ import Features from "@/app/about/Features";
 import TechnologyStack from "@/app/about/TechnologyStack";
 import Benefits from "@/app/about/Benefits";
 import TargetAudience from "@/app/about/TargetAudience";
+import Roadmap from "@/app/about/Roadmap";
 
 export const metadata = {
     title: 'About - Finviq'
@@ -31,46 +32,7 @@ export default function Page() {
                 <TechnologyStack/>
                 <Benefits/>
                 <TargetAudience/>
-
-                <section id={`roadmap`}>
-                    <h2 className={`font-bold font-gfs_didot text-3xl`}>Vision for the future</h2>
-                    <div>
-                        <h3>Our Roadmap</h3>
-                        <p>
-                            We are committed to continuously improving Finviq to meet the evolving needs of
-                            businesses
-                            worldwide. In the coming months, we plan to introduce:
-                        </p>
-                        <ul>
-                            <li>
-                                Mobile App Integration: Manage your inventory on the go with our mobile app,
-                                ensuring
-                                you stay
-                                connected no matter where you are.
-                            </li>
-                            <li>Advanced Reporting Tools: Unlock even more powerful inventory reporting features
-                                that
-                                provide deeper
-                                insights into sales trends, stock turnover, and profitability.
-                            </li>
-                            <li>AI-based Forecasting: We’re working on incorporating AI-powered inventory
-                                forecasting to
-                                help you
-                                predict stock requirements and optimize your supply chain.
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>Continuous Improvement</h3>
-                        <p>
-                            Your feedback drives the continuous improvement of Finviq. We are dedicated to providing
-                            regular
-                            updates, new features, and enhancements based on customer input, ensuring we deliver the
-                            best
-                            inventory management software in the market.
-                        </p>
-                    </div>
-                </section>
+                <Roadmap/>
 
                 <section id={`team`}>
                     <div>
