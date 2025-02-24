@@ -1,45 +1,42 @@
-import {FaCheckCircle} from "react-icons/fa";
-
 export default function Benefits() {
     const benefits = [
         {
-            title: 'Increased Efficiency',
-            description: "Finviq's automated inventory management system reduces manual work and minimizes errors, allowing your business to focus on growth. With features like real-time stock updates, automated order fulfillment, and instant reporting, Finviq helps you run your operations more smoothly and efficiently."
+            metric: "30%",
+            description: "Average reduction in inventory holding costs"
         },
         {
-            title: 'Real-time updates',
-            description: "Stay on top of your stock with real-time inventory updates. Whether you’re in the office or on the go, Finviq ensures that you always have the most up-to-date information on your inventory levels, sales, and orders."
+            metric: "40%",
+            description: "Improvement in order fulfillment speed"
         },
         {
-            title: 'Customization',
-            description: "Finviq offers a highly customizable inventory management solution that adapts to your business's unique needs. You can create custom categories, set specific alerts, and tailor the system to meet your operational requirements. This flexibility makes Finviq the ideal choice for businesses across industries, including retail, manufacturing, and wholesale."
+            metric: "25%",
+            description: "Reduction in stockouts and overstock situations"
         },
         {
-            title: 'User-Friendly Interface',
-            description: "The user-friendly interface of Finviq ensures that both tech-savvy and non-technical users can easily navigate and manage inventory without extensive training. With a clean design and intuitive layout, our cloud-based inventory system allows users to stay productive from day one."
+            metric: "60%",
+            description: "Less time spent on inventory management tasks"
         }
     ];
 
     return (
-        <section id={`benefits`} className={`py-8 px-4`}>
-            <div className={`my-8 text-center`}>
-                <p className={`font-bold text-primary text-lg`}>Why choose us</p>
-                <h2 className={`text-3xl md:text-4xl font-bold font-gfs_didot text-gray-800`}>Benefits of our system</h2>
-            </div>
+        <section id={`benefits`} className={`py-16 bg-text text-white`}>
+            <div className={`container mx-auto px-4`}>
+                <div className={`text-center mb-16`}>
+                    <h2 className={`text-3xl font-bold mb-6 font-gfs_didot`}>Why Choose Finviq?</h2>
+                    <p className={`text-gray-300 max-w-3xl mx-auto`}>
+                        Our inventory management system delivers tangible benefits that impact your bottom line.
+                    </p>
+                </div>
 
-            <ul className={`flex flex-wrap justify-center gap-8`}>
-                {benefits.map((benefit, index) => (
-                    <li key={index} className={`flex items-start gap-4`}>
-                        <div className={`flex-shrink-0`}>
-                            <FaCheckCircle className={`text-primary text-3xl`} />
+                <div className={`grid md:grid-cols-2 lg:grid-cols-4 gap-8`}>
+                    {benefits.map((benefit, index) => (
+                        <div key={index} className={`text-center`}>
+                            <div className={`text-4xl md:text-5xl font-bold text-accent mb-4`}>{benefit.metric}</div>
+                            <p className={`text-gray-300`}>{benefit.description}</p>
                         </div>
-                        <div>
-                            <h3 className={`text-xl font-bold mb-2`}>{benefit.title}</h3>
-                            <p className={`max-w-sm`}>{benefit.description}</p>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                    ))}
+                </div>
+            </div>
         </section>
     )
 }

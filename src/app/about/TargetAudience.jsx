@@ -1,47 +1,33 @@
+import React from "react";
+
 export default function TargetAudience() {
+    const audience = [
+        {
+            title: "Small Businesses",
+            description: "Perfect for shops, boutiques, and small-scale operations looking to upgrade from spreadsheets and manual processes."
+        },
+        {
+            title: "Growing Companies",
+            description: "Scalable solution that grows with your business, from single location to multiple warehouses."
+        },
+        {
+            title: "E-commerce Sellers",
+            description: "Specially designed features for online sellers managing inventory across multiple platforms and marketplaces."
+        }
+    ];
+
     return (
-        <section id={`target-audience`} className={`py-8 px-4`}>
-            <div className={`my-8 text-center`}>
-                <p className={`font-bold text-primary text-lg`}>Who can use our system</p>
-                <h2 className={`text-3xl md:text-4xl font-bold font-gfs_didot text-gray-800`}>
-                    Target Audience
-                </h2>
-            </div>
+        <section className={`py-16 bg-white`}>
+            <div className={`container mx-auto px-4`}>
+                <h2 className={`text-3xl font-bold mb-12 text-center font-gfs_didot`}>Who Finviq Is For</h2>
 
-            <div className={`flex flex-wrap flex-col md:flex-row gap-4`}>
-                <div className={`flex-1`}>
-                    <h3 className={`font-bold text-lg mb-2`}>Small to Medium Enterprises (SMEs)</h3>
-                    <p>
-                        Finviq is designed for small and medium-sized businesses that need a scalable inventory
-                        management
-                        system without the complexity and high costs of enterprise-level solutions. Whether
-                        you're
-                        managing
-                        a small retail store or a growing e-commerce business, Finviq helps you maintain control
-                        over your
-                        stock and order processes.
-                    </p>
-                </div>
-
-                <div className={`flex-1`}>
-                    <h3 className={`font-bold text-lg mb-2`}>Industries We Serve</h3>
-                    <ul className={`list-decimal list-inside`}>
-                        <li>
-                            <strong>Retail</strong>: Finviq is perfect for retail businesses that need to manage
-                            multiple product categories,
-                            sales tracking, and inventory replenishment across different locations.
-                        </li>
-                        <li>
-                            <strong>Manufacturing</strong>: Manufacturers can use Finviq to track raw materials,
-                            work-in-progress, and finished
-                            goods, ensuring production runs smoothly.
-                        </li>
-                        <li>
-                            <strong>Wholesale & Distribution</strong>: Finviq streamlines wholesale inventory
-                            management, helping businesses optimize their supply chain and improve vendor
-                            relationships.
-                        </li>
-                    </ul>
+                <div className={`grid md:grid-cols-3 gap-8`}>
+                    {audience.map((audience, index) => (
+                        <div key={index} className={`bg-background p-8 rounded-lg`}>
+                            <h3 className={`text-xl font-semibold mb-4`}>{audience.title}</h3>
+                            <p className={`text-secondary`}>{audience.description}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

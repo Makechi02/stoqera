@@ -25,12 +25,12 @@ export const metadata = {
 };
 
 export const viewport = {
-    themeColor: "#14B8A6",
+    themeColor: "#0F766E",
 }
 
 export default function RootLayout({children}) {
     return (
-        <html lang="en" className={`${figtree} ${gfs_didot} font-figtree antialiased`}>
+        <html lang="en" className={`${figtree} ${gfs_didot} font-figtree antialiased bg-background text-text`}>
         <body>
         {children}
         <ToastContainer transition={Zoom}/>

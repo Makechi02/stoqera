@@ -4,7 +4,7 @@ import {navLinks} from "@/data/constants";
 
 const Home = () => {
     return (
-        <main className={`bg-background text-text`}>
+        <main>
             <Header navLinks={navLinks} />
             <Hero/>
             <Benefits/>

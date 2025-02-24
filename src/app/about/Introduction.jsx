@@ -1,34 +1,35 @@
+import Image from "next/image";
+
 export default function Introduction() {
     return (
-        <section id={`introduction`} className={`space-y-2 px-2 text-center`}>
-            <div className={`my-8`}>
-                <p className={`font-bold text-primary text-lg`}>About Us</p>
-                <h2 className={`max-w-screen-md mx-auto text-3xl md:text-4xl font-bold font-gfs_didot text-gray-800`}>
-                    Introduction
-                </h2>
-            </div>
-
-            <div className={`flex flex-wrap items-center justify-around gap-6 md:gap-4`}>
-                <div className={`space-y-6`}>
-                    <h3 className={`font-medium text-2xl`}>Overview of Finviq</h3>
-                    <p className={`max-w-screen-md`}>
-                        Welcome to Finviq, the ultimate inventory management system designed to streamline
-                        operations, improve stock control, and enhance business efficiency. Whether you're a
-                        small business, retail chain, or large enterprise, Finviq provides the tools to manage your
-                        inventory seamlessly. Our cloud-based inventory solution offers real-time stock tracking,
-                        automated inventory updates, and intuitive reporting features, ensuring you always stay ahead
-                        in your supply chain management.
-                    </p>
-                </div>
-
-                <div className={`bg-secondary text-white p-8 rounded-lg max-w-md space-y-6`}>
-                    <h3 className={`font-medium text-2xl`}>Mission statement</h3>
-                    <p>
-                        At Finviq, our mission is to deliver a comprehensive, user-friendly inventory management
-                        software that simplifies your business operations. We focus on providing real-time inventory
-                        visibility, reducing operational costs, and helping businesses scale efficiently with an
-                        easy-to-use inventory tracking system.
-                    </p>
+        <section id={`introduction`} className={`py-16 bg-white`}>
+            <div className={`container mx-auto px-4`}>
+                <div className={`flex flex-col md:flex-row items-center gap-12`}>
+                    <div className={`md:w-1/2`}>
+                        <h2 className={`text-3xl font-bold mb-6 font-gfs_didot`}>Overview</h2>
+                        <p className={`text-secondary mb-6`}>
+                            Finviq is a comprehensive inventory management solution built for modern businesses.
+                            From small shops to growing enterprises, our platform adapts to your needs while
+                            maintaining simplicity and power.
+                        </p>
+                        <h3 className={`text-2xl font-semibold mb-4`}>Our Vision</h3>
+                        <p className={`text-secondary mb-6`}>
+                            To create the most intuitive, efficient, and adaptable inventory management system
+                            that empowers businesses to focus on growth rather than logistics.
+                        </p>
+                    </div>
+                    <div className={`md:w-1/2 bg-background p-8 rounded-lg shadow-lg`}>
+                        <div className={`aspect-video relative bg-[#0F766E]/10 rounded-md overflow-hidden`}>
+                            <div className={`absolute inset-0 flex items-center justify-center`}>
+                                <Image
+                                    src={`/assets/images/screenshots/Screenshot_1.png`}
+                                    alt={`Finviq's Dashboard Illustration`}
+                                    fill={true}
+                                />
+                                <span className={`text-[#0F766E] font-semibold`}>Finviq Dashboard Illustration</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

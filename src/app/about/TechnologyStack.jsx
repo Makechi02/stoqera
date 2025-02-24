@@ -1,37 +1,45 @@
+import React from "react";
+
 export default function TechnologyStack() {
-    const technologies = [
-        {
-            title: "Backend",
-            description: "Built on Spring Boot, Finviq’s backend offers a secure, scalable, and high-performance foundation for your inventory management needs. The Spring Boot framework ensures that your data is always accessible, secure, and processed efficiently, providing robust backend support for businesses of all sizes."
-        },
-        {
-            title: "Frontend",
-            description: "Our Next.js frontend ensures fast load times and a responsive interface, creating a seamless user experience. Server-side rendering (SSR) guarantees that your pages load quickly improving performance and SEO rankings."
-        },
-        {
-            title: "Database",
-            description: "Finviq utilizes MongoDB, a flexible NoSQL database that offers unmatched scalability. With MongoDB's document-oriented structure, businesses can easily scale as their inventory grows without worrying about database performance. NoSQL databases like MongoDB allow Finviq to handle large amounts of unstructured data while maintaining high performance."
-        },
-        {
-            title: "Security",
-            description: "Security is a priority at Finviq. Our system implements the latest data encryption techniques and multi-factor authentication (MFA) to keep your business data secure. With regular security audits, we ensure that your inventory management system is always protected against potential threats."
-        },
+    const technologies = ["Next.js", "React", "Tailwind", "Spring Boot", "MongoDB"];
+
+    const technologyFeatures = [
+        "Next.js 15 for a blazing-fast frontend experience",
+        "Tailwind CSS for beautiful, responsive design",
+        "Secure authentication and data encryption",
+        "Cloud-native architecture for reliability and scalability",
+        "RESTful APIs for seamless integration"
     ];
 
     return (
-        <section id={`technology-stack`}>
-            <div className={`my-8 text-center`}>
-                <p className={`font-bold text-primary text-lg`}>Technology used</p>
-                <h2 className={`text-3xl md:text-4xl font-bold font-gfs_didot text-gray-800`}>Technology Stack</h2>
-            </div>
-
-            <div className={`grid grid-cols-1 md:grid-cols-2 gap-8`}>
-                {technologies.map((tech, index) => (
-                    <div key={index} className={`bg-secondary text-white p-8 rounded-lg`}>
-                        <h3 className={`font-medium text-2xl`}>{tech.title}</h3>
-                        <p>{tech.description}</p>
+        <section id={`technology-stack`} className={`py-16 bg-white`}>
+            <div className={`container mx-auto px-4`}>
+                <div className={`flex flex-col md:flex-row items-center gap-12`}>
+                    <div className={`md:w-1/2`}>
+                        <h2 className={`text-3xl font-bold mb-6 font-gfs_didot`}>Technology Stack</h2>
+                        <p className={`text-[#4B5563] mb-6`}>
+                            Built with modern, reliable technologies to ensure performance, security, and scalability.
+                        </p>
+                        <ul className={`space-y-4`}>
+                            {technologyFeatures.map((item, index) => (
+                                <li key={index} className={`flex items-start`}>
+                                    <span className={`text-primary mr-3`}>✓</span>
+                                    <span>{item}</span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                ))}
+                    <div className={`md:w-1/2`}>
+                        <div className={`grid grid-cols-2 md:grid-cols-3 gap-4`}>
+                            {technologies.map((tech, index) => (
+                                <div key={index}
+                                     className={`aspect-square bg-background rounded-lg flex items-center justify-center p-4`}>
+                                    <span className={`font-medium text-center`}>{tech}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     )
