@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme inline {
+    --font-figtree: var(--font-figtree);
+    --font-gfs_didot: var(--font-gfs_didot);
+
+    --color-primary: #0F766E;       /* Darker Teal (better contrast) */
+    --color-accent: #EA580C;       /* Slightly darker Orange (better contrast) */
+    --color-secondary: #4B5563;    /* Neutral Gray */
+    --color-background: #F8FAFC;   /* Slightly cooler light background */
+    --color-text: #0F172A;         /* Near-black for maximum readability */
+    --color-error: #B91C1C;        /* Slightly darker Crimson (better contrast) */
+    --color-surface: #0F172A;
+}
+
+* {
+    @apply scroll-smooth scroll-m-8;
+}
