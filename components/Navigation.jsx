@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {useEffect, useState} from "react";
 
-export const PrimaryNavigation = ({navLinks}) => {
+export function PrimaryNavigation({navLinks}) {
     return (
         <nav aria-label={`Global`}>
             <ul className={`flex items-center gap-6`}>
@@ -13,7 +13,7 @@ export const PrimaryNavigation = ({navLinks}) => {
     )
 }
 
-export const MobileNavigation = ({navLinks, toggleMenu}) => {
+export function MobileNavigation({navLinks, toggleMenu}) {
     return (
         <nav aria-label={`Mobile`} className={`md:hidden`}>
             <ul className={`mt-4 pb-4 space-y-2`}>
@@ -23,7 +23,7 @@ export const MobileNavigation = ({navLinks, toggleMenu}) => {
     )
 }
 
-const NavLinks = ({navLinks, toggleMenu = () => {}}) => {
+function NavLinks({navLinks, toggleMenu = () => {}}) {
     const [activeIndex, setActiveIndex] = useState(0);
     const changeActive = (index) => setActiveIndex(index);
 

@@ -1,12 +1,13 @@
 'use client'
 
 import {useState} from "react";
-import {Logo} from "@/components/ui";
+import {Logo} from "@/components";
 import Link from "next/link";
-import {MobileNavigation, PrimaryNavigation} from "@/components/ui/Navigation";
 import {FaTimes} from "react-icons/fa";
+import {MobileNavigation, PrimaryNavigation} from "@/components/Navigation";
 
-const Header = ({navLinks}) => {
+export default function Header({navLinks}) {
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => setIsMenuOpen((prevState) => !prevState);
@@ -71,5 +72,3 @@ const Header = ({navLinks}) => {
         </header>
     );
 };
-
-export default Header;

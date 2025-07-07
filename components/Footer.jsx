@@ -1,10 +1,8 @@
-'use client'
-
 import Link from "next/link";
 import {footerLinks, socialLinks} from "@/data/constants";
-import {Logo} from "@/components/ui";
+import {Logo} from "@/components";
 
-const Footer = () => {
+export default function Footer() {
     return (
         <footer className={`bg-surface text-white`}>
             <div className={`mx-auto max-w-screen-xl space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-8`}>
@@ -64,5 +62,3 @@ const Footer = () => {
         </footer>
     );
 }
-
-export default Footer;

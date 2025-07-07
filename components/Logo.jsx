@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const Logo = () => {
+export default function Logo() {
     return (
         <Image
             src={`/assets/images/finviq-logo-without-bg.webp`}
@@ -11,5 +11,3 @@ const Logo = () => {
         />
     )
 }
-
-export default Logo;
