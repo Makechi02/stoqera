@@ -19,14 +19,14 @@ export default function Introduction() {
                         </p>
                     </div>
                     <div className={`md:w-1/2 bg-background p-8 rounded-lg shadow-lg`}>
-                        <div className={`aspect-video relative bg-[#0F766E]/10 rounded-md overflow-hidden`}>
+                        <div className={`aspect-video relative bg-primary/10 rounded-md overflow-hidden`}>
                             <div className={`absolute inset-0 flex items-center justify-center`}>
                                 <Image
                                     src={`/assets/images/screenshots/Screenshot_1.png`}
                                     alt={`Finviq's Dashboard Illustration`}
                                     fill={true}
                                 />
-                                <span className={`text-[#0F766E] font-semibold`}>Finviq Dashboard Illustration</span>
+                                <span className={`text-primary font-semibold`}>Finviq Dashboard Illustration</span>
                             </div>
                         </div>
                     </div>

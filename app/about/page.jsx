@@ -1,15 +1,15 @@
-import {Footer} from "@/components/ui/preview";
-import {Header} from "@/components/ui";
+import {Footer, Header} from "@/components";
 import {aboutNavLinks} from "@/data/constants";
-import Introduction from "@/app/about/Introduction";
-import Features from "@/app/about/Features";
-import TechnologyStack from "@/app/about/TechnologyStack";
-import Benefits from "@/app/about/Benefits";
-import TargetAudience from "@/app/about/TargetAudience";
-import Roadmap from "@/app/about/Roadmap";
-import Team from "@/app/about/Team";
-import Hero from "@/app/about/Hero";
-import CTA from "@/app/about/CTA";
+import {
+    Benefits, CTA,
+    Features,
+    Hero,
+    Introduction,
+    Roadmap,
+    TargetAudience,
+    Team,
+    TechnologyStack
+} from "@/components/about";
 
 export const metadata = {
     title: 'About - Finviq'

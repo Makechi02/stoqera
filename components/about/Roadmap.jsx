@@ -23,7 +23,7 @@ export default function Roadmap() {
     ];
 
     return (
-        <section id={`roadmap`} className={`py-16 bg-[#F8FAFC]`}>
+        <section id={`roadmap`} className={`py-16 bg-background`}>
             <div className={`container mx-auto px-4`}>
                 <div className={`text-center mb-16`}>
                     <h2 className={`text-3xl font-bold mb-6 font-gfs_didot`}>Roadmap</h2>
@@ -33,7 +33,7 @@ export default function Roadmap() {
                 </div>
 
                 <div className={`relative`}>
-                    <div className={`absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-[#0F766E]/20`}></div>
+                    <div className={`absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary/20`}></div>
 
                     <div className={`space-y-12`}>
                         {roadmap.map((milestone, index) => (
@@ -43,7 +43,7 @@ export default function Roadmap() {
                                 <div className={`flex flex-col md:flex-row items-center md:items-start gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                                     <div className={`md:w-5/12 text-center md:text-right`}>
                                         <span
-                                            className={`inline-block px-3 py-1 bg-[#0F766E]/10 text-primary rounded-full text-sm font-medium mb-2`}
+                                            className={`inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-2`}
                                         >
                                             {milestone.quarter}
                                         </span>
