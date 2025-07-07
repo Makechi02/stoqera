@@ -1,4 +1,4 @@
-const Contact = () => {
+export default function Contact() {
     return (
         <section id={`contact`} className={`bg-gray-100`}>
             <div className={`py-8 md:py-16 max-w-screen-xl mx-auto px-4 text-center`}>
@@ -58,5 +58,3 @@ const Contact = () => {
         </section>
     )
 }
-
-export default Contact;

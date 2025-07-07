@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {pricingPlans} from "@/data/constants";
 
-const Pricing = () => {
+export default function Pricing() {
     return (
         <section className={`mx-auto max-w-screen-xl px-4 sm:px-6 sm:py-12 lg:px-8 py-16`} id={`pricing`}>
             <div className={`my-8 text-center`}>
@@ -54,7 +54,7 @@ const Pricing = () => {
     );
 }
 
-const CheckIcon = ({styles = ''}) => {
+function CheckIcon({styles = ''}) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -68,5 +68,3 @@ const CheckIcon = ({styles = ''}) => {
         </svg>
     )
 }
-
-export default Pricing;

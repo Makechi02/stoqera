@@ -1,6 +1,6 @@
 import {benefits} from "@/data/constants";
 
-const Benefits = () => {
+export default function Benefits() {
     return (
         <section className={`py-8 md:py-16 max-w-screen-xl mx-auto px-4 text-center`} id={`features`}>
             <div className={`my-8`}>
@@ -25,5 +25,3 @@ const Benefits = () => {
         </section>
     );
 };
-
-export default Benefits;

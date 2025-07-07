@@ -3,7 +3,7 @@
 import {useState} from 'react';
 import {faqs} from "@/data/constants";
 
-const FAQ = () => {
+export default function FAQ() {
     const [openIndex, setOpenIndex] = useState(null);
 
     const toggleFAQ = (index) => {
@@ -37,5 +37,3 @@ const FAQ = () => {
         </section>
     );
 }
-
-export default FAQ;

@@ -16,3 +16,94 @@
 * {
     @apply scroll-smooth scroll-m-8;
 }
+
+.preview-input {
+    @apply p-3 border-2 border-gray-400 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+}
+
+.page-heading {
+    @apply font-gfs_didot font-extrabold text-2xl sm:text-3xl;
+}
+
+.add-btn {
+    @apply bg-primary hover:bg-primary/80 px-4 py-2 rounded-lg text-white;
+}
+
+.edit-btn {
+    @apply bg-indigo-600 hover:bg-indigo-900 text-white p-2 rounded-lg;
+}
+
+.delete-btn {
+    @apply bg-red-600 hover:bg-red-900 text-white p-2 rounded-lg;
+}
+
+.table-heading {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.table-data {
+    @apply px-6 py-2 whitespace-nowrap;
+}
+
+.login-input-box {
+    @apply flex flex-col gap-1;
+}
+
+.input {
+    @apply border border-gray-300 bg-transparent rounded-lg py-2 px-4 text-sm;
+}
+
+.label {
+    @apply text-sm;
+}
+
+.input-box {
+    @apply space-y-1;
+}
+
+.dashboard-input {
+    @apply mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm;
+}
+
+.dashboard-label {
+    @apply block text-sm font-medium text-gray-700;
+}
+
+.dashboard-submit-btn {
+    @apply mt-2 w-full bg-primary text-white px-4 py-2 rounded-md shadow-sm hover:bg-primary/70 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+.form-card {
+    @apply bg-white rounded-xl shadow-md;
+}
+
+.form-card-header {
+    @apply border-b px-6 pt-6 pb-4;
+}
+
+.form-card-header > h2 {
+    @apply font-semibold text-xl;
+}
+
+.form-card-header > p {
+    @apply text-sm text-gray-600;
+}
+
+.form-card-grid {
+    @apply  grid grid-cols-1 sm:grid-cols-2 gap-6 px-6 pt-4 pb-6;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

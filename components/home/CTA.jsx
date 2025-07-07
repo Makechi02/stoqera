@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const CTA = () => {
+export default function CTA() {
     return (
         <section
             className={`px-4 text-center animate__animated animate__fadeIn`}>
@@ -32,5 +32,3 @@ const CTA = () => {
         </section>
     );
 }
-
-export default CTA;

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Hero = () => {
+export default function Hero () {
     return (
         <section
             id={`home`}
@@ -46,5 +46,3 @@ const Hero = () => {
         </section>
     );
 }
-
-export default Hero;
