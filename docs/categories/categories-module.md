@@ -20,11 +20,11 @@ The Category module is responsible for managing categories within the inventory 
 The `Category` model represents a category in the database.
 
 - **Fields:**
-  - `name`: (String) The name of the category (required).
-  - `createdBy`: (String) User ID of the creator (required).
-  - `updatedBy`: (String) User ID of the last user who updated the category (required).
-  - `createdAt`: (Date) Timestamp of when the category was created (automatically generated).
-  - `updatedAt`: (Date) Timestamp of the last update (automatically generated).
+    - `name`: (String) The name of the category (required).
+    - `createdBy`: (String) User ID of the creator (required).
+    - `updatedBy`: (String) User ID of the last user who updated the category (required).
+    - `createdAt`: (Date) Timestamp of when the category was created (automatically generated).
+    - `updatedAt`: (Date) Timestamp of the last update (automatically generated).
 
 ### Example:
 
