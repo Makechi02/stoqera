@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 
-const ForgotPassword = () => {
+export default function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -46,5 +46,3 @@ const ForgotPassword = () => {
         </form>
     )
 }
-
-export default ForgotPassword;

@@ -1,16 +1,18 @@
 import Link from "next/link";
-import {Logo} from "@/components/ui";
-import {Login} from "@/components/pages";
+import {Logo} from "@/components";
+import {Login} from "@/components/accounts";
 
 export const metadata = {
     title: 'Login - Finviq'
 }
 
-const Page = () => {
+export default function Page() {
     return (
         <section className={`p-1`}>
             <div className={`p-6`}>
-                <Logo/>
+                <div className={`bg-surface w-fit rounded-full`}>
+                    <Logo/>
+                </div>
 
                 <div className={`my-6`}>
                     <h1 className={`font-bold text-2xl text-primary`}>Welcome Back! 👋</h1>
@@ -33,5 +35,3 @@ const Page = () => {
         </section>
     );
 };
-
-export default Page;

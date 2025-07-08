@@ -5,7 +5,8 @@ import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {signIn} from "next-auth/react";
 
-const Login = () => {
+export default function Login() {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -98,5 +99,3 @@ const Login = () => {
         </form>
     )
 }
-
-export default Login;
