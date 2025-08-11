@@ -1,9 +1,9 @@
-import Benefits from "@/components/home/Benefits";
-import Contact from "@/components/home/Contact";
-import CTA from "@/components/home/CTA";
-import FAQ from "@/components/home/FAQ";
+import CTA from '@/components/home/CTA';
+import Features from '@/components/home/Features';
+import Footer from '@/components/home/Footer';
+import Header from '@/components/home/Header';
 import Hero from '@/components/home/Hero';
-import OurUsers from "@/components/home/OurUsers";
-import Pricing from "@/components/home/Pricing";
+import Pricing from '@/components/home/Pricing';
+import Testimonials from '@/components/home/Testimonials';
 
-export {Benefits, Contact, CTA, FAQ, Hero, OurUsers, Pricing}
+export {CTA, Features, Footer, Header, Hero, Pricing, Testimonials}

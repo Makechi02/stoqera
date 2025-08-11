@@ -1,70 +1,112 @@
-import Link from "next/link";
-import {pricingPlans} from "@/data/constants";
+'use client'
+
+import {motion} from "framer-motion";
+import {CheckIcon} from "@heroicons/react/24/outline";
+import React from "react";
 
 export default function Pricing() {
+    const plans = [
+        {
+            name: "Starter",
+            price: "Ksh. 2900",
+            description: "Perfect for small businesses",
+            features: [
+                "Up to 1,000 products",
+                "Basic analytics",
+                "Email support",
+                "Mobile app access",
+                "Cloud storage"
+            ],
+            popular: false
+        },
+        {
+            name: "Professional",
+            price: "Ksh. 7900",
+            description: "Best for growing businesses",
+            features: [
+                "Up to 10,000 products",
+                "Advanced analytics",
+                "Priority support",
+                "Multi-location tracking",
+                "API access",
+                "Custom reports"
+            ],
+            popular: true
+        },
+        {
+            name: "Enterprise",
+            price: "Custom",
+            description: "For large organizations",
+            features: [
+                "Unlimited products",
+                "Enterprise analytics",
+                "24/7 phone support",
+                "Custom integrations",
+                "Dedicated account manager",
+                "SLA guarantee"
+            ],
+            popular: false
+        }
+    ];
+
     return (
-        <section className={`mx-auto max-w-screen-xl px-4 sm:px-6 sm:py-12 lg:px-8 py-16`} id={`pricing`}>
-            <div className={`my-8 text-center`}>
-                <p className={`font-bold text-primary text-2xl my-6`}>Our Pricing</p>
-                <h2 className={`max-w-screen-md mx-auto text-3xl md:text-4xl font-bold font-gfs_didot text-gray-800`}>
-                    Transparent Pricing Plans, Find the Perfect Fit for Your Needs
-                </h2>
-            </div>
-            <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-center md:grid-cols-3 md:gap-8`}>
-                {pricingPlans.map((plan, index) => (
-                    <div
-                        key={index}
-                        className={`rounded-2xl border border-gray-200 p-6 shadow-sm sm:px-8 lg:p-12 bg-gray-100 ${
-                            plan.most_popular && 'border-primary ring-1 ring-primary bg-primary text-white'
-                        } hover:ring-1 hover:ring-primary`}
-                    >
-                        <div className={`text-center`}>
-                            <h2 className={`text-xl font-medium`}>
-                                {plan.title}
-                                <span className={`sr-only`}>{plan.sr_only_text}</span>
-                            </h2>
+        <section id={`pricing`} className={`py-20 bg-gray-50`}>
+            <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
+                <div className={`text-center mb-16`}>
+                    <h2 className={`text-4xl font-bold text-gray-900 mb-4 font-heading`}>
+                        Simple, transparent pricing
+                    </h2>
+                    <p className={`text-xl text-gray-600 max-w-3xl mx-auto`}>
+                        Choose the plan that's right for your business. All plans include our core features.
+                    </p>
+                </div>
 
-                            <p className={`mt-2 sm:mt-4`}>
-                                <strong className={`text-3xl font-bold sm:text-4xl font-gfs_didot`}> {plan.amount} </strong>
-                                <span className={`text-sm font-medium`}> {plan.billing} </span>
-                            </p>
-                        </div>
-
-                        <ul className={`mt-6 space-y-2`}>
-                            {plan.features.map((feature, index) => (
-                                <li key={index} className={`flex items-center gap-1`}>
-                                    <CheckIcon styles={`${plan.most_popular ? 'text-white' : 'text-primary'}`}/>
-                                    <span> {feature} </span>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <Link
-                            href={`#`}
-                            className={`text-primary hover:ring-primary mt-8 block rounded-full border border-primary px-12 py-3 text-center text-sm font-medium hover:ring-1 focus:outline-none focus:ring active:text-indigo-500 ${
-                                !plan.most_popular ? 'bg-primary text-white hover:ring-primary hover:bg-primary/70' : 'bg-white'
-                            }`}
+                <div className={`grid grid-cols-1 md:grid-cols-3 gap-8`}>
+                    {plans.map((plan, index) => (
+                        <motion.div
+                            key={index}
+                            className={`bg-white rounded-xl p-8 ${plan.popular ? 'border-2 border-teal-500 relative' : 'border border-gray-200'}`}
+                            initial={{opacity: 0, y: 20}}
+                            animate={{opacity: 1, y: 0}}
+                            transition={{duration: 0.6, delay: index * 0.1}}
                         >
-                            Get Started
-                        </Link>
-                    </div>
-                ))}
+                            {plan.popular && (
+                                <div className={`absolute -top-4 left-1/2 transform -translate-x-1/2`}>
+                                    <span className={`bg-teal-500 text-white px-4 py-2 rounded-full text-sm font-semibold`}>
+                                        Most Popular
+                                    </span>
+                                </div>
+                            )}
+
+                            <div className={`text-center mb-6`}>
+                                <h3 className={`text-2xl font-bold text-gray-900 mb-2`}>{plan.name}</h3>
+                                <div className={`text-4xl font-bold text-gray-900 mb-2`}>
+                                    {plan.price}
+                                    {plan.price !== "Custom" && <span className={`text-lg text-gray-600`}>/month</span>}
+                                </div>
+                                <p className={`text-gray-600`}>{plan.description}</p>
+                            </div>
+
+                            <ul className={`space-y-3 mb-8`}>
+                                {plan.features.map((feature, featureIndex) => (
+                                    <li key={featureIndex} className={`flex items-center`}>
+                                        <CheckIcon className={`size-5 text-teal-500 mr-3`}/>
+                                        <span className={`text-gray-600`}>{feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <button className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
+                                plan.popular
+                                    ? 'bg-teal-600 text-white hover:bg-teal-700'
+                                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                            }`}>
+                                {plan.price === "Custom" ? "Contact Sales" : "Start Free Trial"}
+                            </button>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
-    );
-}
-
-function CheckIcon({styles = ''}) {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className={`size-5 ${styles}`}
-        >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-        </svg>
     )
 }

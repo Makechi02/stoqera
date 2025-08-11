@@ -30,7 +30,7 @@ export const viewport = {
 
 export default function RootLayout({children}) {
     return (
-        <html lang="en" className={`${figtree} ${gfs_didot} font-figtree antialiased bg-background text-text`}>
+        <html lang={`en`} className={`${figtree} ${gfs_didot} font-sans bg-background text-text antialiased`}>
         <body>
         {children}
         <ToastContainer transition={Zoom}/>

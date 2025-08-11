@@ -1,21 +1,15 @@
-import {Footer, Header} from "@/components";
-import {navLinks} from "@/data/constants";
-import {Benefits, Contact, CTA, FAQ, Hero, OurUsers, Pricing} from "@/components/home";
+import {CTA, Features, Footer, Header, Hero, Pricing, Testimonials} from "@/components/home";
 
 export default function Page() {
     return (
-        <>
-            <Header navLinks={navLinks}/>
-            <main>
-                <Hero/>
-                <Benefits/>
-                <OurUsers/>
-                <Pricing/>
-                <CTA/>
-                <FAQ/>
-                <Contact/>
-            </main>
+        <main className={`min-h-screen bg-white`}>
+            <Header/>
+            <Hero/>
+            <Features/>
+            <Pricing/>
+            <Testimonials/>
+            <CTA/>
             <Footer/>
-        </>
+        </main>
     );
 };

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-    --font-figtree: var(--font-figtree);
-    --font-gfs_didot: var(--font-gfs_didot);
+    --font-sans: var(--font-figtree);
+    --font-heading: var(--font-gfs_didot);
 
     --color-primary: #0F766E;       /* Darker Teal (better contrast) */
     --color-accent: #EA580C;       /* Slightly darker Orange (better contrast) */
