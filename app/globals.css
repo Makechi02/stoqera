@@ -7,10 +7,22 @@
     --color-primary: #0F766E;       /* Darker Teal (better contrast) */
     --color-accent: #EA580C;       /* Slightly darker Orange (better contrast) */
     --color-secondary: #4B5563;    /* Neutral Gray */
-    --color-background: #F8FAFC;   /* Slightly cooler light background */
-    --color-text: #0F172A;         /* Near-black for maximum readability */
+    --color-text: #F8FAFC;   /* Near-black for maximum readability */
+    --color-background: #0F172A;         /* Slightly cooler light background */
     --color-error: #B91C1C;        /* Slightly darker Crimson (better contrast) */
     --color-surface: #0F172A;
+}
+
+.auth-form-label {
+    @apply block text-sm font-medium text-gray-700;
+}
+
+.auth-form-input-icon {
+    @apply pl-10 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-600;
+}
+
+.auth-form-input {
+    @apply px-4 py-3 w-full border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-600;
 }
 
 * {
