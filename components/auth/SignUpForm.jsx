@@ -16,13 +16,13 @@ import {
 } from '@heroicons/react/24/outline';
 import {TogglePasswordBtn} from "@/components/ui/buttons";
 import {useState} from "react";
+import {fadeInUp} from "@/data/constants/animations";
+import {createClient} from "@/lib/supabase/client";
+import {useRouter} from "next/navigation";
 
 export default function SignUpForm() {
-    const fadeInUp = {
-        initial: {opacity: 0, y: 20},
-        animate: {opacity: 1, y: 0},
-        transition: {duration: 0.6}
-    };
+    const supabase = createClient();
+    const router = useRouter();
 
     const companySizes = [
         '1-10 employees',
@@ -153,40 +153,64 @@ export default function SignUpForm() {
         }, 500);
     };
 
+    const createOrganization = async (formData) => {
+        const {data, error} = await supabase
+            .from('organizations')
+            .insert([{
+                name: formData.organizationName,
+                slug: formData.organizationSlug,
+                email: formData.organizationEmail,
+                phone: formData.phone,
+                address: formData.address,
+                settings: {
+                    company_size: formData.companySize,
+                    industry: formData.industry
+                }
+            }])
+            .select();
+
+        if (error) {
+            console.error('Error creating organization:', error);
+            return;
+        }
+
+        return data[0];
+    }
+
     const handleSubmit = async () => {
         if (!validateForm()) return;
 
         setIsLoading(true);
 
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
+        const organization = await createOrganization(formData);
 
-            console.log('Form submitted:', {
-                user: {
-                    fullName: formData.fullName,
-                    email: formData.email,
-                    password: formData.password
-                },
-                organization: {
-                    name: formData.organizationName,
-                    slug: formData.organizationSlug,
-                    email: formData.organizationEmail,
-                    phone: formData.phone,
-                    address: formData.address
-                },
-                metadata: {
-                    companySize: formData.companySize,
-                    industry: formData.industry
-                }
-            });
-
-            alert('Account created successfully!');
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
+        if (!organization) {
+            console.error('Organization creation failed');
             setIsLoading(false);
+            return;
         }
+
+        const {data: result, error} = await supabase.auth.signUp({
+            email: formData.email,
+            password: formData.password
+        });
+
+        if (result?.user) {
+            await supabase.from('profiles').insert([{
+                id: result.user.id,
+                organization_id: organization.id,
+                full_name: formData.fullName,
+                email: formData.email,
+            }]).eq('id', result.user.id);
+        }
+
+        setIsLoading(false);
+
+        if(error) {
+            console.error('Error signing up:', error);
+        }
+
+        router.push('/onboarding');
     };
 
     return (

@@ -3,6 +3,7 @@
 import {motion} from 'framer-motion';
 import {CheckCircleIcon} from '@heroicons/react/24/outline';
 import SignUpForm from "@/components/auth/SignUpForm";
+import {fadeInUp} from "@/data/constants/animations";
 
 export default function Page() {
     return (
@@ -14,12 +15,6 @@ export default function Page() {
 };
 
 function Benefits() {
-    const fadeInUp = {
-        initial: {opacity: 0, y: 20},
-        animate: {opacity: 1, y: 0},
-        transition: {duration: 0.6}
-    };
-
     const benefits = [
         {
             title: '14-day free trial',

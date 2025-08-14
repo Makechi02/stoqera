@@ -12,22 +12,26 @@ import {
 import {Logo} from "@/components";
 import Link from "next/link";
 import {TogglePasswordBtn} from "@/components/ui/buttons";
-
-const fadeInUp = {
-    initial: {opacity: 0, y: 20},
-    animate: {opacity: 1, y: 0, transition: {duration: 0.6}}
-};
+import {createClient} from "@/lib/supabase/client";
+import {useRouter, useSearchParams} from "next/navigation";
+import {fadeInUp} from "@/data/constants/animations";
 
 export default function LoginForm() {
+    const supabase = createClient();
+    const router = useRouter();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
-        organizationSlug: '',
         rememberMe: false
     });
+
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const searchParams = useSearchParams();
+    const redirectUrl = searchParams.get('redirected_from') || '/';
 
     const handleInputChange = (field, value) => {
         setFormData(prev => ({...prev, [field]: value}));
@@ -60,20 +64,17 @@ export default function LoginForm() {
 
         setIsLoading(true);
 
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
+        const {error} = await supabase.auth.signInWithPassword({
+            email: formData.email,
+            password: formData.password
+        });
 
-            console.log('Login attempt:', {
-                email: formData.email,
-                rememberMe: formData.rememberMe
-            });
+        setIsLoading(false);
 
-            alert('Login successful!');
-        } catch (error) {
-            setErrors({general: 'Invalid email or password'});
-        } finally {
-            setIsLoading(false);
+        if (error) {
+            setErrors({general: error.message});
+        } else {
+            router.push(redirectUrl);
         }
     };
 
