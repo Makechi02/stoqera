@@ -3,6 +3,7 @@
 import {motion} from "framer-motion";
 import {CheckIcon} from "@heroicons/react/24/outline";
 import React from "react";
+import Link from "next/link";
 
 export default function Pricing() {
     const plans = [
@@ -72,7 +73,9 @@ export default function Pricing() {
                         >
                             {plan.popular && (
                                 <div className={`absolute -top-4 left-1/2 transform -translate-x-1/2`}>
-                                    <span className={`bg-teal-500 text-white px-4 py-2 rounded-full text-sm font-semibold`}>
+                                    <span
+                                        className={`bg-teal-500 text-white px-4 py-2 rounded-full text-sm font-semibold`}
+                                    >
                                         Most Popular
                                     </span>
                                 </div>
@@ -96,13 +99,16 @@ export default function Pricing() {
                                 ))}
                             </ul>
 
-                            <button className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
-                                plan.popular
-                                    ? 'bg-teal-600 text-white hover:bg-teal-700'
-                                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                            }`}>
+                            <Link
+                                href={plan.price === 'Custom' ? '/contact-sales' : '/register'}
+                                className={`w-full block py-3 px-4 rounded-lg font-semibold transition-colors text-center ${
+                                    plan.popular
+                                        ? 'bg-teal-600 text-white hover:bg-teal-700'
+                                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                                }`}
+                            >
                                 {plan.price === "Custom" ? "Contact Sales" : "Start Free Trial"}
-                            </button>
+                            </Link>
                         </motion.div>
                     ))}
                 </div>

@@ -4,6 +4,7 @@ import {ChevronRightIcon, PlayIcon} from '@heroicons/react/24/outline';
 import {motion} from "framer-motion";
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
     const fadeInUp = {
@@ -46,16 +47,20 @@ export default function Hero() {
                         className={`flex flex-col sm:flex-row gap-4 justify-center items-center`}
                         variants={fadeInUp}
                     >
-                        <button
-                            className={`bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors flex items-center`}>
+                        <Link
+                            href={`/register`}
+                            className={`bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors flex items-center`}
+                        >
                             Start 14-Day Free Trial
                             <ChevronRightIcon className={`ml-2 size-5`}/>
-                        </button>
-                        <button
-                            className={`border border-gray-300 text-gray-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-colors flex items-center`}>
+                        </Link>
+                        <Link
+                            href={`/demo`}
+                            className={`border border-gray-300 text-gray-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-colors flex items-center`}
+                        >
                             <PlayIcon className={`mr-2 size-5`}/>
                             Watch Demo
-                        </button>
+                        </Link>
                     </motion.div>
 
                     <motion.p className={`text-sm text-gray-500 mt-4`} variants={fadeInUp}>

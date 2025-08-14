@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function CTA() {
     return (
         <section className={`py-20 bg-teal-600`}>
@@ -9,14 +11,18 @@ export default function CTA() {
                     Join thousands of businesses that trust StockFlow to manage their inventory efficiently.
                 </p>
                 <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center`}>
-                    <button
-                        className={`bg-white text-teal-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors`}>
+                    <Link
+                        href={`/register`}
+                        className={`bg-white text-teal-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors`}
+                    >
                         Start Your Free Trial
-                    </button>
-                    <button
-                        className={`border border-teal-400 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-500 transition-colors`}>
+                    </Link>
+                    <Link
+                        href={`/demo`}
+                        className={`border border-teal-400 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-500 transition-colors`}
+                    >
                         Schedule Demo
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

@@ -1,4 +1,4 @@
-import {CTA, Features, Footer, Header, Hero, Pricing, Testimonials} from "@/components/home";
+import {CTA, Features, Footer, Header, Hero, Pricing} from "@/components/home";
 
 export default function Page() {
     return (
@@ -7,7 +7,8 @@ export default function Page() {
             <Hero/>
             <Features/>
             <Pricing/>
-            <Testimonials/>
+            {/*TODO: Add Testimonials*/}
+            {/*<Testimonials/>*/}
             <CTA/>
             <Footer/>
         </main>

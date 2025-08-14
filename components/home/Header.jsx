@@ -3,9 +3,17 @@
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
 import {useState} from "react";
 import {Logo} from "@/components";
+import Link from "next/link";
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const navLinks = [
+        {href: '#features', title: 'Features'},
+        {href: '#pricing', title: 'Pricing'},
+        {href: '#testimonials', title: 'Testimonials'},
+        {href: '#contact', title: 'Contact'}
+    ];
 
     return (
         <header className={`bg-white border-b border-gray-200 sticky top-0 z-50`}>
@@ -20,20 +28,30 @@ export default function Header() {
 
                     {/* Desktop Navigation */}
                     <nav className={`hidden md:flex space-x-8`}>
-                        <a href={`#features`}
-                           className="text-gray-600 hover:text-teal-600 transition-colors">Features</a>
-                        <a href={`#pricing`} className="text-gray-600 hover:text-teal-600 transition-colors">Pricing</a>
-                        <a href={`#testimonials`}
-                           className="text-gray-600 hover:text-teal-600 transition-colors">Testimonials</a>
-                        <a href={`#contact`} className="text-gray-600 hover:text-teal-600 transition-colors">Contact</a>
+                        {navLinks.map((link, index) => (
+                            <a
+                                key={index}
+                                href={link.href}
+                                className={`text-gray-600 hover:text-teal-600 transition-colors`}
+                            >
+                                {link.title}
+                            </a>
+                        ))}
                     </nav>
 
                     <div className={`hidden md:flex items-center space-x-4`}>
-                        <button className={`text-gray-600 hover:text-teal-600 transition-colors`}>Sign In</button>
-                        <button
-                            className={`bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors`}>
+                        <Link
+                            href={`/login`}
+                            className={`text-gray-600 hover:text-teal-600 transition-colors`}
+                        >
+                            Sign In
+                        </Link>
+                        <Link
+                            href={`/register`}
+                            className={`bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors`}
+                        >
                             Start Free Trial
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Mobile menu button */}
@@ -51,15 +69,19 @@ export default function Header() {
             {mobileMenuOpen && (
                 <div className={`md:hidden bg-white border-t border-gray-200`}>
                     <div className={`px-4 py-2 space-y-2`}>
-                        <a href={`#features`} className="block py-2 text-gray-600">Features</a>
-                        <a href={`#pricing`} className="block py-2 text-gray-600">Pricing</a>
-                        <a href={`#testimonials`} className="block py-2 text-gray-600">Testimonials</a>
-                        <a href={`#contact`} className="block py-2 text-gray-600">Contact</a>
-                        <div className="pt-2 border-t border-gray-200">
-                            <button className="block w-full text-left py-2 text-gray-600">Sign In</button>
-                            <button className="mt-2 w-full bg-teal-600 text-white py-2 rounded-lg">
+                        {navLinks.map((link, index) => (
+                            <a key={index} href={link.href} className={`block py-2 text-gray-600`}>{link.title}</a>
+                        ))}
+                        <div className={`pt-2 border-t border-gray-200`}>
+                            <Link href={`/login`} className={`block w-full text-left py-2 text-gray-600`}>
+                                Sign In
+                            </Link>
+                            <Link
+                                href={`/register`}
+                                className={`block text-center mt-2 w-full bg-teal-600 text-white py-2 px-2 rounded-lg`}
+                            >
                                 Start Free Trial
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
