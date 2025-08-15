@@ -162,6 +162,9 @@ export default function SignUpForm() {
                 email: formData.organizationEmail,
                 phone: formData.phone,
                 address: formData.address,
+                is_active: false,
+                subscription_status: 'trial',
+                subscription_plan: 'basic',
                 settings: {
                     company_size: formData.companySize,
                     industry: formData.industry
@@ -182,6 +185,11 @@ export default function SignUpForm() {
 
         setIsLoading(true);
 
+        const {data: result, error} = await supabase.auth.signUp({
+            email: formData.email,
+            password: formData.password
+        });
+
         const organization = await createOrganization(formData);
 
         if (!organization) {
@@ -189,11 +197,6 @@ export default function SignUpForm() {
             setIsLoading(false);
             return;
         }
-
-        const {data: result, error} = await supabase.auth.signUp({
-            email: formData.email,
-            password: formData.password
-        });
 
         if (result?.user) {
             await supabase.from('profiles').insert([{
@@ -210,7 +213,7 @@ export default function SignUpForm() {
             console.error('Error signing up:', error);
         }
 
-        router.push('/onboarding');
+        router.push('/login');
     };
 
     return (
