@@ -1,0 +1,286 @@
+import Link from 'next/link';
+import {
+    HiOutlineArrowLeft,
+    HiOutlineBuildingOffice,
+    HiOutlineCalendar,
+    HiOutlineClock,
+    HiOutlineCreditCard,
+    HiOutlineDocumentText,
+    HiOutlineEnvelope,
+    HiOutlineMapPin,
+    HiOutlinePencil,
+    HiOutlinePhone,
+    HiOutlineTrash,
+    HiOutlineUser
+} from "react-icons/hi2";
+import {getSupplierById} from "@/lib/querySuppliers";
+import {formatDescriptionDate} from "@/utils/formatters";
+
+export default async function Page({params}) {
+    const {slug, location, id} = await params;
+    const supplier = await getSupplierById(id);
+
+    if (!supplier) {
+        return (
+            <div className={`min-h-svh bg-gray-900 flex items-center justify-center outline`}>
+                <div className={`text-center`}>
+                    <HiOutlineBuildingOffice className={`size-12 text-gray-600 mx-auto mb-4`}/>
+                    <h2 className="text-xl font-semibold text-gray-400 mb-2">Supplier not found</h2>
+                    <Link
+                        href={`/${slug}/${location}/dashboard/suppliers`}
+                        className="text-teal-400 hover:text-teal-300 font-medium"
+                    >
+                        Back to suppliers
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            {/* Header */}
+            <div className={`border-b border-gray-700`}>
+                <div className={`max-w-7xl mx-auto px-4 py-6`}>
+                    <div className={`flex items-center justify-between`}>
+                        <div className={`flex items-center gap-4`}>
+                            <Link
+                                href={`/${slug}/${location}/dashboard/suppliers`}
+                                className={`bg-gray-700 hover:bg-gray-600 p-2 rounded-lg transition-colors`}
+                            >
+                                <HiOutlineArrowLeft className={`size-5`} />
+                            </Link>
+
+                            <div>
+                                <h1 className={`text-3xl font-bold font-heading`}>{supplier.name}</h1>
+                                <div className={`flex items-center gap-4 mt-2`}>
+                                    <p className={`text-teal-400 font-mono text-sm`}>{supplier.code}</p>
+                                    <span
+                                        className={`px-3 py-1 rounded-full text-xs font-medium ${supplier.isActive ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`}
+                                    >
+                                        {supplier.isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={`flex items-center gap-3`}>
+                            <Link
+                                href={`/${slug}/${location}/dashboard/suppliers/${supplier.id}/edit`}
+                                className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors"
+                            >
+                                <HiOutlinePencil className="h-5 w-5"/>
+                                Edit
+                            </Link>
+                            <button
+                                // onClick={handleDelete}
+                                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors"
+                            >
+                                <HiOutlineTrash className="h-5 w-5"/>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Information */}
+                    <div className="lg:col-span-2 space-y-8">
+                        {/* Contact Information */}
+                        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+                            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                                <HiOutlineUser className="h-6 w-6 text-teal-400"/>
+                                Contact Information
+                            </h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {supplier.contactPerson && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">
+                                            Contact Person
+                                        </label>
+                                        <p className="text-white">{supplier.contactPerson}</p>
+                                    </div>
+                                )}
+
+                                {supplier.email && (
+                                    <div>
+                                        <span className="block text-sm font-medium text-gray-400 mb-2">
+                                            Email Address
+                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <HiOutlineEnvelope className="h-4 w-4 text-gray-500"/>
+                                            <a
+                                                href={`mailto:${supplier.email}`}
+                                                className="text-teal-400 hover:text-teal-300"
+                                            >
+                                                {supplier.email}
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {supplier.phone && (
+                                    <div>
+                                        <span className="block text-sm font-medium text-gray-400 mb-2">
+                                            Phone Number
+                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <HiOutlinePhone className="h-4 w-4 text-gray-500"/>
+                                            <a
+                                                href={`tel:${supplier.phone}`}
+                                                className="text-teal-400 hover:text-teal-300"
+                                            >
+                                                {supplier.phone}
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {supplier.address && (
+                                    <div className="md:col-span-2">
+                                        <span className="block text-sm font-medium text-gray-400 mb-2">
+                                            Address
+                                        </span>
+                                        <div className="flex items-start gap-2">
+                                            <HiOutlineMapPin className="h-4 w-4 text-gray-500 mt-1 flex-shrink-0"/>
+                                            <p className="text-white">{supplier.address}</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Business Information */}
+                        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+                            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                                <HiOutlineBuildingOffice className="h-6 w-6 text-teal-400"/>
+                                Business Information
+                            </h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {supplier.taxId && (
+                                    <div>
+                                        <span className="block text-sm font-medium text-gray-400 mb-2">
+                                            Tax ID
+                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <HiOutlineDocumentText className="h-4 w-4 text-gray-500"/>
+                                            <p className="text-white font-mono">{supplier.taxId}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div>
+                                    <span className={`block text-sm font-medium text-gray-400 mb-2`}>Payment Terms</span>
+                                    <div className={`flex items-center gap-2`}>
+                                        <HiOutlineCreditCard className={`size-4 text-gray-500`}/>
+                                        <p className={`text-text`}>{supplier.paymentTerms} days</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Notes */}
+                        {supplier.notes && (
+                            <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+                                <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                                    <HiOutlineDocumentText className="h-6 w-6 text-teal-400"/>
+                                    Notes
+                                </h2>
+                                <p className="text-gray-300 leading-relaxed">{supplier.notes}</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Sidebar */}
+                    <div className="space-y-6">
+                        {/* Status Card */}
+                        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+                            <h3 className="text-lg font-semibold text-white mb-4">Status</h3>
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-gray-400">Current Status</span>
+                                    <span
+                                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                            supplier.isActive ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
+                                        }`}
+                                    >
+                                        {supplier.isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Timestamps */}
+                        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+                            <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                                <HiOutlineClock className="h-5 w-5 text-teal-400"/>
+                                Timeline
+                            </h3>
+
+                            <div className={`space-y-4`}>
+                                <div>
+                                    <div className={`flex items-center gap-2 mb-1`}>
+                                        <HiOutlineCalendar className={`size-4 text-gray-500`}/>
+                                        <span className={`text-sm font-medium text-gray-400`}>Created</span>
+                                    </div>
+                                    <p className={`text-sm text-white ml-6`}>
+                                        {formatDescriptionDate(supplier.createdAt)}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <div className={`flex items-center gap-2 mb-1`}>
+                                        <HiOutlineCalendar className={`h-4 w-4 text-gray-500`}/>
+                                        <span className={`text-sm font-medium text-gray-400`}>Last Updated</span>
+                                    </div>
+                                    <p className={`text-sm text-white ml-6`}>
+                                        {formatDescriptionDate(supplier.updatedAt)}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Quick Actions */}
+                        <div className={`bg-gray-800 border border-gray-700 rounded-lg p-6`}>
+                            <h3 className={`text-lg font-semibold text-white mb-4`}>Quick Actions</h3>
+                            <div className={`space-y-3`}>
+                                {supplier.email && (
+                                    <a
+                                        href={`mailto:${supplier.email}`}
+                                        className={`w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
+                                    >
+                                        <HiOutlineEnvelope className={`size-4`}/>
+                                        Send Email
+                                    </a>
+                                )}
+
+                                {supplier.phone && (
+                                    <a
+                                        href={`tel:${supplier.phone}`}
+                                        className={`w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
+                                    >
+                                        <HiOutlinePhone className={`size-4`}/>
+                                        Call
+                                    </a>
+                                )}
+
+                                <Link
+                                    href={`/${slug}/${location}/dashboard/suppliers/${supplier.id}/edit`}
+                                    className={`w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
+                                >
+                                    <HiOutlinePencil className={`size-4`}/>
+                                    Edit Supplier
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
