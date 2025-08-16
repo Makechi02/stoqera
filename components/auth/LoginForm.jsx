@@ -31,7 +31,7 @@ export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
 
     const searchParams = useSearchParams();
-    const redirectUrl = searchParams.get('redirected_from') || '/';
+    const redirectUrl = searchParams.get('redirected_from') || '/dashboard';
 
     const handleInputChange = (field, value) => {
         setFormData(prev => ({...prev, [field]: value}));
