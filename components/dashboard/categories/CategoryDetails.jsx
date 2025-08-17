@@ -2,12 +2,9 @@
 
 import {HiOutlineCalendar, HiOutlineChevronRight, HiOutlinePhoto} from "react-icons/hi2";
 import Link from "next/link";
-import {useParams} from "next/navigation";
 import {formatDescriptionDate} from "@/utils/formatters";
 
 export default function CategoryDetails({category, subCategories, parentCategory, productsCount}) {
-    const {slug} = useParams();
-
     return (
         <div className={`grid grid-cols-1 lg:grid-cols-3 gap-8`}>
             {/* Main Content */}
@@ -49,7 +46,7 @@ export default function CategoryDetails({category, subCategories, parentCategory
                             {subCategories.map((sub) => (
                                 <Link
                                     key={sub.id}
-                                    href={`/dashboard/${slug}/categories/${sub.id}`}
+                                    href={`/dashboard/categories/${sub.id}`}
                                     className={`flex items-center justify-between p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-200`}
                                 >
                                     <div className={`flex items-center space-x-3`}>
@@ -91,9 +88,10 @@ export default function CategoryDetails({category, subCategories, parentCategory
 
                         {parentCategory && (
                             <div>
-                                <label className={`block text-sm font-medium text-gray-400 mb-1`}>Parent Category</label>
+                                <label className={`block text-sm font-medium text-gray-400 mb-1`}>Parent
+                                    Category</label>
                                 <Link
-                                    href={`/dashboard/${slug}/categories/${parentCategory.id}`}
+                                    href={`/dashboard/categories/${parentCategory.id}`}
                                     className={`text-teal-400 hover:text-teal-300 transition-colors duration-200`}
                                 >
                                     {parentCategory.name}

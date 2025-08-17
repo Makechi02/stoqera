@@ -1,22 +1,18 @@
-import {useParams, usePathname} from "next/navigation";
+import {usePathname} from "next/navigation";
 import {getTenantAdminNavigation} from "@/data/constants";
 import Link from "next/link";
 import {useState} from "react";
 import {HiOutlineChevronDown, HiOutlineChevronUp} from "react-icons/hi2";
 
 export function Navigation({setSidebarOpen}) {
-    const params = useParams();
-
-    const navigation = getTenantAdminNavigation(params.slug);
+    const navigation = getTenantAdminNavigation();
 
     const pathname = usePathname();
 
     return (
         <nav className={`mt-4 px-4`}>
             {navigation.map((item, index) => {
-                const isActive = item.href === `/dashboard/${params.slug}` ?
-                    pathname === item.href :
-                    pathname.startsWith(item.href);
+                const isActive = item.href === '/dashboard' ? pathname === item.href : pathname.startsWith(item.href);
 
                 const [showSubItems, setShowSubItems] = useState(false);
                 const toggleSubItems = () => setShowSubItems(prevState => !prevState);
@@ -51,7 +47,7 @@ export function Navigation({setSidebarOpen}) {
 
                         {item.subItems && item.subItems.map((subItem, index) => {
                             const isActive = pathname.startsWith(subItem.href);
-                            
+
                             return (
                                 <div key={index} className={`pl-4`}>
                                     <Link

@@ -38,39 +38,39 @@ export function getSuperAdminNavigation(slug, location) {
     ];
 }
 
-export function getTenantAdminNavigation(slug) {
+export function getTenantAdminNavigation() {
     return [
-        {name: 'Dashboard', icon: <HiOutlineHome/>, href: `/dashboard/${slug}`},
+        {name: 'Dashboard', icon: <HiOutlineHome/>, href: `/dashboard`},
         {name: 'Inventory',
             subItems: [
-                {name: 'Products', icon: <HiOutlineCube/>, href: `/dashboard/${slug}/products`},
-                {name: 'Categories', icon: <HiOutlineTag/>, href: `/dashboard/${slug}/categories`},
-                {name: 'Stock Levels', icon: <HiOutlineArchiveBox/>, href: `/dashboard/${slug}/stock/levels`},
-                {name: 'Stock Transfers', icon: <HiOutlineArrowsRightLeft/>, href: `/dashboard/${slug}/stock/transfers`},
-                {name: 'Low Stock Alerts', icon: <HiOutlineExclamationTriangle/>, href: `/dashboard/${slug}/stock/alerts`},
+                {name: 'Products', icon: <HiOutlineCube/>, href: `/dashboard/products`},
+                {name: 'Categories', icon: <HiOutlineTag/>, href: `/dashboard/categories`},
+                {name: 'Stock Levels', icon: <HiOutlineArchiveBox/>, href: `/dashboard/stock/levels`},
+                {name: 'Stock Transfers', icon: <HiOutlineArrowsRightLeft/>, href: `/dashboard/stock/transfers`},
+                {name: 'Low Stock Alerts', icon: <HiOutlineExclamationTriangle/>, href: `/dashboard/stock/alerts`},
             ]
         },
-        {name: 'Locations', icon: <HiOutlineMapPin/>, href: `/dashboard/${slug}/locations`},
-        {name: 'Suppliers', icon: <HiOutlineTruck/>, href: `/dashboard/${slug}/suppliers`},
-        {name: 'Purchase Orders', icon: <HiOutlineClipboardDocumentList/>, href: `/dashboard/${slug}/purchases`},
+        {name: 'Locations', icon: <HiOutlineMapPin/>, href: `/dashboard/locations`},
+        {name: 'Suppliers', icon: <HiOutlineTruck/>, href: `/dashboard/suppliers`},
+        {name: 'Purchase Orders', icon: <HiOutlineClipboardDocumentList/>, href: `/dashboard/purchases`},
         {name: 'Sales Management',
             subItems: [
-                {name: 'Sales', icon: <HiOutlineBanknotes/>, href: `/dashboard/${slug}/sales`},
-                {name: 'Sales Channels', icon: <HiOutlineGlobeAlt/>, href: `/dashboard/${slug}/sales-channels`},
-                {name: 'Payment Methods', icon: <HiOutlineCreditCard/>, href: `/dashboard/${slug}/payment-methods`},
+                {name: 'Sales', icon: <HiOutlineBanknotes/>, href: `/dashboard/sales`},
+                {name: 'Sales Channels', icon: <HiOutlineGlobeAlt/>, href: `/dashboard/sales-channels`},
+                {name: 'Payment Methods', icon: <HiOutlineCreditCard/>, href: `/dashboard/payment-methods`},
             ]
         },
-        {name: 'Customers', icon: <HiOutlineUserGroup/>, href: `/dashboard/${slug}/customers`},
-        {name: 'Customer Groups', icon: <HiOutlineUsers/>, href: `/dashboard/${slug}/customer-groups`},
+        {name: 'Customers', icon: <HiOutlineUserGroup/>, href: `/dashboard/customers`},
+        {name: 'Customer Groups', icon: <HiOutlineUsers/>, href: `/dashboard/customer-groups`},
         {name: 'Marketing',
             subItems: [
-                {name: 'Promotions', icon: <HiOutlineGift/>, href: `/dashboard/${slug}/promotions`},
-                {name: 'Loyalty Programs', icon: <HiOutlineStar/>, href: `/dashboard/${slug}/loyalty-programs`},
+                {name: 'Promotions', icon: <HiOutlineGift/>, href: `/dashboard/promotions`},
+                {name: 'Loyalty Programs', icon: <HiOutlineStar/>, href: `/dashboard/loyalty-programs`},
             ]
         },
-        {name: 'Users & Access', icon: <HiOutlineUser/>, href: `/dashboard/${slug}/users`},
-        {name: 'Reports & Analytics', icon: <HiOutlineChartBarSquare/>, href: `/dashboard/${slug}/dashboard/reports`},
-        {name: 'Settings', icon: <HiOutlineCog/>, href: `/dashboard/${slug}/settings`},
+        {name: 'Users & Access', icon: <HiOutlineUser/>, href: `/dashboard/users`},
+        {name: 'Reports & Analytics', icon: <HiOutlineChartBarSquare/>, href: `/dashboard/dashboard/reports`},
+        {name: 'Settings', icon: <HiOutlineCog/>, href: `/dashboard/settings`},
     ];
 }
 

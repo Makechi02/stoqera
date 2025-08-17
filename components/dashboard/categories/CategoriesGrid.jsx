@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import {HiOutlineEye, HiOutlinePencilSquare, HiOutlineTrash} from "react-icons/hi2";
-import {useParams} from "next/navigation";
 import {AddBtn} from "@/components/ui/buttons";
 import {formatDate} from "@/utils/formatters";
+import {deleteCategory} from "@/lib/queryCategories";
+import {toast} from "react-toastify";
 
 export default function CategoriesGrid({categories}) {
-    const {slug} = useParams();
-
     const getParentName = (parentId) => {
         const parent = categories.find(cat => cat.id === parentId);
         return parent ? parent.name : null;
@@ -18,10 +17,7 @@ export default function CategoriesGrid({categories}) {
         return (
             <div className={`text-center py-12`}>
                 <div className={`text-gray-400 text-lg mb-4`}>No categories found</div>
-                <AddBtn
-                    text={`Create your first category`}
-                    href={`/dashboard/${slug}/categories/new`}
-                />
+                <AddBtn text={`Create your first category`} href={`/dashboard/categories/new`}/>
             </div>
         )
     }
@@ -36,12 +32,19 @@ export default function CategoriesGrid({categories}) {
 }
 
 function CategoryCard({category, getParentName}) {
-    const {slug, location} = useParams();
-
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this category?')) {
-            // Add API call to delete category
-            // setCategories(categories.filter(cat => cat.id !== id));
+            await deleteCategory(id);
+
+            toast.success({
+                title: 'Category deleted successfully.',
+                description: 'The category has been deleted successfully.',
+                status: 'success',
+                duration: 5000,
+                theme: 'dark',
+            });
+
+            window.location.reload();
         }
     };
 
@@ -53,7 +56,7 @@ function CategoryCard({category, getParentName}) {
             <div className={`h-48 bg-gray-700 relative`}>
                 {category.image_url ? (
                     <img
-                        src={category.image_Url}
+                        src={category.image_url}
                         alt={category.name}
                         className={`w-full h-full object-cover`}
                         onError={(e) => {
@@ -102,14 +105,14 @@ function CategoryCard({category, getParentName}) {
                 {/* Action Buttons */}
                 <div className={`flex space-x-2`}>
                     <Link
-                        href={`/dashboard/${slug}/categories/${category.id}`}
+                        href={`/dashboard/categories/${category.id}`}
                         className={`category-card-btn bg-gray-700 hover:bg-gray-600 text-gray-300`}
                     >
                         <HiOutlineEye className={`size-4 sm:mr-1`}/>
                         <span className={`hidden sm:inline`}>View</span>
                     </Link>
                     <Link
-                        href={`/dashboard/${slug}/categories/${category.id}/edit`}
+                        href={`/dashboard/categories/${category.id}/edit`}
                         className={`category-card-btn bg-primary hover:bg-primary/70 text-white`}
                     >
                         <HiOutlinePencilSquare className={`size-4 sm:mr-1`}/>

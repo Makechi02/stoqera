@@ -4,16 +4,20 @@ import {
     HiOutlineCheckCircle,
     HiOutlineChevronRight,
     HiOutlinePencilSquare,
-    HiOutlineTrash,
     HiOutlineXCircle
 } from "react-icons/hi2";
 import CategoryDetails from "@/components/dashboard/categories/CategoryDetails";
 import {getCategoryById, getProductsCountByCategory, getSubCategories} from "@/lib/queryCategories";
+import DeleteCategoryBtn from "@/components/dashboard/categories/DeleteCategoryBtn";
+import {notFound} from "next/navigation";
 
 export default async function Page({params}) {
-    const {slug, id} = await params;
+    const {id} = await params;
 
     const category = await getCategoryById(id);
+
+    if (!category) notFound();
+
     const parentCategory = await getCategoryById(category.parent_id);
     const subcategories = await getSubCategories(category.id);
     const productsByCategory = await getProductsCountByCategory(category.id);
@@ -26,7 +30,7 @@ export default async function Page({params}) {
                 <div className={`mb-8`}>
                     <div className={`flex items-center space-x-2 text-sm text-gray-400 mb-4`}>
                         <Link
-                            href={`/dashboard/${slug}/categories`}
+                            href={`/dashboard/categories`}
                             className={`hover:text-primary`}
                         >
                             Categories
@@ -35,7 +39,7 @@ export default async function Page({params}) {
                             <>
                                 <HiOutlineChevronRight className={`size-4`}/>
                                 <Link
-                                    href={`/dashboard/${slug}/categories/${parentCategory.id}`}
+                                    href={`/dashboard/categories/${parentCategory.id}`}
                                     className={`hover:text-primary`}
                                 >
                                     {parentCategory.name}
@@ -70,24 +74,18 @@ export default async function Page({params}) {
 
                         <div className={`flex space-x-2`}>
                             <Link
-                                href={`/dashboard/${slug}/categories/${category.id}/edit`}
+                                href={`/dashboard/categories/${category.id}/edit`}
                                 className={`inline-flex items-center px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors duration-200`}
                             >
                                 <HiOutlinePencilSquare className={`size-5 mr-2`}/>
                                 Edit
                             </Link>
-                            <button
-                                // onClick={handleDelete}
-                                className={`inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200`}
-                            >
-                                <HiOutlineTrash className={`size-5 mr-2`}/>
-                                Delete
-                            </button>
+                            <DeleteCategoryBtn category={category}/>
                         </div>
                     </div>
 
                     <Link
-                        href={`/dashboard/${slug}/categories`}
+                        href={`/dashboard/categories`}
                         className={`inline-flex items-center text-gray-400 hover:text-primary transition-colors duration-200`}
                     >
                         <HiOutlineArrowLeft className={`size-5 mr-2`}/>

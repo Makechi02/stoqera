@@ -5,7 +5,7 @@ import Link from 'next/link';
 import {useParams, useRouter} from 'next/navigation';
 import {HiOutlineCloudArrowUp, HiOutlinePhoto, HiOutlineXMark} from "react-icons/hi2";
 import {toast} from "react-toastify";
-import {updateCategory} from "@/lib/queryCategories";
+import {addCategory, updateCategory} from "@/lib/queryCategories";
 
 export default function CategoriesForm({categories, category, organizationId}) {
     const params = useParams();
@@ -87,7 +87,7 @@ export default function CategoriesForm({categories, category, organizationId}) {
         }
 
         // Check for circular parent relationship
-        if (formData.parent_id && isEditing && parseInt(formData.parent_id) === parseInt(params.id)) {
+        if (formData.parent_id && isEditing && formData.parent_id === category.id) {
             newErrors.parent_id = 'A category cannot be its own parent';
         }
 
@@ -115,13 +115,13 @@ export default function CategoriesForm({categories, category, organizationId}) {
         try {
             const updatedCategory = await updateCategory(params.id, formData);
 
-            toast.success(`Category updated successfully`, {
+            toast.success(`Category ${updatedCategory?.name} updated successfully`, {
                     theme: 'dark',
                     autoClose: 5000,
                 }
             );
 
-            router.push(`/dashboard/${params.slug}/categories`);
+            router.push(`/dashboard/categories`);
         } catch (error) {
             console.error('Error updating category: ', error);
             setErrors({submit: 'An error occurred while updating the category'});
@@ -134,34 +134,14 @@ export default function CategoriesForm({categories, category, organizationId}) {
         setSubmitting(true);
 
         try {
-            const response = await fetch(`/api/categories`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                toast.error('Failed to create category', {
-                        theme: 'dark',
-                        autoClose: 5000,
-                    }
-                );
-                throw new Error(errorData.message || 'Failed to create category');
-            }
-
-            const data = await response.json();
-            console.log('Category created: ', data);
-
-            toast.success('Category created successfully', {
+            const addedCategory = await addCategory(formData);
+            toast.success(`Category ${addedCategory?.name} created successfully`, {
                     theme: 'dark',
                     autoClose: 5000,
                 }
             );
 
-            router.push(`/dashboard/${params.slug}/categories`);
+            router.push(`/dashboard/categories`);
         } catch (error) {
             console.error('Error saving category:', error);
             setErrors({submit: 'An error occurred while saving the category'});
@@ -360,23 +340,23 @@ export default function CategoriesForm({categories, category, organizationId}) {
 
                 {/* Submit Error */}
                 {errors.submit && (
-                    <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
-                        <p className="text-red-400">{errors.submit}</p>
+                    <div className={`mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg`}>
+                        <p className={`text-red-400`}>{errors.submit}</p>
                     </div>
                 )}
 
                 {/* Form Actions */}
-                <div className="flex justify-end space-x-4">
+                <div className={`flex justify-end space-x-4`}>
                     <Link
-                        href={`/dashboard/${params.slug}/categories`}
-                        className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors duration-200"
+                        href={`/dashboard/categories`}
+                        className={`px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors duration-200`}
                     >
                         Cancel
                     </Link>
                     <button
-                        type="submit"
+                        type={`submit`}
                         disabled={submitting}
-                        className="px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                        className={`px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center`}
                     >
                         {submitting ? (
                             <>
