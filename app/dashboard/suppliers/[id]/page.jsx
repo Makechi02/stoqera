@@ -10,14 +10,14 @@ import {
     HiOutlineMapPin,
     HiOutlinePencil,
     HiOutlinePhone,
-    HiOutlineTrash,
     HiOutlineUser
 } from "react-icons/hi2";
 import {getSupplierById} from "@/lib/querySuppliers";
 import {formatDescriptionDate} from "@/utils/formatters";
+import DeleteSupplierBtn from "@/components/dashboard/supplier/DeleteSupplierBtn";
 
 export default async function Page({params}) {
-    const {slug, location, id} = await params;
+    const {id} = await params;
     const supplier = await getSupplierById(id);
 
     if (!supplier) {
@@ -25,11 +25,8 @@ export default async function Page({params}) {
             <div className={`min-h-svh bg-gray-900 flex items-center justify-center outline`}>
                 <div className={`text-center`}>
                     <HiOutlineBuildingOffice className={`size-12 text-gray-600 mx-auto mb-4`}/>
-                    <h2 className="text-xl font-semibold text-gray-400 mb-2">Supplier not found</h2>
-                    <Link
-                        href={`/${slug}/${location}/dashboard/suppliers`}
-                        className="text-teal-400 hover:text-teal-300 font-medium"
-                    >
+                    <h2 className={`text-xl font-semibold text-gray-400 mb-2`}>Supplier not found</h2>
+                    <Link href={`/dashboard/suppliers`} className={`text-teal-400 hover:text-teal-300 font-medium`}>
                         Back to suppliers
                     </Link>
                 </div>
@@ -45,10 +42,10 @@ export default async function Page({params}) {
                     <div className={`flex items-center justify-between`}>
                         <div className={`flex items-center gap-4`}>
                             <Link
-                                href={`/${slug}/${location}/dashboard/suppliers`}
+                                href={`/dashboard/suppliers`}
                                 className={`bg-gray-700 hover:bg-gray-600 p-2 rounded-lg transition-colors`}
                             >
-                                <HiOutlineArrowLeft className={`size-5`} />
+                                <HiOutlineArrowLeft className={`size-5`}/>
                             </Link>
 
                             <div>
@@ -56,9 +53,9 @@ export default async function Page({params}) {
                                 <div className={`flex items-center gap-4 mt-2`}>
                                     <p className={`text-teal-400 font-mono text-sm`}>{supplier.code}</p>
                                     <span
-                                        className={`px-3 py-1 rounded-full text-xs font-medium ${supplier.isActive ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`}
+                                        className={`px-3 py-1 rounded-full text-xs font-medium ${supplier.is_active ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`}
                                     >
-                                        {supplier.isActive ? 'Active' : 'Inactive'}
+                                        {supplier.is_active ? 'Active' : 'Inactive'}
                                     </span>
                                 </div>
                             </div>
@@ -66,19 +63,13 @@ export default async function Page({params}) {
 
                         <div className={`flex items-center gap-3`}>
                             <Link
-                                href={`/${slug}/${location}/dashboard/suppliers/${supplier.id}/edit`}
+                                href={`/dashboard/suppliers/${supplier.id}/edit`}
                                 className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors"
                             >
-                                <HiOutlinePencil className="h-5 w-5"/>
+                                <HiOutlinePencil className="size-5"/>
                                 Edit
                             </Link>
-                            <button
-                                // onClick={handleDelete}
-                                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors"
-                            >
-                                <HiOutlineTrash className="h-5 w-5"/>
-                                Delete
-                            </button>
+                            <DeleteSupplierBtn supplier={supplier}/>
                         </div>
                     </div>
                 </div>
@@ -97,12 +88,12 @@ export default async function Page({params}) {
                             </h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {supplier.contactPerson && (
+                                {supplier.contact_person && (
                                     <div>
                                         <label className="block text-sm font-medium text-gray-400 mb-2">
                                             Contact Person
                                         </label>
-                                        <p className="text-white">{supplier.contactPerson}</p>
+                                        <p className="text-white">{supplier.contact_person}</p>
                                     </div>
                                 )}
 
@@ -147,7 +138,7 @@ export default async function Page({params}) {
                                         </span>
                                         <div className="flex items-start gap-2">
                                             <HiOutlineMapPin className="h-4 w-4 text-gray-500 mt-1 flex-shrink-0"/>
-                                            <p className="text-white">{supplier.address}</p>
+                                            <p>{supplier.address}</p>
                                         </div>
                                     </div>
                                 )}
@@ -156,29 +147,30 @@ export default async function Page({params}) {
 
                         {/* Business Information */}
                         <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-                            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                            <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
                                 <HiOutlineBuildingOffice className="h-6 w-6 text-teal-400"/>
                                 Business Information
                             </h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {supplier.taxId && (
+                                {supplier.tax_id && (
                                     <div>
                                         <span className="block text-sm font-medium text-gray-400 mb-2">
                                             Tax ID
                                         </span>
                                         <div className="flex items-center gap-2">
                                             <HiOutlineDocumentText className="h-4 w-4 text-gray-500"/>
-                                            <p className="text-white font-mono">{supplier.taxId}</p>
+                                            <p className="text-white font-mono">{supplier.tax_id}</p>
                                         </div>
                                     </div>
                                 )}
 
                                 <div>
-                                    <span className={`block text-sm font-medium text-gray-400 mb-2`}>Payment Terms</span>
+                                    <span
+                                        className={`block text-sm font-medium text-gray-400 mb-2`}>Payment Terms</span>
                                     <div className={`flex items-center gap-2`}>
                                         <HiOutlineCreditCard className={`size-4 text-gray-500`}/>
-                                        <p className={`text-text`}>{supplier.paymentTerms} days</p>
+                                        <p className={`text-text`}>{supplier.payment_terms} days</p>
                                     </div>
                                 </div>
                             </div>
@@ -206,10 +198,10 @@ export default async function Page({params}) {
                                     <span className="text-gray-400">Current Status</span>
                                     <span
                                         className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                            supplier.isActive ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
+                                            supplier.is_active ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
                                         }`}
                                     >
-                                        {supplier.isActive ? 'Active' : 'Inactive'}
+                                        {supplier.is_active ? 'Active' : 'Inactive'}
                                     </span>
                                 </div>
                             </div>
@@ -229,7 +221,7 @@ export default async function Page({params}) {
                                         <span className={`text-sm font-medium text-gray-400`}>Created</span>
                                     </div>
                                     <p className={`text-sm text-white ml-6`}>
-                                        {formatDescriptionDate(supplier.createdAt)}
+                                        {formatDescriptionDate(supplier.created_at)}
                                     </p>
                                 </div>
 
@@ -239,7 +231,7 @@ export default async function Page({params}) {
                                         <span className={`text-sm font-medium text-gray-400`}>Last Updated</span>
                                     </div>
                                     <p className={`text-sm text-white ml-6`}>
-                                        {formatDescriptionDate(supplier.updatedAt)}
+                                        {formatDescriptionDate(supplier.updated_at)}
                                     </p>
                                 </div>
                             </div>
@@ -270,7 +262,7 @@ export default async function Page({params}) {
                                 )}
 
                                 <Link
-                                    href={`/${slug}/${location}/dashboard/suppliers/${supplier.id}/edit`}
+                                    href={`/dashboard/suppliers/${supplier.id}/edit`}
                                     className={`w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
                                 >
                                     <HiOutlinePencil className={`size-4`}/>

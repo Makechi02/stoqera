@@ -10,15 +10,11 @@ import {
     HiOutlineUser
 } from "react-icons/hi2";
 import Link from "next/link";
-import {useParams} from "next/navigation";
+import {deleteSupplier} from "@/lib/querySuppliers";
+import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 export default function SuppliersGrid({suppliers, searchTerm}) {
-    const handleDelete = async (id) => {
-        if (confirm('Are you sure you want to delete this supplier?')) {
-            // TODO: Add delete API call here
-        }
-    };
-
     return (
         <>
             {suppliers.length === 0 ? (
@@ -32,7 +28,7 @@ export default function SuppliersGrid({suppliers, searchTerm}) {
             ) : (
                 <div className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6`}>
                     {suppliers.map((supplier) => (
-                        <SuppliersCard key={supplier.id} supplier={supplier} handleDelete={handleDelete}/>
+                        <SuppliersCard key={supplier.id} supplier={supplier} />
                     ))}
                 </div>
             )}
@@ -40,8 +36,23 @@ export default function SuppliersGrid({suppliers, searchTerm}) {
     )
 }
 
-function SuppliersCard({supplier, handleDelete}) {
-    const {slug, location} = useParams();
+function SuppliersCard({supplier}) {
+    const router = useRouter();
+
+    const handleDelete = async (supplierId) => {
+        if (window.confirm('Are you sure you want to delete this supplier?')) {
+            await deleteSupplier(supplierId);
+
+            toast.success({
+                title: 'Supplier deleted successfully.',
+                status: 'success',
+                duration: 5000,
+                theme: 'dark',
+            });
+
+            router.push('/dashboard/suppliers');
+        }
+    }
 
     return (
         <div
@@ -54,18 +65,18 @@ function SuppliersCard({supplier, handleDelete}) {
                     <p className={`text-teal-400 text-sm font-mono`}>{supplier.code}</p>
                 </div>
                 <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${supplier.isActive ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`}
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${supplier.is_active ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`}
                 >
-                    {supplier.isActive ? 'Active' : 'Inactive'}
+                    {supplier.is_active ? 'Active' : 'Inactive'}
                 </span>
             </div>
 
             {/* Contact Info */}
             <div className={`space-y-2 mb-6`}>
-                {supplier.contactPerson && (
+                {supplier.contact_person && (
                     <div className={`flex items-center gap-2 text-sm text-gray-300`}>
                         <HiOutlineUser className={`size-4 text-gray-500`}/>
-                        {supplier.contactPerson}
+                        {supplier.contact_person}
                     </div>
                 )}
                 {supplier.email && (
@@ -85,21 +96,21 @@ function SuppliersCard({supplier, handleDelete}) {
             {/* Payment Terms */}
             <div className={`mb-6 mt-auto`}>
                 <p className={`text-sm text-gray-400`}>
-                    Payment Terms: <span className={`text-white`}>{supplier.paymentTerms} days</span>
+                    Payment Terms: <span className={`text-white`}>{supplier.payment_terms} days</span>
                 </p>
             </div>
 
             {/* Actions */}
             <div className={`flex items-center gap-2`}>
                 <Link
-                    href={`/${slug}/${location}/dashboard/suppliers/${supplier.id}`}
+                    href={`/dashboard/suppliers/${supplier.id}`}
                     className={`flex-1 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors`}
                 >
                     <HiOutlineEye className={`size-4`}/>
                     View
                 </Link>
                 <Link
-                    href={`/${slug}/${location}/dashboard/suppliers/${supplier.id}/edit`}
+                    href={`/dashboard/suppliers/${supplier.id}/edit`}
                     className={`flex-1 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors`}
                 >
                     <HiOutlinePencil className={`size-4`}/>

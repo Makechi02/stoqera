@@ -23,7 +23,7 @@ export default function LocationForm({organizationId, users, location = null, in
         phone: location?.phone || '',
         email: location?.email || '',
         manager_id: location?.manager_id || '',
-        is_active: location?.is_active || true,
+        is_active: location?.is_active || false,
         operating_hours: location?.settings?.operating_hours || {
             monday: '9:00 AM - 5:00 PM',
             tuesday: '9:00 AM - 5:00 PM',

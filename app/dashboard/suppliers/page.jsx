@@ -2,14 +2,10 @@ import Link from 'next/link';
 import {HiOutlinePlus} from "react-icons/hi2";
 import SuppliersSearchBar from "@/components/dashboard/supplier/SuppliersSearchBar";
 import SuppliersGrid from "@/components/dashboard/supplier/SuppliersGrid";
-import {getOrganizationBySlug} from "@/lib/queryOrganizations";
-import {getSuppliersByOrganization} from "@/lib/querySuppliers";
+import {getSuppliersForCurrentOrganization} from "@/lib/querySuppliers";
 
-export default async function SuppliersPage({params}) {
-    const {slug, location} = await params;
-
-    const organization = await getOrganizationBySlug(slug);
-    const suppliers = await getSuppliersByOrganization(organization.id);
+export default async function Page() {
+    const suppliers = await getSuppliersForCurrentOrganization();
     const searchTerm = '';
 
     return (
@@ -21,7 +17,7 @@ export default async function SuppliersPage({params}) {
                         <p className={`mt-2 text-gray-400`}>Manage your supplier relationships</p>
                     </div>
                     <Link
-                        href={`/${slug}/${location}/dashboard/suppliers/new`}
+                        href={`/dashboard/suppliers/new`}
                         className={`bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors`}
                     >
                         <HiOutlinePlus className={`size-5`}/>
