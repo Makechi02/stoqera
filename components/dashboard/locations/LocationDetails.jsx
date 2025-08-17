@@ -31,16 +31,6 @@ export default function LocationDetails({location}) {
         }
     };
 
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
-
     return (
             <div className={`grid grid-cols-1 lg:grid-cols-3 gap-8`}>
                 {/* Main Information */}
