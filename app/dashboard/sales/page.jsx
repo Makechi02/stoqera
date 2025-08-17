@@ -37,7 +37,7 @@ export default function Page() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <h2 className="text-3xl font-bold text-gray-100">Sales</h2>
                 <Link
-                    href={`/app/dashboard/%5Bslug%5D/sales/new`}
+                    href={`/app/dashboard/sales/new`}
                     className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
                 >
                     Add Sale
