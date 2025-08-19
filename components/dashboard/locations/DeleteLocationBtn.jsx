@@ -22,6 +22,7 @@ export default function DeleteLocationBtn({location}) {
             router.push('/dashboard/locations');
         }
     };
+
     return (
         <button
             onClick={handleDelete}
