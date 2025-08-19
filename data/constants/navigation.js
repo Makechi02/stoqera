@@ -55,9 +55,9 @@ export function getTenantAdminNavigation() {
         {name: 'Purchase Orders', icon: <HiOutlineClipboardDocumentList/>, href: `/dashboard/purchases`},
         {name: 'Sales Management',
             subItems: [
-                {name: 'Sales', icon: <HiOutlineBanknotes/>, href: `/dashboard/sales`},
-                {name: 'Sales Channels', icon: <HiOutlineGlobeAlt/>, href: `/dashboard/sales-channels`},
-                {name: 'Payment Methods', icon: <HiOutlineCreditCard/>, href: `/dashboard/payment-methods`},
+                {name: 'Sales', icon: <HiOutlineBanknotes/>, href: `/dashboard/sales/list`},
+                {name: 'Sales Channels', icon: <HiOutlineGlobeAlt/>, href: `/dashboard/sales/channels`},
+                {name: 'Payment Methods', icon: <HiOutlineCreditCard/>, href: `/dashboard/sales/payment-methods`},
             ]
         },
         {name: 'Customers', icon: <HiOutlineUserGroup/>, href: `/dashboard/customers`},
@@ -69,7 +69,7 @@ export function getTenantAdminNavigation() {
             ]
         },
         {name: 'Users & Access', icon: <HiOutlineUser/>, href: `/dashboard/users`},
-        {name: 'Reports & Analytics', icon: <HiOutlineChartBarSquare/>, href: `/dashboard/dashboard/reports`},
+        {name: 'Reports & Analytics', icon: <HiOutlineChartBarSquare/>, href: `/dashboard/reports`},
         {name: 'Settings', icon: <HiOutlineCog/>, href: `/dashboard/settings`},
     ];
 }

@@ -1,5 +1,5 @@
 import {usePathname} from "next/navigation";
-import {getTenantAdminNavigation} from "@/data/constants";
+import {getTenantAdminNavigation} from "@/data/constants/navigation";
 import Link from "next/link";
 import {useState} from "react";
 import {HiOutlineChevronDown, HiOutlineChevronUp} from "react-icons/hi2";
