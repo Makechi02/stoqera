@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
     CubeIcon,
     EllipsisVerticalIcon,
@@ -10,9 +10,10 @@ import {
     PhotoIcon,
     PlusIcon
 } from '@heroicons/react/24/outline';
+import {formatCurrency} from "@/utils/formatters";
+import Link from "next/link";
 
-export default function ProductsGrid({categories}) {
-    const [products, setProducts] = useState([]);
+export default function ProductsGrid({categories, products}) {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -22,106 +23,7 @@ export default function ProductsGrid({categories}) {
     const [sortOrder, setSortOrder] = useState('asc');
     const [viewMode, setViewMode] = useState('grid'); // grid or list
 
-    // Mock data for demonstration
-    const mockProducts = [
-        {
-            id: '1',
-            sku: 'LAPTOP001',
-            name: 'MacBook Pro 16"',
-            description: 'High-performance laptop with M2 Pro chip',
-            category: 'Electronics',
-            brand: 'Apple',
-            cost_price: 1999.00,
-            selling_price: 2499.00,
-            min_stock_level: 5,
-            current_stock: 12,
-            reorder_point: 8,
-            unit_of_measure: 'pcs',
-            images: ['https://via.placeholder.com/300x200?text=MacBook'],
-            tags: ['laptop', 'premium', 'productivity'],
-            is_active: true,
-            created_at: '2024-01-15T10:30:00Z'
-        },
-        {
-            id: '2',
-            sku: 'PHONE001',
-            name: 'iPhone 15 Pro',
-            description: 'Latest flagship smartphone with titanium design',
-            category: 'Electronics',
-            brand: 'Apple',
-            cost_price: 899.00,
-            selling_price: 1199.00,
-            min_stock_level: 10,
-            current_stock: 25,
-            reorder_point: 15,
-            unit_of_measure: 'pcs',
-            images: ['https://via.placeholder.com/300x200?text=iPhone'],
-            tags: ['smartphone', 'premium', 'titanium'],
-            is_active: true,
-            created_at: '2024-01-14T09:15:00Z'
-        },
-        {
-            id: '3',
-            sku: 'DESK001',
-            name: 'Standing Desk Pro',
-            description: 'Adjustable height standing desk with memory presets',
-            category: 'Furniture',
-            brand: 'ErgoDesk',
-            cost_price: 399.00,
-            selling_price: 599.00,
-            min_stock_level: 3,
-            current_stock: 8,
-            reorder_point: 5,
-            unit_of_measure: 'pcs',
-            images: ['https://via.placeholder.com/300x200?text=Desk'],
-            tags: ['furniture', 'ergonomic', 'adjustable'],
-            is_active: true,
-            created_at: '2024-01-13T14:22:00Z'
-        },
-        {
-            id: '4',
-            sku: 'CHAIR001',
-            name: 'Ergonomic Office Chair',
-            description: 'Premium mesh office chair with lumbar support',
-            category: 'Furniture',
-            brand: 'ComfortSeating',
-            cost_price: 249.00,
-            selling_price: 399.00,
-            min_stock_level: 5,
-            current_stock: 2,
-            reorder_point: 8,
-            unit_of_measure: 'pcs',
-            images: ['https://via.placeholder.com/300x200?text=Chair'],
-            tags: ['furniture', 'ergonomic', 'mesh'],
-            is_active: true,
-            created_at: '2024-01-12T11:45:00Z'
-        },
-        {
-            id: '5',
-            sku: 'MOUSE001',
-            name: 'Wireless Gaming Mouse',
-            description: 'High-precision wireless mouse for gaming',
-            category: 'Accessories',
-            brand: 'TechGear',
-            cost_price: 49.00,
-            selling_price: 89.00,
-            min_stock_level: 15,
-            current_stock: 45,
-            reorder_point: 20,
-            unit_of_measure: 'pcs',
-            images: ['https://via.placeholder.com/300x200?text=Mouse'],
-            tags: ['gaming', 'wireless', 'precision'],
-            is_active: true,
-            created_at: '2024-01-11T16:30:00Z'
-        }
-    ];
-
     const brands = ['all', 'Apple', 'ErgoDesk', 'ComfortSeating', 'TechGear'];
-
-    useEffect(() => {
-        setProducts(mockProducts);
-        setFilteredProducts(mockProducts);
-    }, []);
 
     useEffect(() => {
         let filtered = products.filter(product => {
@@ -264,7 +166,7 @@ export default function ProductsGrid({categories}) {
 
             {/* Products Grid */}
             {viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map(product => (
                         <ProductCard key={product.id} product={product}/>
                     ))}
@@ -310,17 +212,19 @@ export default function ProductsGrid({categories}) {
                                         <div>
                                             <span className="text-gray-400">Price: </span>
                                             <span
-                                                className="text-teal-400 font-semibold">${product.selling_price}</span>
+                                                className="text-teal-400 font-semibold">{formatCurrency(product.selling_price)}</span>
                                         </div>
                                         <div className="flex gap-2">
-                                            <button
+                                            <Link
+                                                href={`/dashboard/products/${product.id}/edit`}
                                                 className="p-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors">
                                                 <PencilIcon className="w-4 h-4"/>
-                                            </button>
-                                            <button
+                                            </Link>
+                                            <Link
+                                                href={`/dashboard/products/${product.id}`}
                                                 className="p-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
                                                 <EyeIcon className="w-4 h-4"/>
-                                            </button>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -363,14 +267,14 @@ function ProductCard({product}) {
 
     return (
         <div
-            className="bg-gray-800 rounded-xl border border-gray-700 hover:border-teal-500/50 transition-all duration-200 group">
-            <div className="relative">
-                <div className="aspect-video bg-gray-700 rounded-t-xl overflow-hidden">
+            className={`bg-gray-800 rounded-xl border border-gray-700 hover:border-teal-500/50 transition-all duration-200 group`}>
+            <div className={`relative`}>
+                <div className={`aspect-video bg-gray-700 rounded-t-xl overflow-hidden`}>
                     {product.images && product.images.length > 0 ? (
                         <img
                             src={product.images[0]}
                             alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-200`}
                         />
                     ) : (
                         <div className="w-full h-full flex items-center justify-center">
@@ -422,11 +326,11 @@ function ProductCard({product}) {
                 <div className="flex items-center justify-between mb-4">
                     <div>
                         <span className="text-gray-400 text-sm">Cost: </span>
-                        <span className="text-white">${product.cost_price}</span>
+                        <span className="text-white">{formatCurrency(product.cost_price)}</span>
                     </div>
                     <div>
                         <span className="text-gray-400 text-sm">Price: </span>
-                        <span className="text-teal-400 font-semibold">${product.selling_price}</span>
+                        <span className="text-teal-400 font-semibold">{formatCurrency(product.selling_price)}</span>
                     </div>
                 </div>
 
@@ -444,15 +348,17 @@ function ProductCard({product}) {
                 )}
 
                 <div className="flex gap-2">
-                    <button
-                        className="flex-1 px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    <Link
+                        href={`/dashboard/products/${product.id}/edit`}
+                        className="block text-center flex-1 px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors">
                         <PencilIcon className="w-4 h-4 inline mr-1"/>
                         Edit
-                    </button>
-                    <button
+                    </Link>
+                    <Link
+                        href={`/dashboard/products/${product.id}`}
                         className="px-3 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm font-medium transition-colors">
                         <EyeIcon className="w-4 h-4"/>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
