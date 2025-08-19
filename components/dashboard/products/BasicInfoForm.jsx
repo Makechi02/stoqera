@@ -1,4 +1,3 @@
-import React from "react";
 import {units} from "@/data/constants/constants";
 
 export default function BasicInfoForm({formData, errors, onChange, categories}) {

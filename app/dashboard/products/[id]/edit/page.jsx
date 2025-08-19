@@ -1,8 +1,12 @@
 import {BackBtn} from "@/components/ui/buttons";
 import {getCategoriesForCurrentOrganization} from "@/lib/queryCategories";
 import ProductForm from "@/components/dashboard/products/ProductForm";
+import {getProductById} from "@/lib/queryProducts";
 
-export default async function Page() {
+export default async function Page({params}) {
+    const {id} = await params;
+
+    const product = await getProductById(id);
     const categories = await getCategoriesForCurrentOrganization();
 
     return (
@@ -13,13 +17,13 @@ export default async function Page() {
                     <div className={`flex items-center`}>
                         <BackBtn/>
                         <div>
-                            <h1 className={`text-3xl font-bold font-heading`}>Add New Product</h1>
-                            <p className={`text-gray-400 mt-2`}>Create a new product for your inventory</p>
+                            <h1 className={`text-3xl font-bold font-heading`}>Edit Product</h1>
+                            <p className={`text-gray-400 mt-2`}>Update your product information</p>
                         </div>
                     </div>
                 </div>
 
-                <ProductForm categories={categories}/>
+                <ProductForm categories={categories} product={product}/>
             </div>
         </div>
     );

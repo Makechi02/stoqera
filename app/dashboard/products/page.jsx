@@ -35,8 +35,6 @@ export default async function Page() {
 }
 
 function Stats({products, categories}) {
-    console.log(products);
-
     return (
         <div className={`grid grid-cols-1 md:grid-cols-4 gap-6 mb-8`}>
             <div className={`bg-gray-800 p-6 rounded-xl border border-gray-700`}>

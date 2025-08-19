@@ -18,7 +18,6 @@ export default function ProductsGrid({categories, products}) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedBrand, setSelectedBrand] = useState('all');
-    const [showFilters, setShowFilters] = useState(false);
     const [sortBy, setSortBy] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc');
     const [viewMode, setViewMode] = useState('grid'); // grid or list
@@ -303,7 +302,7 @@ function ProductCard({product}) {
                         <h3 className="font-semibold text-white text-lg group-hover:text-teal-400 transition-colors">
                             {product.name}
                         </h3>
-                        <p className="text-gray-400 text-sm">SKU: {product.sku}</p>
+                        <p className="text-gray-400 text-sm">SKU: <span className={`font-mono`}>{product.sku}</span></p>
                     </div>
                 </div>
 
