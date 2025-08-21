@@ -64,8 +64,8 @@ export function getTenantAdminNavigation() {
         {name: 'Customer Groups', icon: <HiOutlineUsers/>, href: `/dashboard/customer-groups`},
         {name: 'Marketing',
             subItems: [
-                {name: 'Promotions', icon: <HiOutlineGift/>, href: `/dashboard/promotions`},
-                {name: 'Loyalty Programs', icon: <HiOutlineStar/>, href: `/dashboard/loyalty-programs`},
+                {name: 'Promotions', icon: <HiOutlineGift/>, href: `/dashboard/marketing/promotions`},
+                {name: 'Loyalty Programs', icon: <HiOutlineStar/>, href: `/dashboard/marketing/loyalty-programs`},
             ]
         },
         {name: 'Users & Access', icon: <HiOutlineUser/>, href: `/dashboard/users`},
