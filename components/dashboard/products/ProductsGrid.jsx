@@ -310,16 +310,9 @@ function ProductCard({product}) {
                     {product.description}
                 </p>
 
-                <div className="flex items-center justify-between mb-3">
-                    <div className="text-sm">
-                        <span className="text-gray-400">Stock: </span>
-                        <span
-                            className="text-white font-medium">{product.current_stock} {product.unit_of_measure}</span>
-                    </div>
-                    <div className="text-sm">
-                        <span className="text-gray-400">Brand: </span>
-                        <span className="text-teal-400">{product.brand}</span>
-                    </div>
+                <div className={`text-sm mb-3`}>
+                    <span className="text-gray-400">Brand: </span>
+                    <span className="text-teal-400">{product.brand}</span>
                 </div>
 
                 <div className="flex items-center justify-between mb-4">

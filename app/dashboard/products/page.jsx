@@ -1,10 +1,9 @@
 import {getProductsForCurrentOrganization} from "@/lib/queryProducts";
-import {CubeIcon, FunnelIcon, PlusIcon, TagIcon} from "@heroicons/react/24/outline";
+import {CubeIcon, FunnelIcon, PlusIcon} from "@heroicons/react/24/outline";
 import ProductsGrid from "@/components/dashboard/products/ProductsGrid";
 import Link from "next/link";
 import React from "react";
 import {getCategoriesForCurrentOrganization} from "@/lib/queryCategories";
-import {formatCurrency} from "@/utils/formatters";
 
 export default async function Page() {
     const products = await getProductsForCurrentOrganization();
@@ -36,7 +35,7 @@ export default async function Page() {
 
 function Stats({products, categories}) {
     return (
-        <div className={`grid grid-cols-1 md:grid-cols-4 gap-6 mb-8`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8`}>
             <div className={`bg-gray-800 p-6 rounded-xl border border-gray-700`}>
                 <div className={`flex items-center justify-between`}>
                     <div>
@@ -52,39 +51,11 @@ function Stats({products, categories}) {
             <div className={`bg-gray-800 p-6 rounded-xl border border-gray-700`}>
                 <div className={`flex items-center justify-between`}>
                     <div>
-                        <p className={`text-gray-400 text-sm`}>Low Stock</p>
-                        <p className={`text-2xl font-bold text-red-400`}>
-                            {products.filter(p => p.current_stock <= p.reorder_point).length}
-                        </p>
-                    </div>
-                    <div className={`p-3 bg-red-600/20 rounded-full`}>
-                        <TagIcon className={`size-6 text-red-400`}/>
-                    </div>
-                </div>
-            </div>
-
-            <div className={`bg-gray-800 p-6 rounded-xl border border-gray-700`}>
-                <div className={`flex items-center justify-between`}>
-                    <div>
                         <p className={`text-gray-400 text-sm`}>Categories</p>
                         <p className={`text-2xl font-bold text-white`}>{categories.length}</p>
                     </div>
                     <div className={`p-3 bg-blue-600/20 rounded-full`}>
                         <FunnelIcon className={`size-6 text-blue-400`}/>
-                    </div>
-                </div>
-            </div>
-
-            <div className={`bg-gray-800 p-6 rounded-xl border border-gray-700`}>
-                <div className={`flex items-center justify-between`}>
-                    <div>
-                        <p className={`text-gray-400 text-sm`}>Total Value</p>
-                        <p className={`text-2xl font-bold text-green-400`}>
-                            {formatCurrency(products.reduce((acc, p) => acc + p.selling_price * p.current_stock, 0))}
-                        </p>
-                    </div>
-                    <div className={`p-3 bg-green-600/20 rounded-full`}>
-                        <CubeIcon className={`size-6 text-green-400`}/>
                     </div>
                 </div>
             </div>
