@@ -3,8 +3,11 @@ import {AddBtn} from "@/components/ui/buttons";
 import CategorySearchBar from "@/components/dashboard/categories/CategorySearchBar";
 import {getCategoriesForCurrentOrganization} from "@/lib/queryCategories";
 
-export default async function Page() {
-    const categories = await getCategoriesForCurrentOrganization();
+export default async function Page(props) {
+    const searchParams = await props.searchParams;
+    const {search, filter} = searchParams;
+
+    const categories = await getCategoriesForCurrentOrganization(search, filter);
 
     return (
         <div className={`space-y-6`}>
