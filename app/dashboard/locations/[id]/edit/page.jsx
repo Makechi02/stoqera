@@ -2,7 +2,7 @@ import Link from "next/link";
 import {ArrowLeftIcon} from "@heroicons/react/24/outline";
 import LocationForm from "@/components/dashboard/locations/LocationForm";
 import {getCurrentOrganizationId} from "@/lib/queryOrganizations";
-import {getUserForCurrentOrganization} from "@/lib/queryUsers";
+import {getUsersForCurrentOrganization} from "@/lib/queryUsers";
 import {getLocationById} from "@/lib/queryLocations";
 
 export default async function Page({params}) {
@@ -11,7 +11,7 @@ export default async function Page({params}) {
     const location = await getLocationById(id);
 
     const organizationId = await getCurrentOrganizationId();
-    const users = await getUserForCurrentOrganization();
+    const users = await getUsersForCurrentOrganization();
 
     return (
         <div className={`min-h-screen`}>

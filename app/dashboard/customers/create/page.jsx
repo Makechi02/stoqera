@@ -1,0 +1,27 @@
+import CustomersForm from "@/components/dashboard/customers/CustomersForm";
+import {BackBtn} from "@/components/ui/buttons";
+import {getCustomerGroupsForCurrentOrganization} from "@/lib/queryCustomers";
+import {getUsersForCurrentOrganization} from "@/lib/queryUsers";
+
+export default async function Page() {
+    const customerGroups = await getCustomerGroupsForCurrentOrganization();
+    const users = await getUsersForCurrentOrganization();
+
+    return (
+        <div>
+            <div className={`border-b border-gray-700`}>
+                <div className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8`}>
+                    <div className={`flex items-center gap-4 py-6`}>
+                        <BackBtn/>
+                        <div>
+                            <h1 className={`text-3xl font-bold font-heading`}>Add New Customer</h1>
+                            <p className={`text-gray-400 mt-1`}>Create a new customer profile for your system</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <CustomersForm customerGroups={customerGroups} salesReps={users}/>
+        </div>
+    )
+}

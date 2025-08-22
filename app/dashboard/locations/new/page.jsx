@@ -2,12 +2,12 @@ import Link from "next/link";
 import {ArrowLeftIcon} from "@heroicons/react/24/outline";
 import LocationForm from "@/components/dashboard/locations/LocationForm";
 import {getCurrentOrganizationId} from "@/lib/queryOrganizations";
-import {getUserForCurrentOrganization} from "@/lib/queryUsers";
+import {getUsersForCurrentOrganization} from "@/lib/queryUsers";
 
 export default async function Page() {
 
     const organizationId = await getCurrentOrganizationId();
-    const users = await getUserForCurrentOrganization();
+    const users = await getUsersForCurrentOrganization();
 
     return (
         <div className={`min-h-screen`}>
