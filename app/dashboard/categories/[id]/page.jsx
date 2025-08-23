@@ -18,7 +18,7 @@ export default async function Page({params}) {
 
     if (!category) notFound();
 
-    const parentCategory = await getCategoryById(category.parent_id);
+    const parentCategory = category.parent_id ? await getCategoryById(category.parent_id) : null;
     const subcategories = await getSubCategories(category.id);
     const productsByCategory = await getProductsCountByCategory(category.id);
     const productsCount = productsByCategory.length;
