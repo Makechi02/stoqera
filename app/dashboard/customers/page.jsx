@@ -1,4 +1,5 @@
-import {getCustomerGroupsForCurrentOrganization, getCustomersForCurrentOrganization} from "@/lib/queryCustomers";
+import {getCustomersForCurrentOrganization} from "@/lib/queryCustomers";
+import {getCustomerGroupsForCurrentOrganization} from "@/lib/queryCustomerGroups";
 import CustomersGrid from "@/components/dashboard/customers/CustomersGrid";
 import {UserPlusIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";

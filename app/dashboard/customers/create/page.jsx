@@ -1,7 +1,7 @@
 import CustomersForm from "@/components/dashboard/customers/CustomersForm";
 import {BackBtn} from "@/components/ui/buttons";
-import {getCustomerGroupsForCurrentOrganization} from "@/lib/queryCustomers";
 import {getUsersForCurrentOrganization} from "@/lib/queryUsers";
+import {getCustomerGroupsForCurrentOrganization} from "@/lib/queryCustomerGroups";
 
 export default async function Page() {
     const customerGroups = await getCustomerGroupsForCurrentOrganization();

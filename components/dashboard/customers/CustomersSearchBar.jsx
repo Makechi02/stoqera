@@ -15,13 +15,10 @@ export default function CustomersSearchBar({customerGroups}) {
 
     const [showFilters, setShowFilters] = useState(false);
 
-    const [_, setCurrentPage] = useState(1);
-
     const handleClear = () => {
         setSelectedGroup('all');
         setSelectedStatus('all');
         setSearchQuery('');
-        setCurrentPage(1);
     }
 
     const debouncedSearch = useDebounce(searchQuery, 500);
