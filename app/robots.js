@@ -3,7 +3,7 @@ export default function robots() {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: ['/accounts/', '/dashboard/', '/admin/', '/api/', '/platform/', '/confirm'],
+            disallow: ['/accounts', '/dashboard', '/admin', '/api', '/platform', '/confirm'],
         },
         sitemap: 'https://finviq.vercel.app/sitemap.xml',
     }
