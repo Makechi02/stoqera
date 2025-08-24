@@ -1,7 +1,6 @@
 'use client'
 
 import {useState} from 'react';
-import {useParams, useRouter} from 'next/navigation';
 import Link from 'next/link';
 import {
     CalendarIcon,
@@ -14,34 +13,32 @@ import {
     UsersIcon
 } from '@heroicons/react/24/outline';
 import {StarIcon as StarSolidIcon} from '@heroicons/react/24/solid';
-import {createClient} from "@/lib/supabase/client";
 import {formatCurrency, formatDate} from "@/utils/formatters";
 import {BackBtn} from "@/components/ui/buttons";
 import DeleteCustomerGroupModal from "@/components/dashboard/customers/groups/DeleteCustomerGroupModal";
+import {deleteCustomerGroup} from "@/lib/queryCustomerGroups";
+import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
+import {useRouter} from "next/navigation";
 
 export default function CustomerGroupDetails({group, stats}) {
-    const supabase = createClient();
     const router = useRouter();
-    const {id} = useParams();
     const [deleteModal, setDeleteModal] = useState({open: false, group: null});
 
-    const handleDelete = async () => {
+    const handleDelete = async (groupId) => {
         try {
-            const {error} = await supabase
-                .from('customer_groups')
-                .delete()
-                .eq('id', id);
+            await deleteCustomerGroup(groupId);
 
-            if (error) throw error;
+            setDeleteModal({open: false, group: null});
+            showSuccessToast('Customer group deleted successfully.');
             router.push('/dashboard/customer-groups');
         } catch (error) {
             console.error('Error deleting customer group:', error);
+            showErrorToast('Error deleting customer group. Please try again later.');
         }
     };
 
     return (
         <div>
-            {/* Header */}
             <div className={`mb-8`}>
                 <div className={`flex flex-wrap gap-4 items-center justify-between`}>
                     <div className={`flex items-center`}>
@@ -133,7 +130,7 @@ export default function CustomerGroupDetails({group, stats}) {
                 <div className="lg:col-span-2 space-y-6">
                     {/* Basic Information */}
                     <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                        <h2 className="text-lg font-medium text-white mb-6 flex items-center">
+                        <h2 className="text-lg font-medium mb-6 flex items-center">
                             <InformationCircleIcon className="h-5 w-5 mr-2"/>
                             Group Information
                         </h2>
@@ -173,9 +170,10 @@ export default function CustomerGroupDetails({group, stats}) {
                                     Status
                                 </label>
                                 <div className="flex items-center space-x-3">
-                                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                                        group.is_default ? 'bg-yellow-900 text-yellow-200' : 'bg-gray-700 text-gray-300'
-                                    }`}>
+                                    <span
+                                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                                            group.is_default ? 'bg-yellow-900 text-yellow-200' : 'bg-gray-700 text-gray-300'
+                                        }`}>
                                         {group.is_default ? 'Default Group' : 'Active'}
                                     </span>
                                     {group.is_default && (
