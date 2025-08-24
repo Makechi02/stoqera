@@ -1,10 +1,12 @@
-import {getCustomerGroupsForCurrentOrganization, getCustomersForCurrentOrganization} from "@/lib/queryCustomers";
+import {getCustomersForCurrentOrganization} from "@/lib/queryCustomers";
+import {getCustomerGroupsForCurrentOrganization} from "@/lib/queryCustomerGroups";
 import CustomersGrid from "@/components/dashboard/customers/CustomersGrid";
 import {UserPlusIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-export default async function Page() {
-    const data = await getCustomersForCurrentOrganization();
+export default async function Page(props) {
+    const {search, status, group, page, per_page} = await props.searchParams;
+    const data = await getCustomersForCurrentOrganization(search, group, status, page, per_page);
     const customerGroups = await getCustomerGroupsForCurrentOrganization();
 
     return (
