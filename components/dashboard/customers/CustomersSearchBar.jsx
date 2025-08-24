@@ -1,13 +1,20 @@
 'use client'
 
 import {FunnelIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import useDebounce from "@/hooks/useDebounce";
 
 export default function CustomersSearchBar({customerGroups}) {
-    const [searchQuery, setSearchQuery] = useState('');
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+    const [selectedStatus, setSelectedStatus] = useState(searchParams.get('status') || 'all');
+    const [selectedGroup, setSelectedGroup] = useState(searchParams.get('group') || 'all');
+
     const [showFilters, setShowFilters] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState('all');
-    const [selectedGroup, setSelectedGroup] = useState('all');
+
     const [_, setCurrentPage] = useState(1);
 
     const handleClear = () => {
@@ -16,6 +23,32 @@ export default function CustomersSearchBar({customerGroups}) {
         setSearchQuery('');
         setCurrentPage(1);
     }
+
+    const debouncedSearch = useDebounce(searchQuery, 500);
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (debouncedSearch) {
+            params.set("search", debouncedSearch);
+        } else {
+            params.delete("search");
+        }
+
+        if (selectedStatus !== 'all') {
+            params.set("status", selectedStatus);
+        } else {
+            params.delete("status");
+        }
+
+        if (selectedGroup !== 'all') {
+            params.set("group", selectedGroup);
+        } else {
+            params.delete("group");
+        }
+
+        router.replace(`?${params.toString()}`);
+    }, [debouncedSearch, selectedStatus, selectedGroup, router, searchParams]);
 
     return (
         <>
