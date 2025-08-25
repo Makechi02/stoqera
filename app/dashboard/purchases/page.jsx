@@ -6,7 +6,7 @@ import PurchaseOrdersSearchBar from "@/components/dashboard/purchases/PurchaseOr
 
 export default async function Page(props) {
     const {search, status, date} = await props.searchParams;
-    const purchaseOrders = await getPurchaseOrdersForCurrentOrganization(search, status, date);
+    const orders = await getPurchaseOrdersForCurrentOrganization({status, searchTerm: search});
 
     return (
         <div>
@@ -16,7 +16,7 @@ export default async function Page(props) {
                         <div className={`flex items-center`}>
                             <h1 className={`text-2xl font-bold font-heading`}>Purchase Orders</h1>
                             <div className={`ml-4 px-3 py-1 bg-teal-900 text-teal-300 rounded-full text-sm`}>
-                                {purchaseOrders.length} orders
+                                {orders.length} orders
                             </div>
                         </div>
                         <div className={`flex-1 flex justify-end`}>
@@ -33,7 +33,7 @@ export default async function Page(props) {
             </div>
 
             <PurchaseOrdersSearchBar/>
-            <PurchasesGrid purchaseOrders={purchaseOrders}/>
+            <PurchasesGrid purchaseOrders={orders}/>
         </div>
     )
 }
