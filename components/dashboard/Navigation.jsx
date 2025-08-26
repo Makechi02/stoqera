@@ -2,7 +2,7 @@ import {usePathname} from "next/navigation";
 import {getTenantAdminNavigation} from "@/data/constants/navigation";
 import Link from "next/link";
 import {useState} from "react";
-import {HiOutlineChevronDown, HiOutlineChevronUp} from "react-icons/hi2";
+import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/24/outline";
 
 export function Navigation({setSidebarOpen}) {
     const navigation = getTenantAdminNavigation();
@@ -24,23 +24,23 @@ export function Navigation({setSidebarOpen}) {
                                 href={item.href}
                                 onClick={() => setSidebarOpen(false)}
                                 className={`w-full flex items-center px-4 py-1 mb-2 text-left rounded-lg transition-colors duration-200 ${
-                                    isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-secondary hover:text-white'
+                                    isActive ? 'bg-primary text-text' : 'text-gray-300 hover:bg-secondary hover:text-text'
                                 }`}
                             >
-                                <span className={`mr-3 text-lg`}>{item.icon}</span>
+                                <span className={`mr-3 text-lg size-5`}>{item.icon}</span>
                                 {item.name}
                             </Link>
                         ) : (
                             <p
-                                className={`w-full flex items-center px-4 py-1 mb-2 text-left rounded-lg transition-colors duration-200 text-gray-300 hover:bg-secondary hover:text-white ${
-                                    showSubItems && 'bg-secondary text-white'
+                                className={`w-full flex items-center px-4 py-1 mb-2 text-left rounded-lg transition-colors duration-200 text-gray-300 hover:bg-secondary hover:text-text ${
+                                    showSubItems && 'bg-secondary text-text'
                                 }`}
                                 onClick={toggleSubItems}
                             >
                                 {item.name}
                                 {showSubItems ?
-                                    <HiOutlineChevronUp className={`ml-auto`}/> :
-                                    <HiOutlineChevronDown className={`ml-auto`}/>
+                                    <ChevronUpIcon className={`ml-auto size-5`}/> :
+                                    <ChevronDownIcon className={`ml-auto size-5`}/>
                                 }
                             </p>
                         )}
@@ -54,11 +54,11 @@ export function Navigation({setSidebarOpen}) {
                                         href={subItem.href}
                                         onClick={() => setSidebarOpen(false)}
                                         className={`w-full items-center px-4 py-1 mb-2 text-left rounded-lg transition-colors duration-200 
-                                    ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-secondary hover:text-white'}
-                                    ${showSubItems ? 'flex' : 'hidden'}
-                                `}
+                                            ${isActive ? 'bg-primary text-text' : 'text-gray-300 hover:bg-secondary hover:text-text'}
+                                            ${showSubItems ? 'flex' : 'hidden'}
+                                        `}
                                     >
-                                        <span className={`mr-3 text-lg`}>{subItem.icon}</span>
+                                        <span className={`mr-3 text-lg size-5`}>{subItem.icon}</span>
                                         {subItem.name}
                                     </Link>
                                 </div>
