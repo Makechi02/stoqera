@@ -57,3 +57,21 @@
 .dashboard-form-input-icon {
     @apply w-full pl-10 pr-3 py-2 bg-gray-700 border rounded-lg text-text placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:outline-none;
 }
+
+@keyframes indeterminate {
+    0% {
+        transform: translateX(-100%);
+        width: 30%;
+    }
+    50% {
+        width: 40%;
+    }
+    100% {
+        transform: translateX(400%);
+        width: 30%;
+    }
+}
+
+.animate-indeterminate {
+    animation: indeterminate 2s ease-in-out infinite;
+}
