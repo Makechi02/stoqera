@@ -14,17 +14,31 @@ import {
     HiOutlineDocumentText,
     HiOutlineExclamationTriangle,
     HiOutlineGift,
-    HiOutlineGlobeAlt,
     HiOutlineHome,
-    HiOutlineMapPin,
-    HiOutlineStar,
-    HiOutlineTag,
     HiOutlineTrophy,
     HiOutlineTruck,
-    HiOutlineUser,
     HiOutlineUserGroup,
-    HiOutlineUsers
 } from "react-icons/hi2";
+
+import {
+    ArchiveBoxIcon,
+    ArrowsRightLeftIcon,
+    BanknotesIcon,
+    ChartBarSquareIcon,
+    ClipboardDocumentListIcon,
+    CogIcon,
+    CreditCardIcon,
+    CubeIcon,
+    ExclamationTriangleIcon,
+    GlobeAltIcon,
+    HomeIcon,
+    MapPinIcon,
+    TagIcon,
+    TruckIcon,
+    UserGroupIcon,
+    UserIcon,
+    UsersIcon
+} from "@heroicons/react/24/outline";
 
 export function getSuperAdminNavigation(slug, location) {
     return [
@@ -40,37 +54,46 @@ export function getSuperAdminNavigation(slug, location) {
 
 export function getTenantAdminNavigation() {
     return [
-        {name: 'Dashboard', icon: <HiOutlineHome/>, href: `/dashboard`},
+        {name: 'Dashboard', icon: <HomeIcon/>, href: `/dashboard`},
+        {name: 'Products',
+            subItems: [
+                {name: 'Products', icon: <CubeIcon/>, href: `/dashboard/products`},
+                {name: 'Categories', icon: <TagIcon/>, href: `/dashboard/categories`}
+            ]
+        },
         {name: 'Inventory',
             subItems: [
-                {name: 'Products', icon: <HiOutlineCube/>, href: `/dashboard/products`},
-                {name: 'Categories', icon: <HiOutlineTag/>, href: `/dashboard/categories`},
-                {name: 'Stock Levels', icon: <HiOutlineArchiveBox/>, href: `/dashboard/stock/levels`},
-                {name: 'Stock Transfers', icon: <HiOutlineArrowsRightLeft/>, href: `/dashboard/stock/transfers`},
-                {name: 'Low Stock Alerts', icon: <HiOutlineExclamationTriangle/>, href: `/dashboard/stock/alerts`},
+                {name: 'Locations', icon: <MapPinIcon/>, href: `/dashboard/locations`},
+                {name: 'Stock Levels', icon: <ArchiveBoxIcon/>, href: `/dashboard/stock/levels`},
+                {name: 'Stock Transfers', icon: <ArrowsRightLeftIcon/>, href: `/dashboard/stock/transfers`},
+                {name: 'Low Stock Alerts', icon: <ExclamationTriangleIcon/>, href: `/dashboard/stock/alerts`},
             ]
         },
-        {name: 'Locations', icon: <HiOutlineMapPin/>, href: `/dashboard/locations`},
-        {name: 'Suppliers', icon: <HiOutlineTruck/>, href: `/dashboard/suppliers`},
-        {name: 'Purchase Orders', icon: <HiOutlineClipboardDocumentList/>, href: `/dashboard/purchases`},
-        {name: 'Sales Management',
+        {name: 'Sales',
             subItems: [
-                {name: 'Sales', icon: <HiOutlineBanknotes/>, href: `/dashboard/sales/list`},
-                {name: 'Sales Channels', icon: <HiOutlineGlobeAlt/>, href: `/dashboard/sales/channels`},
-                {name: 'Payment Methods', icon: <HiOutlineCreditCard/>, href: `/dashboard/sales/payment-methods`},
+                {name: 'Customers', icon: <UserGroupIcon/>, href: `/dashboard/customers`},
+                {name: 'Customer Groups', icon: <UsersIcon/>, href: `/dashboard/customer-groups`},
+                {name: 'Sales', icon: <BanknotesIcon/>, href: `/dashboard/sales/list`},
+                {name: 'Sales Channels', icon: <GlobeAltIcon/>, href: `/dashboard/sales/channels`},
+                {name: 'Payment Methods', icon: <CreditCardIcon/>, href: `/dashboard/sales/payment-methods`},
             ]
         },
-        {name: 'Customers', icon: <HiOutlineUserGroup/>, href: `/dashboard/customers`},
-        {name: 'Customer Groups', icon: <HiOutlineUsers/>, href: `/dashboard/customer-groups`},
-        {name: 'Marketing',
+        {name: 'Purchases',
             subItems: [
-                {name: 'Promotions', icon: <HiOutlineGift/>, href: `/dashboard/marketing/promotions`},
-                {name: 'Loyalty Programs', icon: <HiOutlineStar/>, href: `/dashboard/marketing/loyalty-programs`},
+                {name: 'Suppliers', icon: <TruckIcon/>, href: `/dashboard/suppliers`},
+                {name: 'Purchase Orders', icon: <ClipboardDocumentListIcon/>, href: `/dashboard/purchases`},
             ]
         },
-        {name: 'Users & Access', icon: <HiOutlineUser/>, href: `/dashboard/users`},
-        {name: 'Reports & Analytics', icon: <HiOutlineChartBarSquare/>, href: `/dashboard/reports`},
-        {name: 'Settings', icon: <HiOutlineCog/>, href: `/dashboard/settings`},
+        // TODO: Add marketing features
+        // {name: 'Marketing',
+        //     subItems: [
+        //         {name: 'Promotions', icon: <GiftIcon/>, href: `/dashboard/marketing/promotions`},
+        //         {name: 'Loyalty Programs', icon: <StarIcon/>, href: `/dashboard/marketing/loyalty-programs`},
+        //     ]
+        // },
+        {name: 'Users & Access', icon: <UserIcon/>, href: `/dashboard/users`},
+        {name: 'Reports & Analytics', icon: <ChartBarSquareIcon/>, href: `/dashboard/reports`},
+        {name: 'Settings', icon: <CogIcon/>, href: `/dashboard/settings`},
     ];
 }
 
