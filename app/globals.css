@@ -58,6 +58,15 @@
     @apply w-full pl-10 pr-3 py-2 bg-gray-700 border rounded-lg text-text placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:outline-none;
 }
 
+.dashboard-submit-btn {
+    @apply bg-teal-600 hover:bg-teal-700 disabled:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed
+    px-6 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors;
+}
+
+.dashboard-cancel-btn {
+    @apply bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center gap-2 transition-colors;
+}
+
 @keyframes indeterminate {
     0% {
         transform: translateX(-100%);
@@ -74,4 +83,25 @@
 
 .animate-indeterminate {
     animation: indeterminate 2s ease-in-out infinite;
+}
+
+@keyframes inventorySpin {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(0.9); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    75% { transform: rotate(270deg) scale(0.9); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes inventoryPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+.inventory-loader {
+    animation: inventorySpin 1.2s ease-in-out infinite;
+}
+
+.inventory-dot {
+    animation: inventoryPulse 1.2s ease-in-out infinite;
 }

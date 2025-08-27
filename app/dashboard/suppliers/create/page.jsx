@@ -1,10 +1,9 @@
 import SupplierForm from "@/components/dashboard/supplier/SupplierForm";
-import {getSupplierById} from "@/lib/querySuppliers";
 import {BackBtn} from "@/components/ui/buttons";
+import {getNewSupplierCode} from "@/lib/querySuppliers";
 
-export default async function Page({params}) {
-    const {id} = await params;
-    const supplier = await getSupplierById(id);
+export default async function Page() {
+    const newSupplierCode = await getNewSupplierCode();
 
     return (
         <div>
@@ -13,14 +12,14 @@ export default async function Page({params}) {
                     <div className={`flex items-center`}>
                         <BackBtn/>
                         <div>
-                            <h1 className={`text-3xl font-bold font-heading`}>Update Supplier</h1>
-                            <p className={`mt-2 text-gray-400`}>Update supplier information</p>
+                            <h1 className={`text-3xl font-bold font-heading`}>Add Supplier</h1>
+                            <p className={`mt-2 text-gray-400`}>Enter new supplier information</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <SupplierForm supplier={supplier}/>
+            <SupplierForm newSupplierCode={newSupplierCode}/>
         </div>
     );
 }

@@ -1,11 +1,35 @@
 'use client'
 
 import {HiOutlineAdjustmentsHorizontal, HiOutlineMagnifyingGlass} from "react-icons/hi2";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import useDebounce from "@/hooks/useDebounce";
 
 export default function SuppliersSearchBar() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filterActive, setFilterActive] = useState('all');
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const [searchTerm, setSearchTerm] = useState(searchParams.get( 'search') || '');
+    const [filterActive, setFilterActive] = useState(searchParams.get('status') || 'all');
+
+    const debouncedSearch = useDebounce(searchTerm, 500);
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (debouncedSearch) {
+            params.set('search', debouncedSearch);
+        } else {
+            params.delete('search');
+        }
+
+        if (filterActive !== 'all') {
+            params.set('status', filterActive);
+        } else {
+            params.delete('status');
+        }
+
+        router.replace(`?${params.toString()}`);
+    }, [router, searchParams, debouncedSearch, filterActive]);
 
     return (
         <div className={`flex flex-col sm:flex-row gap-4 mb-6`}>
@@ -17,21 +41,21 @@ export default function SuppliersSearchBar() {
                     placeholder={`Search suppliers...`}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent`}
+                    className={`dashboard-form-input-icon border-gray-700`}
                 />
             </div>
 
             {/* Filter */}
-            <div className="flex items-center gap-2">
-                <HiOutlineAdjustmentsHorizontal className="h-5 w-5 text-gray-400" />
+            <div className={`flex items-center gap-2`}>
+                <HiOutlineAdjustmentsHorizontal className={`size-5 text-gray-400`} />
                 <select
                     value={filterActive}
                     onChange={(e) => setFilterActive(e.target.value)}
-                    className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    className={`bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent`}
                 >
-                    <option value="all">All Suppliers</option>
-                    <option value="active">Active Only</option>
-                    <option value="inactive">Inactive Only</option>
+                    <option value={`all`}>All Suppliers</option>
+                    <option value={`active`}>Active Only</option>
+                    <option value={`inactive`}>Inactive Only</option>
                 </select>
             </div>
         </div>

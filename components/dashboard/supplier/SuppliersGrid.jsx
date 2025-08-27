@@ -11,10 +11,35 @@ import {
 } from "react-icons/hi2";
 import Link from "next/link";
 import {deleteSupplier} from "@/lib/querySuppliers";
-import {toast} from "react-toastify";
-import {useRouter} from "next/navigation";
+import {useSearchParams} from "next/navigation";
+import {useState} from "react";
+import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
+import DeleteSupplierModal from "@/components/dashboard/supplier/DeleteSupplierModal";
 
-export default function SuppliersGrid({suppliers, searchTerm}) {
+export default function SuppliersGrid({suppliers}) {
+    const searchParams = useSearchParams();
+    const searchTerm = searchParams.get('search') || '';
+
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [deleteModal, setDeleteModal] = useState({open: false, supplier: null});
+
+    const handleDelete = async (supplierId) => {
+        setLoadingDelete(true);
+
+        try {
+            await deleteSupplier(supplierId);
+
+            setDeleteModal({open: false, supplier: null});
+            showSuccessToast('Supplier deleted successfully.');
+            window.location.reload();
+        } catch (error) {
+            console.error('Error deleting supplier:', error);
+            showErrorToast('Error deleting supplier. Please try again later.');
+        } finally {
+            setLoadingDelete(false);
+        }
+    };
+
     return (
         <>
             {suppliers.length === 0 ? (
@@ -26,34 +51,27 @@ export default function SuppliersGrid({suppliers, searchTerm}) {
                     </p>
                 </div>
             ) : (
-                <div className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6`}>
-                    {suppliers.map((supplier) => (
-                        <SuppliersCard key={supplier.id} supplier={supplier} />
-                    ))}
-                </div>
+                <>
+                    <div className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6`}>
+                        {suppliers.map((supplier) => (
+                            <SuppliersCard key={supplier.id} supplier={supplier} setDeleteModal={setDeleteModal}/>
+                        ))}
+                    </div>
+
+                    {deleteModal.open && (
+                        <DeleteSupplierModal
+                            setDeleteModal={setDeleteModal}
+                            deleteModal={deleteModal}
+                            handleDelete={handleDelete}
+                            isLoading={loadingDelete}/>
+                    )}
+                </>
             )}
         </>
     )
 }
 
-function SuppliersCard({supplier}) {
-    const router = useRouter();
-
-    const handleDelete = async (supplierId) => {
-        if (window.confirm('Are you sure you want to delete this supplier?')) {
-            await deleteSupplier(supplierId);
-
-            toast.success({
-                title: 'Supplier deleted successfully.',
-                status: 'success',
-                duration: 5000,
-                theme: 'dark',
-            });
-
-            router.push('/dashboard/suppliers');
-        }
-    }
-
+function SuppliersCard({supplier, setDeleteModal}) {
     return (
         <div
             className={`bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-teal-500 transition-colors flex flex-col`}
@@ -96,7 +114,7 @@ function SuppliersCard({supplier}) {
             {/* Payment Terms */}
             <div className={`mb-6 mt-auto`}>
                 <p className={`text-sm text-gray-400`}>
-                    Payment Terms: <span className={`text-white`}>{supplier.payment_terms} days</span>
+                    Payment Terms: <span className={`text-text`}>{supplier.payment_terms} days</span>
                 </p>
             </div>
 
@@ -104,21 +122,21 @@ function SuppliersCard({supplier}) {
             <div className={`flex items-center gap-2`}>
                 <Link
                     href={`/dashboard/suppliers/${supplier.id}`}
-                    className={`flex-1 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors`}
+                    className={`flex-1 bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors`}
                 >
                     <HiOutlineEye className={`size-4`}/>
                     View
                 </Link>
                 <Link
                     href={`/dashboard/suppliers/${supplier.id}/edit`}
-                    className={`flex-1 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors`}
+                    className={`flex-1 bg-teal-600 hover:bg-teal-700 px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors`}
                 >
                     <HiOutlinePencil className={`size-4`}/>
                     Edit
                 </Link>
                 <button
-                    onClick={() => handleDelete(supplier.id)}
-                    className={`bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center transition-colors`}
+                    onClick={() => setDeleteModal({open: true, supplier})}
+                    className={`bg-red-600 hover:bg-red-700 px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center transition-colors`}
                 >
                     <HiOutlineTrash className={`size-4`}/>
                 </button>
