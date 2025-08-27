@@ -12,9 +12,12 @@ import {
 import Link from "next/link";
 import {deleteSupplier} from "@/lib/querySuppliers";
 import {toast} from "react-toastify";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 
-export default function SuppliersGrid({suppliers, searchTerm}) {
+export default function SuppliersGrid({suppliers}) {
+    const searchParams = useSearchParams();
+    const searchTerm = searchParams.get('search') || '';
+
     return (
         <>
             {suppliers.length === 0 ? (
