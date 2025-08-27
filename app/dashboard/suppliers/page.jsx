@@ -6,7 +6,7 @@ import {getSuppliersForCurrentOrganization} from "@/lib/querySuppliers";
 
 export default async function Page(props) {
     const {search, status} = await props.searchParams;
-    const suppliers = await getSuppliersForCurrentOrganization({ searchTerm: search, status: status});
+    const suppliers = await getSuppliersForCurrentOrganization({ searchTerm: search, statusFilter: status});
 
     return (
         <div>
