@@ -1,13 +1,7 @@
 'use client'
 
 import {useState} from 'react';
-import {
-    BuildingOfficeIcon,
-    CheckCircleIcon,
-    ExclamationTriangleIcon,
-    InformationCircleIcon,
-    UserIcon,
-} from '@heroicons/react/24/outline';
+import {BuildingOfficeIcon, CheckIcon, InformationCircleIcon, UserIcon, XMarkIcon,} from '@heroicons/react/24/outline';
 import BasicInfoForm from "@/components/dashboard/customers/BasicInfoForm";
 import ContactPersonsForm from "@/components/dashboard/customers/ContactPersonsForm";
 import ContactInfoForm from "@/components/dashboard/customers/ContactInfoForm";
@@ -17,12 +11,13 @@ import FinancialInfoForm from "@/components/dashboard/customers/FinancialInfoFor
 import TagsForm from "@/components/dashboard/customers/TagsForm";
 import {addCustomer} from "@/lib/queryCustomers";
 import {useRouter} from "next/navigation";
+import {ProgressLoader} from "@/components";
+import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 
 export default function CustomersForm({customerGroups, salesReps}) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
-    const [success, setSuccess] = useState(false);
     const [newTag, setNewTag] = useState('');
     const [contacts, setContacts] = useState([{name: '', title: '', email: '', phone: '', is_primary: true}]);
 
@@ -77,39 +72,6 @@ export default function CustomersForm({customerGroups, salesReps}) {
         }
     };
 
-    const addTag = () => {
-        if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-            setFormData(prev => ({
-                ...prev,
-                tags: [...prev.tags, newTag.trim()]
-            }));
-            setNewTag('');
-        }
-    };
-
-    const removeTag = (tagToRemove) => {
-        setFormData(prev => ({
-            ...prev,
-            tags: prev.tags.filter(tag => tag !== tagToRemove)
-        }));
-    };
-
-    const addContact = () => {
-        setContacts(prev => [...prev, {name: '', title: '', email: '', phone: '', is_primary: false}]);
-    };
-
-    const removeContact = (index) => {
-        if (contacts.length > 1) {
-            setContacts(prev => prev.filter((_, i) => i !== index));
-        }
-    };
-
-    const updateContact = (index, field, value) => {
-        setContacts(prev => prev.map((contact, i) =>
-            i === index ? {...contact, [field]: value} : contact
-        ));
-    };
-
     const validateForm = () => {
         const newErrors = {};
 
@@ -158,7 +120,6 @@ export default function CustomersForm({customerGroups, salesReps}) {
         }
 
         setLoading(true);
-        setSuccess(false);
 
         try {
             const submitData = {
@@ -169,63 +130,21 @@ export default function CustomersForm({customerGroups, salesReps}) {
             };
 
             const customer = await addCustomer(submitData, contacts.filter(c => c.name.trim()));
-
-            if (customer.error) {
-                throw new Error(customer.error);
-            }
-
-            setSuccess(true);
-
-            // Reset form after successful submission
-            setTimeout(() => {
-                setFormData({
-                    type: 'individual',
-                    first_name: '',
-                    last_name: '',
-                    business_name: '',
-                    tax_id: '',
-                    email: '',
-                    phone: '',
-                    date_of_birth: '',
-                    gender: '',
-                    address_line_1: '',
-                    address_line_2: '',
-                    city: '',
-                    state: '',
-                    postal_code: '',
-                    country: 'Kenya',
-                    customer_group_id: '',
-                    assigned_to: '',
-                    acquisition_source: '',
-                    status: 'active',
-                    credit_limit: 0,
-                    preferred_contact_method: 'email',
-                    marketing_consent: false,
-                    notes: '',
-                    tags: [],
-                    custom_fields: {}
-                });
-                setContacts([{name: '', title: '', email: '', phone: '', is_primary: true}]);
-                setSuccess(false);
-
-                router.push(`/dashboard/customers`);
-            }, 3000);
-
+            showSuccessToast(`${customer?.type} customer created successfully`);
+            router.push(`/dashboard/customers`);
         } catch (error) {
             console.error('Error creating customer:', error);
-            setErrors({submit: error.message || 'Failed to create customer'});
+            showErrorToast('An error occurred while creating the customer. Please try again later.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8`}>
-            {success && <SuccessMessage/>}
-
+        <div className={`max-w-4xl mx-auto py-8`}>
             <form onSubmit={handleSubmit} className={`space-y-8`}>
                 <div className={`bg-gray-800 rounded-lg p-6 border border-gray-700`}>
-                    <h2 className={`text-lg font-semibold text-white mb-4`}>Customer Type</h2>
+                    <h2 className={`text-lg font-semibold mb-4`}>Customer Type</h2>
                     <CustomerTypeButtons formData={formData} handleInputChange={handleInputChange}/>
                 </div>
 
@@ -233,13 +152,7 @@ export default function CustomersForm({customerGroups, salesReps}) {
 
                 {/* Business Contacts */}
                 {formData.type === 'business' && (
-                    <ContactPersonsForm
-                        contacts={contacts}
-                        setContacts={setContacts}
-                        errors={errors}
-                        addContact={addContact}
-                        removeContact={removeContact}
-                        updateContact={updateContact}/>
+                    <ContactPersonsForm contacts={contacts} setContacts={setContacts} errors={errors}/>
                 )}
 
                 <ContactInfoForm formData={formData} handleInputChange={handleInputChange} errors={errors}/>
@@ -253,12 +166,7 @@ export default function CustomersForm({customerGroups, salesReps}) {
 
                 <FinancialInfoForm formData={formData} handleInputChange={handleInputChange}/>
 
-                <TagsForm
-                    formData={formData}
-                    newTag={newTag}
-                    setNewTag={setNewTag}
-                    addTag={addTag}
-                    removeTag={removeTag}/>
+                <TagsForm formData={formData} setFormData={setFormData} newTag={newTag} setNewTag={setNewTag}/>
 
                 {/* Notes */}
                 <div className={`bg-gray-800 rounded-lg p-6 border border-gray-700`}>
@@ -275,29 +183,32 @@ export default function CustomersForm({customerGroups, salesReps}) {
                     </p>
                 </div>
 
-                {errors.submit && <ErrorMessage errors={errors}/>}
-
                 {/* Form Actions */}
                 <div className={`flex justify-end gap-4 pt-6 border-t border-gray-700`}>
                     <button
                         type={`button`}
-                        className={`px-6 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors`}
+                        className={`dashboard-cancel-btn`}
+                        onClick={() => router.push(`/dashboard/customers`)}
+                        disabled={loading}
+                        aria-label={`Cancel and go back to customers list`}
                     >
+                        <XMarkIcon className={`size-4`}/>
                         Cancel
                     </button>
                     <button
                         type={`submit`}
                         disabled={loading}
-                        className={`px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2`}
+                        className={`dashboard-submit-btn`}
+                        aria-label={`Create customer`}
                     >
                         {loading ? (
                             <>
-                                <div className={`animate-spin rounded-full size-4 border-b-2 border-white`}></div>
+                                <ProgressLoader/>
                                 Creating...
                             </>
                         ) : (
                             <>
-                                <CheckCircleIcon className={`size-4`}/>
+                                <CheckIcon className={`size-4`}/>
                                 Create Customer
                             </>
                         )}
@@ -308,37 +219,6 @@ export default function CustomersForm({customerGroups, salesReps}) {
             <HelperInfo/>
         </div>
     );
-}
-
-function SuccessMessage() {
-    return (
-        <div className={`mb-6 bg-green-500/10 border border-green-500/20 rounded-lg p-4`}>
-            <div className={`flex items-center gap-3`}>
-                <CheckCircleIcon className={`size-5 text-green-400`}/>
-                <div>
-                    <h3 className={`text-green-400 font-medium`}>Customer Created Successfully!</h3>
-                    <p className={`text-green-300/80 text-sm mt-1`}>
-                        The customer has been added to your system and is now available in the customers
-                        list.
-                    </p>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-function ErrorMessage({errors}) {
-    return (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
-            <div className="flex items-center gap-3">
-                <ExclamationTriangleIcon className="h-5 w-5 text-red-400"/>
-                <div>
-                    <h3 className="text-red-400 font-medium">Error Creating Customer</h3>
-                    <p className="text-red-300/80 text-sm mt-1">{errors.submit}</p>
-                </div>
-            </div>
-        </div>
-    )
 }
 
 function CustomerTypeButtons({handleInputChange, formData}) {
@@ -372,13 +252,12 @@ function CustomerTypeButtons({handleInputChange, formData}) {
                         : 'border-gray-700 bg-gray-800 hover:border-gray-600'
                 }`}
             >
-                <div className="flex items-center gap-3">
-                    <BuildingOfficeIcon className={`h-8 w-8 ${
-                        formData.type === 'business' ? 'text-teal-400' : 'text-gray-400'
-                    }`}/>
-                    <div className="text-left">
-                        <h3 className="font-medium text-white">Business</h3>
-                        <p className="text-sm text-gray-400">Company or organization</p>
+                <div className={`flex items-center gap-3`}>
+                    <BuildingOfficeIcon
+                        className={`size-8 ${formData.type === 'business' ? 'text-teal-400' : 'text-gray-400'}`}/>
+                    <div className={`text-left`}>
+                        <h3 className={`font-medium`}>Business</h3>
+                        <p className={`text-sm text-gray-400`}>Company or organization</p>
                     </div>
                 </div>
             </button>
@@ -388,17 +267,17 @@ function CustomerTypeButtons({handleInputChange, formData}) {
 
 function HelperInfo() {
     return (
-        <div className="mt-8 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-            <div className="flex items-start gap-3">
-                <InformationCircleIcon className="h-5 w-5 text-blue-400 mt-0.5"/>
+        <div className={`mt-8 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4`}>
+            <div className={`flex items-start gap-3`}>
+                <InformationCircleIcon className={`size-5 text-blue-400 mt-0.5`}/>
                 <div>
-                    <h3 className="text-blue-400 font-medium">Customer Creation Tips</h3>
-                    <ul className="text-blue-300/80 text-sm mt-1 space-y-1">
-                        <li>• Customer codes are automatically generated if not provided</li>
-                        <li>• Business customers can have multiple contact persons</li>
-                        <li>• Email and phone validation is performed automatically</li>
-                        <li>• Tags help you organize customers for better management</li>
-                        <li>• All fields except name/business name are optional</li>
+                    <h3 className={`text-blue-400 font-medium`}>Customer Creation Tips</h3>
+                    <ul className={`text-blue-300/80 text-sm mt-1 space-y-1 list-disc list-inside`}>
+                        <li>Customer codes are automatically generated if not provided</li>
+                        <li>Business customers can have multiple contact persons</li>
+                        <li>Email and phone validation is performed automatically</li>
+                        <li>Tags help you organize customers for better management</li>
+                        <li>All fields except name/business name are optional</li>
                     </ul>
                 </div>
             </div>

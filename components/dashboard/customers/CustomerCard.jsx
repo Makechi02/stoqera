@@ -145,11 +145,14 @@ export default function CustomerCard({customer}) {
                 <div className={`flex items-center gap-1 mt-3 pt-3 border-t border-gray-700`}>
                     <TagIcon className={`size-4 text-gray-500`}/>
                     <div className={`flex flex-wrap gap-1`}>
-                        {customer.tags.slice(0, 2).map((tag, index) => (
-                            <span key={index} className={`text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded`}>
-                              {tag}
-                            </span>
-                        ))}
+                        {customer.tags.slice(0, 2).map((tag, index) => {
+                            const jsonTag = JSON.parse(tag);
+                            return (
+                                <span key={index} className={`text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded`}>
+                                    {jsonTag.name}
+                                </span>
+                            )
+                        })}
                         {customer.tags.length > 2 && (
                             <span className={`text-xs text-gray-500`}>+{customer.tags.length - 2} more</span>
                         )}

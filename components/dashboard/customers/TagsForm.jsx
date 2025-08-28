@@ -2,7 +2,24 @@
 
 import {PlusIcon, TagIcon, XMarkIcon} from "@heroicons/react/24/outline";
 
-export default function TagsForm({newTag, setNewTag, addTag, formData, removeTag}) {
+export default function TagsForm({newTag, setNewTag, formData, setFormData}) {
+    const addTag = () => {
+        if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+            setFormData(prev => ({
+                ...prev,
+                tags: [...prev.tags, newTag.trim()]
+            }));
+            setNewTag('');
+        }
+    };
+
+    const removeTag = (tagToRemove) => {
+        setFormData(prev => ({
+            ...prev,
+            tags: prev.tags.filter(tag => tag !== tagToRemove)
+        }));
+    };
+
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
