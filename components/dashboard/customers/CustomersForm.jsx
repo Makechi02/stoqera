@@ -14,47 +14,49 @@ import {useRouter} from "next/navigation";
 import {ProgressLoader} from "@/components";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 
-export default function CustomersForm({customerGroups, salesReps}) {
+export default function CustomersForm({customer = null, customerGroups, salesReps}) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [newTag, setNewTag] = useState('');
     const [contacts, setContacts] = useState([{name: '', title: '', email: '', phone: '', is_primary: true}]);
 
+    const isEditing = !!customer?.id;
+
     const [formData, setFormData] = useState({
-        type: 'individual',
+        type: customer?.type || 'individual',
         // Individual fields
-        first_name: '',
-        last_name: '',
+        first_name: customer?.first_name || '',
+        last_name: customer?.last_name || '',
         // Business fields
-        business_name: '',
-        tax_id: '',
+        business_name: customer?.business_name || '',
+        tax_id: customer?.tax_id || '',
         // Common fields
-        email: '',
-        phone: '',
-        date_of_birth: '',
-        gender: '',
+        email: customer?.email || '',
+        phone: customer?.phone || '',
+        date_of_birth: customer?.date_of_birth || '',
+        gender: customer?.gender || '',
         // Address
-        address_line_1: '',
-        address_line_2: '',
-        city: '',
-        state: '',
-        postal_code: '',
-        country: 'Kenya',
+        address_line_1: customer?.address_line_1 || '',
+        address_line_2: customer?.address_line_2 || '',
+        city: customer?.city || '',
+        state: customer?.state || '',
+        postal_code: customer?.postal_code || '',
+        country: customer?.country || 'Kenya',
         // Relationship
-        customer_group_id: '',
-        assigned_to: '',
-        acquisition_source: '',
+        customer_group_id: customer?.customer_group_id || '',
+        assigned_to: customer?.assigned_to || '',
+        acquisition_source: customer?.acquisition_source || '',
         // Status
-        status: 'active',
-        credit_limit: 0,
+        status: customer?.status || 'active',
+        credit_limit: customer?.credit_limit || 0,
         // Preferences
-        preferred_contact_method: 'email',
-        marketing_consent: false,
+        preferred_contact_method: customer?.preferred_contact_method || 'email',
+        marketing_consent: customer?.marketing_consent || false,
         // Metadata
-        notes: '',
-        tags: [],
-        custom_fields: {}
+        notes: customer?.notes || '',
+        tags: customer?.tags?.map(tag => JSON.parse(tag).name) || [],
+        custom_fields: customer?.custom_fields || {}
     });
 
     const handleInputChange = (field, value) => {
@@ -204,12 +206,12 @@ export default function CustomersForm({customerGroups, salesReps}) {
                         {loading ? (
                             <>
                                 <ProgressLoader/>
-                                Creating...
+                                {isEditing ? 'Updating...' : 'Creating...'}
                             </>
                         ) : (
                             <>
                                 <CheckIcon className={`size-4`}/>
-                                Create Customer
+                                {isEditing ? 'Update Customer' : 'Create Customer'}
                             </>
                         )}
                     </button>

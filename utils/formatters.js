@@ -8,6 +8,7 @@ export function formatCurrency(amount) {
 }
 
 export function formatDate(dateString) {
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
@@ -16,6 +17,7 @@ export function formatDate(dateString) {
 }
 
 export function formatDescriptionDate(dateString) {
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
