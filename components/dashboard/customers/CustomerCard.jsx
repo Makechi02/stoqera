@@ -1,3 +1,5 @@
+'use client';
+
 import {
     BuildingOfficeIcon,
     CheckCircleIcon,
@@ -5,10 +7,25 @@ import {
     UserIcon,
     XCircleIcon
 } from "@heroicons/react/24/solid";
-import {EllipsisVerticalIcon, EnvelopeIcon, MapPinIcon, PhoneIcon, TagIcon} from "@heroicons/react/24/outline";
+import {
+    EllipsisVerticalIcon,
+    EnvelopeIcon,
+    EyeIcon,
+    MapPinIcon,
+    PencilIcon,
+    PhoneIcon,
+    TagIcon,
+    TrashIcon
+} from "@heroicons/react/24/outline";
 import {formatCurrency, formatDate} from "@/utils/formatters";
 
+import {useState} from 'react';
+import Link from 'next/link';
+
 export default function CustomerCard({customer}) {
+    const [showActions, setShowActions] = useState(false);
+
+    const toggleActions = () => setShowActions(prevState => !prevState);
 
     const getCustomerDisplayName = (customer) => {
         if (customer.type === 'business') {
@@ -67,9 +84,15 @@ export default function CustomerCard({customer}) {
                         </div>
                     </div>
                 </div>
-                <button className={`text-gray-400 hover:text-text p-1 rounded`}>
-                    <EllipsisVerticalIcon className={`size-5`}/>
-                </button>
+                <div className={`relative`}>
+                    <button
+                        onClick={toggleActions}
+                        className={`text-gray-400 hover:text-text p-1 rounded cursor-pointer`}
+                    >
+                        <EllipsisVerticalIcon className={`size-5`}/>
+                    </button>
+                    {showActions && <ActionPopup customerId={customer.id}/>}
+                </div>
             </div>
 
             {/* Customer Info */}
@@ -145,17 +168,49 @@ export default function CustomerCard({customer}) {
                 <div className={`flex items-center gap-1 mt-3 pt-3 border-t border-gray-700`}>
                     <TagIcon className={`size-4 text-gray-500`}/>
                     <div className={`flex flex-wrap gap-1`}>
-                        {customer.tags.slice(0, 2).map((tag, index) => (
-                            <span key={index} className={`text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded`}>
-                              {tag}
-                            </span>
-                        ))}
+                        {customer.tags.slice(0, 2).map((tag, index) => {
+                            const jsonTag = JSON.parse(tag);
+                            return (
+                                <span key={index} className={`text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded`}>
+                                    {jsonTag.name}
+                                </span>
+                            )
+                        })}
                         {customer.tags.length > 2 && (
                             <span className={`text-xs text-gray-500`}>+{customer.tags.length - 2} more</span>
                         )}
                     </div>
                 </div>
             )}
+        </div>
+    )
+}
+
+function ActionPopup({customerId}) {
+    return (
+        <div className={`absolute right-0 mt-2 w-48 bg-background border border-gray-700 rounded-md shadow-lg z-10`}>
+            <Link
+                href={`/dashboard/customers/${customerId}`}
+                className={`hover:bg-gray-600 px-3 py-2 text-sm font-medium flex items-center justify-center transition-colors`}
+            >
+                <EyeIcon className={`size-4 mr-2`}/>
+                View Customer
+            </Link>
+
+            <Link
+                href={`/dashboard/customers/${customerId}/edit`}
+                className={`hover:bg-teal-700 px-3 py-2 text-sm font-medium flex items-center justify-center transition-colors`}
+            >
+                <PencilIcon className={`size-4 mr-2`}/>
+                Edit Customer
+            </Link>
+
+            <button
+                className={`w-full text-error hover:bg-red-700 hover:text-text px-3 py-2 text-sm font-medium flex items-center justify-center transition-colors`}
+            >
+                <TrashIcon className={`size-4 mr-2`}/>
+                Delete Customer
+            </button>
         </div>
     )
 }
