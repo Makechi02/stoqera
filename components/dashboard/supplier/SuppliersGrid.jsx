@@ -14,14 +14,14 @@ import {deleteSupplier} from "@/lib/querySuppliers";
 import {useSearchParams} from "next/navigation";
 import {useState} from "react";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
-import DeleteSupplierModal from "@/components/dashboard/supplier/DeleteSupplierModal";
+import {DeleteModal} from "@/components/ui/modal";
 
 export default function SuppliersGrid({suppliers}) {
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get('search') || '';
 
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const [deleteModal, setDeleteModal] = useState({open: false, supplier: null});
+    const [deleteModal, setDeleteModal] = useState({open: false, data: null});
 
     const handleDelete = async (supplierId) => {
         setLoadingDelete(true);
@@ -29,7 +29,7 @@ export default function SuppliersGrid({suppliers}) {
         try {
             await deleteSupplier(supplierId);
 
-            setDeleteModal({open: false, supplier: null});
+            setDeleteModal({open: false, data: null});
             showSuccessToast('Supplier deleted successfully.');
             window.location.reload();
         } catch (error) {
@@ -59,11 +59,12 @@ export default function SuppliersGrid({suppliers}) {
                     </div>
 
                     {deleteModal.open && (
-                        <DeleteSupplierModal
+                        <DeleteModal
                             setDeleteModal={setDeleteModal}
                             deleteModal={deleteModal}
                             handleDelete={handleDelete}
-                            isLoading={loadingDelete}/>
+                            isLoading={loadingDelete}
+                            title={`Delete Supplier`}/>
                     )}
                 </>
             )}
@@ -135,7 +136,7 @@ function SuppliersCard({supplier, setDeleteModal}) {
                     Edit
                 </Link>
                 <button
-                    onClick={() => setDeleteModal({open: true, supplier})}
+                    onClick={() => setDeleteModal({open: true, data: supplier})}
                     className={`bg-red-600 hover:bg-red-700 px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center transition-colors`}
                 >
                     <HiOutlineTrash className={`size-4`}/>

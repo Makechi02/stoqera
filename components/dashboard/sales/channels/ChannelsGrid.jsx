@@ -7,7 +7,7 @@ import {formatDate} from "@/utils/formatters";
 import {useState} from "react";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 import {deleteSalesChannel} from "@/lib/querySales";
-import DeleteSaleChannelModal from "@/components/dashboard/sales/channels/DeleteSaleChannelModal";
+import {DeleteModal} from "@/components/ui/modal";
 
 export default function ChannelsGrid({channels}) {
     const searchParams = useSearchParams();
@@ -17,7 +17,7 @@ export default function ChannelsGrid({channels}) {
     const statusFilter = searchParams.get('status') || '';
 
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const [deleteModal, setDeleteModal] = useState({open: false, channel: null});
+    const [deleteModal, setDeleteModal] = useState({open: false, data: null});
 
     const handleDelete = async (channelId) => {
         setLoadingDelete(true);
@@ -25,7 +25,7 @@ export default function ChannelsGrid({channels}) {
         try {
             await deleteSalesChannel(channelId);
 
-            setDeleteModal({open: false, channel: null});
+            setDeleteModal({open: false, data: null});
             showSuccessToast('Sale channel deleted successfully.');
             window.location.reload();
         } catch (error) {
@@ -66,11 +66,12 @@ export default function ChannelsGrid({channels}) {
                     </div>
 
                     {deleteModal.open && (
-                        <DeleteSaleChannelModal
+                        <DeleteModal
                             setDeleteModal={setDeleteModal}
                             deleteModal={deleteModal}
                             handleDelete={handleDelete}
-                            isLoading={loadingDelete}/>
+                            isLoading={loadingDelete}
+                            title={`Delete Sale Channel`}/>
                     )}
                 </>
             )}
@@ -192,7 +193,7 @@ function ChannelCard({channel, setDeleteModal}) {
                         <PencilIcon className={`size-4`}/>
                     </Link>
                     <button
-                        onClick={() => setDeleteModal({open: true, channel})}
+                        onClick={() => setDeleteModal({open: true, data: channel})}
                         className={`text-gray-400 hover:text-red-400 transition-colors p-1`}
                     >
                         <TrashIcon className={`size-4`}/>

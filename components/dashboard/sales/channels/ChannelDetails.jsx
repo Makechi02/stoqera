@@ -8,13 +8,13 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {deleteSalesChannel} from "@/lib/querySales";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
-import DeleteSaleChannelModal from "@/components/dashboard/sales/channels/DeleteSaleChannelModal";
+import {DeleteModal} from "@/components/ui/modal";
 
 export default function ChannelDetails({channel}) {
     const router = useRouter();
 
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const [deleteModal, setDeleteModal] = useState({open: false, channel: null});
+    const [deleteModal, setDeleteModal] = useState({open: false, data: null});
 
     const handleDelete = async (channelId) => {
         setLoadingDelete(true);
@@ -22,7 +22,7 @@ export default function ChannelDetails({channel}) {
         try {
             await deleteSalesChannel(channelId);
 
-            setDeleteModal({open: false, channel: null});
+            setDeleteModal({open: false, data: null});
             showSuccessToast('Sale channel deleted successfully.');
             router.push('/dashboard/sales/channels');
         } catch (error) {
@@ -50,8 +50,8 @@ export default function ChannelDetails({channel}) {
                 <div className={`flex items-center`}>
                     <BackBtn/>
                     <div>
-                        <h1 className="text-3xl font-bold font-heading">{channel.name}</h1>
-                        <p className="text-gray-400 mt-1">Sales Channel Details</p>
+                        <h1 className={`text-3xl font-bold font-heading`}>{channel.name}</h1>
+                        <p className={`text-gray-400 mt-1`}>Sales Channel Details</p>
                     </div>
                 </div>
                 <div className={`flex items-center gap-3 flex-1 justify-end`}>
@@ -63,7 +63,7 @@ export default function ChannelDetails({channel}) {
                         Edit
                     </Link>
                     <button
-                        onClick={() => setDeleteModal({open: true, channel})}
+                        onClick={() => setDeleteModal({open: true, data: channel})}
                         className={`bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors`}
                     >
                         <TrashIcon className={`size-5`}/>
@@ -144,11 +144,12 @@ export default function ChannelDetails({channel}) {
             </div>
 
             {deleteModal.open && (
-                <DeleteSaleChannelModal
+                <DeleteModal
                     setDeleteModal={setDeleteModal}
                     deleteModal={deleteModal}
                     handleDelete={handleDelete}
-                    isLoading={loadingDelete}/>
+                    isLoading={loadingDelete}
+                    title={`Delete Sale Channel`}/>
             )}
         </div>
     );
