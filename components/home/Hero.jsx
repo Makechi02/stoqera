@@ -35,12 +35,12 @@ export default function Hero() {
                         variants={fadeInUp}
                     >
                         Inventory Management
-                        <span className={`text-teal-600 block`}>Made Simple</span>
+                        <span className={`text-teal-600 block`}>for Kenyan Businesses</span>
                     </motion.h1>
 
                     <motion.p className={`text-xl text-gray-600 mb-8 max-w-3xl mx-auto`} variants={fadeInUp}>
-                        Streamline your inventory operations with real-time tracking, automated alerts,
-                        and powerful analytics. Perfect for businesses of all sizes.
+                        Streamline your small business inventory with Kenya's leading stock management system. Real-time
+                        tracking, automated alerts, and powerful analytics for SMEs across Kenya.
                     </motion.p>
 
                     <motion.div
@@ -84,7 +84,9 @@ export default function Hero() {
                             <div className={`size-3 bg-green-400 rounded-full`}></div>
                         </div>
                     </div>
-                    <div className={`h-96 bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center relative`}>
+                    <div
+                        className={`h-96 bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center relative`}
+                    >
                         <Image
                             src={`/assets/images/screenshots/dashboard-screenshot.png`}
                             alt={`Dashboard Preview`}

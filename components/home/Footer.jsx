@@ -10,7 +10,7 @@ export default function Footer() {
                 {name: 'API', href: '#'},
                 {name: 'Security', href: '#'}
             ]
-        }  ,
+        },
         {
             title: 'Company',
             links: [
@@ -41,7 +41,8 @@ export default function Footer() {
                             <span className={`ml-2 text-2xl font-bold font-heading`}>Finviq</span>
                         </div>
                         <p className={`text-gray-400 mb-4`}>
-                            Streamline your inventory operations with the most intuitive management platform.
+                            Leading inventory management platform helping small and medium businesses in Kenya
+                            streamline operations and maximize profits.
                         </p>
                     </div>
 

@@ -55,10 +55,11 @@ export default function Pricing() {
             <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
                 <div className={`text-center mb-16`}>
                     <h2 className={`text-4xl font-bold text-gray-900 mb-4 font-heading`}>
-                        Simple, transparent pricing
+                        Affordable Inventory Software Plans for Kenya SMBs
                     </h2>
                     <p className={`text-xl text-gray-600 max-w-3xl mx-auto`}>
-                        Choose the plan that's right for your business. All plans include our core features.
+                        Transparent pricing for small and medium businesses in Kenya. Choose your inventory management
+                        plan with no hidden costs - all plans include core stock control features.
                     </p>
                 </div>
 
