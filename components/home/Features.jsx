@@ -49,10 +49,11 @@ export default function Features() {
             <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
                 <div className={`text-center mb-16`}>
                     <h2 className={`text-4xl font-bold text-gray-900 mb-4 font-heading`}>
-                        Everything you need to manage inventory
+                        Complete Inventory Management Solution for Kenyan Businesses
                     </h2>
                     <p className={`text-xl text-gray-600 max-w-3xl mx-auto`}>
-                        Powerful features designed to streamline your operations and boost efficiency
+                        Everything your SMB needs: stock tracking software, warehouse management, automated reorder
+                        alerts, and business analytics designed for Kenya's growing enterprises.
                     </p>
                 </div>
 

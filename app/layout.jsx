@@ -5,19 +5,38 @@ import {ToastContainer, Zoom} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
-    title: "Finviq - Streamline Your Inventory Management",
-    description: "Finviq is a modern inventory management system designed to help businesses of all sizes track, manage, and report their inventory effortlessly.",
+    title: "Finviq | Best Inventory Management Software in Kenya for SMEs",
+    description: "Finviq is Kenya’s best inventory management software for SMEs. Track stock, manage sales, and get real-time reports. Start free today!",
     keywords: [
         "Finviq",
-        "inventory management system",
-        "IMS",
-        "inventory tracking",
-        "business software",
-        "inventory analytics",
-        "streamline inventory",
+        "inventory management software Kenya",
+        "stock management system Kenya",
+        "IMS Kenya",
+        "inventory tracking Kenya",
+        "business software Kenya",
+        "inventory system for SMEs",
+        "warehouse management Kenya",
+        "sales and stock control Kenya",
+        "small business inventory software Kenya"
     ],
+    openGraph: {
+        title: "Finviq | Best Inventory Management Software in Kenya for SMEs",
+        description: "Finviq is Kenya’s leading inventory management system for SMEs. Track stock, manage sales, and prevent stockouts with ease. Start free today!",
+        type: "website",
+        url: "https://finviq.vercel.app/",
+        siteName: "Finviq",
+        locale: "en_KE",
+        images: [
+            {
+                url: "https://finviq.vercel.app/assets/images/screenshots/dashboard-screenshot.png",
+                width: 1200,
+                height: 630,
+                alt: "Finviq - Best Inventory Management Software in Kenya for SMEs",
+            },
+        ],
+    },
     authors: [
-        { name: "Makechi Eric", url: "https://github.com/Makechi02" },
+        {name: "Makechi Eric", url: "https://github.com/Makechi02"},
     ],
     verification: {
         google: 'bQPyIAZERspa3jutIVff6Ihh6UntNx1H408VQYHIO2I'
