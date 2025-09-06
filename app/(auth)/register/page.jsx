@@ -39,13 +39,13 @@ function Benefits() {
                 className={`max-w-md`}
             >
                 <h2 className={`text-4xl font-bold mb-6 font-heading`}>
-                    Join thousands of businesses managing inventory smarter
+                    Join hundreds of Kenyan businesses managing inventory smarter
                 </h2>
 
                 <div className={`space-y-6`}>
                     {benefits.map((benefit, index) => (
                         <div key={index} className={`flex items-start space-x-3`}>
-                            <CheckCircleIcon className={`h-6 w-6 text-teal-200 mt-1 flex-shrink-0`}/>
+                            <CheckCircleIcon className={`size-6 text-teal-200 mt-1 flex-shrink-0`}/>
                             <div>
                                 <h3 className={`font-semibold text-teal-100`}>{benefit.title}</h3>
                                 <p className={`text-teal-200 text-sm`}>{benefit.description}</p>
@@ -54,19 +54,25 @@ function Benefits() {
                     ))}
                 </div>
 
-                {/*<div className={`mt-12 p-6 bg-teal-500 rounded-lg`}>*/}
-                {/*    <p className={`text-sm text-teal-100 mb-2`}>Trusted by 10,000+ businesses</p>*/}
-                {/*    <div className={`flex items-center space-x-4`}>*/}
-                {/*        <div className={`text-2xl font-bold`}>4.9/5</div>*/}
-                {/*        <div className={`flex space-x-1`}>*/}
-                {/*            {[...Array(5)].map((_, i) => (*/}
-                {/*                <div key={i} className={`w-4 h-4 bg-yellow-400 rounded-full`}></div>*/}
-                {/*            ))}*/}
-                {/*        </div>*/}
-                {/*        <div className={`text-sm text-teal-100`}>from 500+ reviews</div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                {/*<TrustIndicator/>*/}
             </motion.div>
+        </div>
+    )
+}
+
+function TrustIndicator() {
+    return (
+        <div className={`mt-12 p-6 bg-teal-500 rounded-lg`}>
+            <p className={`text-sm text-teal-100 mb-2`}>Trusted by 10,000+ businesses</p>
+            <div className={`flex items-center space-x-4`}>
+                <div className={`text-2xl font-bold`}>4.9/5</div>
+                <div className={`flex space-x-1`}>
+                    {[...Array(5)].map((_, i) => (
+                        <div key={i} className={`w-4 h-4 bg-yellow-400 rounded-full`}></div>
+                    ))}
+                </div>
+                <div className={`text-sm text-teal-100`}>from 500+ reviews</div>
+            </div>
         </div>
     )
 }

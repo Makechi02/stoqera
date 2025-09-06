@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import Logo from "@/components/Logo";
 
-export default function FinviqPreloader({theme = 'dark'}) {
+export default function StoqeraPreloader({theme = 'dark'}) {
     const [loadingText, setLoadingText] = useState('Initializing...');
 
     useEffect(() => {
@@ -69,7 +69,7 @@ export default function FinviqPreloader({theme = 'dark'}) {
                         ? 'bg-gradient-to-r from-teal-300 to-teal-100 bg-clip-text text-transparent'
                         : 'bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent'
                 }`}>
-                    Finviq
+                    Stoqera
                 </h1>
                 <p className={`text-lg mb-12 font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                     Inventory Management System
@@ -122,7 +122,7 @@ function LoadingFooter({isDark}) {
     return (
         <footer className={`absolute bottom-8 left-0 right-0 text-center`}>
             <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                © {new Date().getFullYear()} Finviq. All rights reserved.
+                © {new Date().getFullYear()} Stoqera. All rights reserved.
             </p>
         </footer>
     )

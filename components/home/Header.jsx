@@ -11,8 +11,8 @@ export default function Header() {
     const navLinks = [
         {href: '#features', title: 'Features'},
         {href: '#pricing', title: 'Pricing'},
-        {href: '#testimonials', title: 'Testimonials'},
-        {href: '#contact', title: 'Contact'}
+        // {href: '#testimonials', title: 'Testimonials'},
+        // {href: '#contact', title: 'Contact'}
     ];
 
     return (
@@ -23,7 +23,7 @@ export default function Header() {
                         <div className={` size-10 bg-gray-800 rounded-full`}>
                             <Logo/>
                         </div>
-                        <span className={`ml-2 text-2xl font-bold text-gray-900 font-heading`}>Finviq</span>
+                        <span className={`ml-2 text-2xl font-bold text-gray-900 font-heading`}>Stoqera</span>
                     </div>
 
                     {/* Desktop Navigation */}

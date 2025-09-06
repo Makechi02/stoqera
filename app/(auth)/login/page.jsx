@@ -38,10 +38,8 @@ function Features() {
                 variants={fadeInUp}
                 className={`max-w-md`}
             >
-                <h2 className={`text-4xl font-bold font-heading`}>Welcome Back to Finviq</h2>
-                <p className={`text-xl text-teal-100 mb-6`}>
-                    Manage your inventory with confidence and precision.
-                </p>
+                <h2 className={`text-4xl font-bold font-heading`}>Welcome Back to Stoqera</h2>
+                <p className={`text-xl text-teal-100 mb-6`}>Manage your inventory with confidence and precision.</p>
 
                 <div className={`space-y-6`}>
                     {features.map((feature, index) => (

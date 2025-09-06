@@ -326,7 +326,7 @@ export default function SignUpForm() {
                                                 {/*<span*/}
                                                 {/*    className={`inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm`}*/}
                                                 {/*>*/}
-                                                {/*    finviq.vercel.app/*/}
+                                                {/*    stoqera.co.ke*/}
                                                 {/*</span>*/}
                                                 <input
                                                     type={`text`}
@@ -609,7 +609,7 @@ function Header() {
                     <div className={`bg-background rounded-full size-10`}>
                         <Logo/>
                     </div>
-                    <span className={`ml-2 text-2xl font-bold text-gray-900 font-heading`}>Finviq</span>
+                    <span className={`ml-2 text-2xl font-bold text-gray-900 font-heading`}>Stoqera</span>
                 </div>
                 <div className={`w-full flex items-center justify-between gap-4`}>
                     <Link

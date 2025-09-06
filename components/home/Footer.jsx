@@ -38,7 +38,7 @@ export default function Footer() {
                     <div>
                         <div className={`flex items-center mb-4`}>
                             <Logo/>
-                            <span className={`ml-2 text-2xl font-bold font-heading`}>Finviq</span>
+                            <span className={`ml-2 text-2xl font-bold font-heading`}>Stoqera</span>
                         </div>
                         <p className={`text-gray-400 mb-4`}>
                             Leading inventory management platform helping small and medium businesses in Kenya
@@ -65,7 +65,7 @@ export default function Footer() {
                 <div
                     className={`border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center`}
                 >
-                    <p className={`text-gray-400`}>© {new Date().getFullYear()} Finviq. All rights reserved.</p>
+                    <p className={`text-gray-400`}>© {new Date().getFullYear()} Stoqera. All rights reserved.</p>
                     <div className={`flex space-x-6 mt-4 md:mt-0`}>
                         <a href="#" className={`text-gray-400 hover:text-white transition-colors`}>Privacy</a>
                         <a href="#" className={`text-gray-400 hover:text-white transition-colors`}>Terms</a>

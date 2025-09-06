@@ -1,7 +1,7 @@
-import {FinviqPreloader} from "@/components";
+import {StoqeraPreloader} from "@/components";
 
 export default function Loading() {
     return (
-        <FinviqPreloader theme={`dark`}/>
+        <StoqeraPreloader theme={`dark`}/>
     )
 }

@@ -8,16 +8,16 @@ export default function Page() {
                 {JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "SoftwareApplication",
-                    "name": "Finviq Inventory Management Software",
+                    "name": "Stoqera Inventory Management Software",
                     "applicationCategory": "BusinessApplication",
                     "operatingSystem": "Web Browser",
                     "description": "Professional inventory management software designed for small and medium businesses in Kenya. Features real-time stock tracking, automated alerts, and comprehensive analytics.",
-                    "url": "https://finviq.vercel.app",
-                    "image": "https://finviq.vercel.app/assets/images/finviq-logo-without-bg.webp",
+                    "url": "https://stoqera.co.ke",
+                    "image": "https://stoqera.co.ke/assets/images/finviq-logo-without-bg.webp",
                     "offers": [
                         {
                             "@type": "Offer",
-                            "name": "Finviq Starter Plan",
+                            "name": "Stoqera Starter Plan",
                             "description": "Essential inventory management features for small businesses",
                             "price": "2900",
                             "priceCurrency": "KES",
@@ -26,7 +26,7 @@ export default function Page() {
                         },
                         {
                             "@type": "Offer",
-                            "name": "Finviq Professional Plan",
+                            "name": "Stoqera Professional Plan",
                             "description": "Advanced inventory management with analytics for growing businesses",
                             "price": "7900",
                             "priceCurrency": "KES",
@@ -36,9 +36,9 @@ export default function Page() {
                     ],
                     "provider": {
                         "@type": "Organization",
-                        "name": "Finviq",
-                        "url": "https://finviq.vercel.app",
-                        "logo": "https://finviq.vercel.app/assets/images/finviq-logo-without-bg.webp",
+                        "name": "Stoqera",
+                        "url": "https://stoqera.co.ke",
+                        "logo": "https://stoqera.co.ke/assets/images/finviq-logo-without-bg.webp",
                         "address": {
                             "@type": "PostalAddress",
                             "addressCountry": "KE",
@@ -64,9 +64,9 @@ export default function Page() {
                 {JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "Organization",
-                    "name": "Finviq",
-                    "url": "https://finviq.vercel.app",
-                    "logo": "https://finviq.vercel.app/assets/images/finviq-logo-without-bg.webp",
+                    "name": "Stoqera",
+                    "url": "https://stoqera.co.ke",
+                    "logo": "https://stoqera.co.ke/assets/images/finviq-logo-without-bg.webp",
                     "description": "Leading provider of inventory management software for small and medium businesses in Kenya",
                     "address": {
                         "@type": "PostalAddress",

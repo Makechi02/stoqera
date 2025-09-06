@@ -8,7 +8,7 @@ export default function CTA() {
                     Transform Your Kenya Business with Smart Inventory Management
                 </h2>
                 <p className={`text-xl text-teal-100 mb-8 max-w-3xl mx-auto`}>
-                    Join hundreds of Kenyan SMBs using Finviq's inventory system to reduce costs, prevent stockouts, and
+                    Join hundreds of Kenyan SMBs using Stoqera's inventory system to reduce costs, prevent stockouts, and
                     grow their business efficiently.
                 </p>
                 <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center`}>
