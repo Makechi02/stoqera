@@ -26,7 +26,6 @@ import {
     BanknotesIcon,
     ChartBarSquareIcon,
     ClipboardDocumentListIcon,
-    CogIcon,
     CreditCardIcon,
     CubeIcon,
     ExclamationTriangleIcon,
@@ -93,7 +92,6 @@ export function getTenantAdminNavigation() {
         // },
         {name: 'Users & Access', icon: <UserIcon/>, href: `/dashboard/users`},
         {name: 'Reports & Analytics', icon: <ChartBarSquareIcon/>, href: `/dashboard/reports`},
-        {name: 'Settings', icon: <CogIcon/>, href: `/dashboard/settings`},
     ];
 }
 
