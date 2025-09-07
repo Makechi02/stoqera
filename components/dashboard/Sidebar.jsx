@@ -16,10 +16,42 @@ import {
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import LogoutModal from "@/components/dashboard/ui/modals/LogoutModal";
+import {useRouter} from "next/navigation";
+import {signOut} from "@/lib/queryUsers";
+import {showErrorToast} from "@/utils/toastUtil";
 
 export default function Sidebar({organization, currentUser, children}) {
+    const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const toggleSidebar = () => setSidebarOpen(prevState => !prevState);
+
+    const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+    const handleSignOutClick = () => {
+        setLogoutModalOpen(true);
+    };
+
+    const handleLogoutCancel = () => {
+        setLogoutModalOpen(false);
+    };
+
+    const handleLogoutConfirm = async () => {
+        setIsLoggingOut(true);
+
+        try {
+            await signOut();
+
+            setLogoutModalOpen(false);
+            router.push('/login');
+        } catch (error) {
+            console.error('Error signing out:', error);
+            showErrorToast('Error signing out. Please try again later.');
+        } finally {
+            setIsLoggingOut(false);
+        }
+    };
 
     return (
         <div>
@@ -48,15 +80,28 @@ export default function Sidebar({organization, currentUser, children}) {
             </aside>
 
             <div className={`lg:absolute lg:left-64 right-0 top-0`}>
-                <TopBar user={currentUser} organization={organization} toggleSidebar={toggleSidebar}/>
+                <TopBar
+                    user={currentUser}
+                    organization={organization}
+                    toggleSidebar={toggleSidebar}
+                    handleSignOut={handleSignOutClick}
+                />
                 <main className={`p-4 lg:p-6`}>{children}</main>
             </div>
+
+            <LogoutModal
+                isOpen={logoutModalOpen}
+                onClose={handleLogoutCancel}
+                onConfirm={handleLogoutConfirm}
+                userName={currentUser.full_name}
+                isLoading={isLoggingOut}
+            />
         </div>
     )
 }
 
 
-function TopBar({user, organization, toggleSidebar}) {
+function TopBar({user, organization, toggleSidebar, handleSignOut}) {
     const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -112,7 +157,11 @@ function TopBar({user, organization, toggleSidebar}) {
 
                         {/* Dropdown menu */}
                         {profileDropdownOpen && (
-                            <ProfileDropdown user={user} toggleProfileDropdown={toggleProfileDropdown}/>
+                            <ProfileDropdown
+                                user={user}
+                                             toggleProfileDropdown={toggleProfileDropdown}
+                                handleSignOut={handleSignOut}
+                            />
                         )}
                     </div>
                 </div>
@@ -153,18 +202,13 @@ function ProfileDropdownToggler({toggleProfileDropdown, profileDropdownOpen, use
     )
 }
 
-function ProfileDropdown({user, toggleProfileDropdown}) {
+function ProfileDropdown({user, toggleProfileDropdown, handleSignOut}) {
     const profileMenuItems = [
         {name: 'Your Profile', icon: <UserIcon/>, href: '/dashboard/profile'},
         {name: 'Settings', icon: <CogIcon/>, href: '/dashboard/settings'},
         // {name: 'Security', icon: <ShieldCheckIcon/>, href: '/dashboard/security'},
         {name: 'Help & Support', icon: <QuestionMarkCircleIcon/>, href: '/help'},
     ];
-
-    const handleSignOut = async () => {
-        console.log('Signing out...');
-        // await supabase.auth.signOut();
-    };
 
     return (
         <div
