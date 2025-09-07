@@ -66,7 +66,7 @@ export default function Sidebar({organization, currentUser, children}) {
                 <div className={`flex items-center justify-between h-16 px-4 bg-gray-800 border-b border-gray-700`}>
                     <div className={`flex gap-4 items-center`}>
                         <Logo/>
-                        <h1 className={`text-2xl font-bold text-teal-600 font-heading`}>Finviq</h1>
+                        <h1 className={`text-2xl font-bold text-teal-600 font-heading`}>Stoqera</h1>
                     </div>
                     <button className={`lg:hidden text-gray-400 hover:text-gray-200`} onClick={toggleSidebar}>
                         <span className={`sr-only`}>Close sidebar</span>
