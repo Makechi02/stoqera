@@ -5,6 +5,6 @@ export default function robots() {
             allow: '/',
             disallow: ['/accounts', '/dashboard', '/admin', '/api', '/platform', '/confirm'],
         },
-        sitemap: 'https://finviq.vercel.app/sitemap.xml',
+        sitemap: 'https://stoqera.co.ke/sitemap.xml',
     }
 }

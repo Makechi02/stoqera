@@ -20,12 +20,12 @@ import {useState} from "react";
 import {deleteSupplier} from "@/lib/querySuppliers";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 import {useRouter} from "next/navigation";
-import DeleteSupplierModal from "@/components/dashboard/supplier/DeleteSupplierModal";
+import {DeleteModal} from "@/components/ui/modal";
 
 export default function SupplierDetails({supplier}) {
     const router = useRouter();
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const [deleteModal, setDeleteModal] = useState({open: false, supplier: null});
+    const [deleteModal, setDeleteModal] = useState({open: false, data: null});
 
     const handleDelete = async (supplierId) => {
         setLoadingDelete(true);
@@ -33,7 +33,7 @@ export default function SupplierDetails({supplier}) {
         try {
             await deleteSupplier(supplierId);
 
-            setDeleteModal({open: false, supplier: null});
+            setDeleteModal({open: false, data: null});
             showSuccessToast('Supplier deleted successfully.');
             router.push('/dashboard/suppliers');
         } catch (error) {
@@ -74,7 +74,7 @@ export default function SupplierDetails({supplier}) {
                                 Edit
                             </Link>
                             <button
-                                onClick={() => setDeleteModal({open: true, supplier})}
+                                onClick={() => setDeleteModal({open: true, data: supplier})}
                                 className={`inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200`}
                             >
                                 <HiOutlineTrash className={`size-5 mr-2`}/>
@@ -220,7 +220,7 @@ export default function SupplierDetails({supplier}) {
 
                         {/* Timestamps */}
                         <div className={`bg-gray-800 border border-gray-700 rounded-lg p-6`}>
-                            <h3 className={`text-lg font-semibold text-white mb-4 flex items-center gap-2`}>
+                            <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2`}>
                                 <HiOutlineClock className={`size-5 text-teal-400`}/>
                                 Timeline
                             </h3>
@@ -231,9 +231,7 @@ export default function SupplierDetails({supplier}) {
                                         <HiOutlineCalendar className={`size-4 text-gray-500`}/>
                                         <span className={`text-sm font-medium text-gray-400`}>Created</span>
                                     </div>
-                                    <p className={`text-sm text-white ml-6`}>
-                                        {formatDescriptionDate(supplier.created_at)}
-                                    </p>
+                                    <p className={`text-sm ml-6`}>{formatDescriptionDate(supplier.created_at)}</p>
                                 </div>
 
                                 <div>
@@ -241,21 +239,19 @@ export default function SupplierDetails({supplier}) {
                                         <HiOutlineCalendar className={`h-4 w-4 text-gray-500`}/>
                                         <span className={`text-sm font-medium text-gray-400`}>Last Updated</span>
                                     </div>
-                                    <p className={`text-sm text-white ml-6`}>
-                                        {formatDescriptionDate(supplier.updated_at)}
-                                    </p>
+                                    <p className={`text-sm ml-6`}>{formatDescriptionDate(supplier.updated_at)}</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Quick Actions */}
                         <div className={`bg-gray-800 border border-gray-700 rounded-lg p-6`}>
-                            <h3 className={`text-lg font-semibold text-white mb-4`}>Quick Actions</h3>
+                            <h3 className={`text-lg font-semibold mb-4`}>Quick Actions</h3>
                             <div className={`space-y-3`}>
                                 {supplier.email && (
                                     <a
                                         href={`mailto:${supplier.email}`}
-                                        className={`w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
+                                        className={`w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
                                     >
                                         <HiOutlineEnvelope className={`size-4`}/>
                                         Send Email
@@ -265,7 +261,7 @@ export default function SupplierDetails({supplier}) {
                                 {supplier.phone && (
                                     <a
                                         href={`tel:${supplier.phone}`}
-                                        className={`w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
+                                        className={`w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
                                     >
                                         <HiOutlinePhone className={`size-4`}/>
                                         Call
@@ -274,7 +270,7 @@ export default function SupplierDetails({supplier}) {
 
                                 <Link
                                     href={`/dashboard/suppliers/${supplier.id}/edit`}
-                                    className={`w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
+                                    className={`w-full bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors`}
                                 >
                                     <HiOutlinePencil className={`size-4`}/>
                                     Edit Supplier
@@ -286,11 +282,12 @@ export default function SupplierDetails({supplier}) {
             </div>
 
             {deleteModal.open && (
-                <DeleteSupplierModal
+                <DeleteModal
                     setDeleteModal={setDeleteModal}
                     deleteModal={deleteModal}
                     handleDelete={handleDelete}
-                    isLoading={loadingDelete}/>
+                    isLoading={loadingDelete}
+                    title={`Delete Supplier`}/>
             )}
         </div>
     );
