@@ -1,25 +1,25 @@
 export default function sitemap() {
     return [
         {
-            url: 'https://finviq.vercel.app',
+            url: 'https://stoqera.co.ke',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 1,
         },
         {
-            url: 'https://finviq.vercel.app/login',
+            url: 'https://stoqera.co.ke/login',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: 'https://finviq.vercel.app/register',
+            url: 'https://stoqera.co.ke/register',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,
         },
         {
-            url: 'https://finviq.vercel.app/demo',
+            url: 'https://stoqera.co.ke/demo',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,
