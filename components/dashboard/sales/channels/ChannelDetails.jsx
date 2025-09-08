@@ -6,7 +6,7 @@ import {BackBtn} from "@/components/ui/buttons";
 import {formatDescriptionDate} from "@/utils/formatters";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {deleteSalesChannel} from "@/lib/querySales";
+import {deleteSalesChannel} from "@/lib/sales/querySales";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 import {DeleteModal} from "@/components/ui/modal";
 

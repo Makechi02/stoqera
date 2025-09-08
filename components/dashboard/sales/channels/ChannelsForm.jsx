@@ -5,7 +5,7 @@ import {useRouter} from 'next/navigation';
 import {ProgressLoader} from "@/components";
 import {HiOutlineCheck} from "react-icons/hi2";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
-import {addSaleChannel, updateSaleChannel} from "@/lib/querySales";
+import {addSaleChannel, updateSaleChannel} from "@/lib/sales/querySales";
 
 export default function ChannelsForm({channel}) {
     const [formData, setFormData] = useState({

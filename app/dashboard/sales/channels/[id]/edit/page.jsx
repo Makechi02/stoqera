@@ -1,6 +1,6 @@
 import ChannelsForm from "@/components/dashboard/sales/channels/ChannelsForm";
 import {BackBtn} from "@/components/ui/buttons";
-import {getSaleChannelById} from "@/lib/querySales";
+import {getSaleChannelById} from "@/lib/sales/querySales";
 import {notFound} from "next/navigation";
 
 export default async function Page({params}) {
