@@ -39,7 +39,7 @@ export const metadata = {
         {name: "Makechi Eric", url: "https://github.com/Makechi02"},
     ],
     verification: {
-        google: 'bQPyIAZERspa3jutIVff6Ihh6UntNx1H408VQYHIO2I'
+        google: 'UOBykR8irWtCb4yjmlPjHtamLDooAlRdqC2dkRyeG8s'
     }
 };
 
