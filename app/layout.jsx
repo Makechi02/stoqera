@@ -3,6 +3,7 @@ import "./globals.css";
 import {figtree, gfs_didot} from "@/app/font";
 import {ToastContainer, Zoom} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Metrics from "@/app/metrics";
 
 export const metadata = {
     title: "Stoqera | Best Inventory Management Software in Kenya for SMEs",
@@ -53,6 +54,7 @@ export default function RootLayout({children}) {
         <body>
         {children}
         <ToastContainer transition={Zoom}/>
+        <Metrics/>
         </body>
         </html>
     );
