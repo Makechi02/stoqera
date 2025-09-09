@@ -6,7 +6,7 @@ export async function generateMetadata() {
     const organization = await getCurrentOrganization();
 
     return {
-        title: `${organization?.name} | Finviq`
+        title: `${organization?.name} | Stoqera`
     }
 }
 

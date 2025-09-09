@@ -3,6 +3,7 @@ import "./globals.css";
 import {figtree, gfs_didot} from "@/app/font";
 import {ToastContainer, Zoom} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Metrics from "@/app/metrics";
 
 export const metadata = {
     title: "Finviq - Streamline Your Inventory Management",
@@ -17,7 +18,7 @@ export const metadata = {
         "streamline inventory",
     ],
     authors: [
-        { name: "Makechi Eric", url: "https://github.com/Makechi02" },
+        {name: "Makechi Eric", url: "https://github.com/Makechi02"},
     ],
     verification: {
         google: 'bQPyIAZERspa3jutIVff6Ihh6UntNx1H408VQYHIO2I'
@@ -34,6 +35,7 @@ export default function RootLayout({children}) {
         <body>
         {children}
         <ToastContainer transition={Zoom}/>
+        <Metrics/>
         </body>
         </html>
     );
