@@ -1,8 +1,8 @@
 export default function ProgressLoader({size = 'md', color = 'white', className = ''}) {
     const sizeClasses = {
-        sm: 'w-3 h-3',
-        md: 'w-4 h-4',
-        lg: 'w-5 h-5'
+        sm: 'size-3',
+        md: 'size-4',
+        lg: 'size-8'
     };
 
     const borderClasses = {
@@ -12,9 +12,9 @@ export default function ProgressLoader({size = 'md', color = 'white', className 
     };
 
     const dotClasses = {
-        sm: 'w-0.5 h-0.5',
-        md: 'w-1 h-1',
-        lg: 'w-1.5 h-1.5'
+        sm: 'size-0.5',
+        md: 'size-1',
+        lg: 'size-2'
     };
 
     const colorClasses = {
