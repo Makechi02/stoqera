@@ -16,13 +16,19 @@ export default function sitemap() {
             url: 'https://stoqera.co.ke/register',
             lastModified: new Date(),
             changeFrequency: 'monthly',
-            priority: 0.5,
+            priority: 0.8,
         },
         {
             url: 'https://stoqera.co.ke/demo',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,
+        },
+        {
+            url: 'https://stoqera.co.ke/pricing',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
         },
     ]
 }

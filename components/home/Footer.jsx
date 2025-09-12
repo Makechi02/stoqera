@@ -1,4 +1,5 @@
 import {Logo} from "@/components";
+import Link from "next/link";
 
 export default function Footer() {
     const footerLinks = [
@@ -6,9 +7,9 @@ export default function Footer() {
             title: 'Product',
             links: [
                 {name: 'Features', href: '#'},
-                {name: 'Integrations', href: '#'},
-                {name: 'API', href: '#'},
-                {name: 'Security', href: '#'}
+                {name: 'Pricing', href: '/pricing'},
+                // {name: 'API', href: '#'},
+                // {name: 'Security', href: '#'}
             ]
         },
         {
@@ -16,7 +17,7 @@ export default function Footer() {
             links: [
                 {name: 'About', href: '#'},
                 {name: 'Blog', href: '#'},
-                {name: 'Careers', href: '#'},
+                // {name: 'Careers', href: '#'},
                 {name: 'Contact', href: '#'}
             ]
         },
@@ -25,14 +26,14 @@ export default function Footer() {
             links: [
                 {name: 'Help Center', href: '#'},
                 {name: 'Documentation', href: '#'},
-                {name: 'Status', href: '#'},
-                {name: 'Community', href: '#'}
+                // {name: 'Status', href: '#'},
+                // {name: 'Community', href: '#'}
             ]
         }
     ];
 
     return (
-        <footer className={`bg-gray-900 text-white py-16`}>
+        <footer className={`bg-gray-900 text-white py-10`}>
             <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
                 <div className={`grid grid-cols-1 md:grid-cols-4 gap-8`}>
                     <div>
@@ -52,9 +53,9 @@ export default function Footer() {
                             <ul className={`space-y-2 text-gray-400`}>
                                 {section.links.map((link, linkIndex) => (
                                     <li key={linkIndex}>
-                                        <a href={link.href} className={`hover:text-white transition-colors`}>
+                                        <Link href={link.href} className={`hover:text-white transition-colors`}>
                                             {link.name}
-                                        </a>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
