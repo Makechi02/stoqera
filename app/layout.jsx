@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Metrics from "@/app/metrics";
 
 export const metadata = {
+    metadataBase: new URL("https://www.stoqera.co.ke"),
     title: "Stoqera | Best Inventory Management Software in Kenya for SMEs",
     description: "Stoqera is Kenya’s best inventory management software for SMEs. Track stock, manage sales, and get real-time reports. Start free today!",
     keywords: [
@@ -41,6 +42,9 @@ export const metadata = {
     ],
     verification: {
         google: 'UOBykR8irWtCb4yjmlPjHtamLDooAlRdqC2dkRyeG8s'
+    },
+    alternates: {
+        canonical: "/"
     }
 };
 

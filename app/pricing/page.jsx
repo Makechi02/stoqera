@@ -5,7 +5,10 @@ import PricingCTA from "@/components/pricing/PricingCTA";
 import {Footer} from "@/components/home";
 
 export const metadata = {
-    title: `Pricing | Stoqera`
+    title: `Pricing | Stoqera`,
+    alternates: {
+        canonical: `/pricing`
+    }
 }
 
 export default async function Page() {

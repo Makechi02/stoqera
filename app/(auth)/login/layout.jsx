@@ -1,5 +1,8 @@
 export const metadata = {
-    title: `Login | Stoqera`
+    title: `Login | Stoqera`,
+    alternates: {
+        canonical: `/login`
+    }
 }
 
 export default function Layout({children}) {
