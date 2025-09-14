@@ -37,10 +37,7 @@ export default function Footer() {
             <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
                 <div className={`grid grid-cols-1 md:grid-cols-4 gap-8`}>
                     <div>
-                        <div className={`flex items-center mb-4`}>
-                            <Logo/>
-                            <span className={`ml-2 text-2xl font-bold font-heading`}>Stoqera</span>
-                        </div>
+                        <div className={`mb-4`}><Logo textColor={`text-text`}/></div>
                         <p className={`text-gray-400 mb-4`}>
                             Leading inventory management platform helping small and medium businesses in Kenya
                             streamline operations and maximize profits.

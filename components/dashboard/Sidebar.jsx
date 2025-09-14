@@ -64,10 +64,7 @@ export default function Sidebar({organization, currentUser, children}) {
                 className={`fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:inset-0 overflow-y-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 <div className={`flex items-center justify-between h-16 px-4 bg-gray-800 border-b border-gray-700`}>
-                    <div className={`flex gap-4 items-center`}>
-                        <Logo/>
-                        <h1 className={`text-2xl font-bold text-teal-600 font-heading`}>Stoqera</h1>
-                    </div>
+                    <Logo textColor={`text-text`} size={`sm`}/>
                     <button className={`lg:hidden text-gray-400 hover:text-gray-200`} onClick={toggleSidebar}>
                         <span className={`sr-only`}>Close sidebar</span>
                         <XMarkIcon className={`size-5`}/>

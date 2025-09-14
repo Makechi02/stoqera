@@ -4,6 +4,7 @@ import {motion} from 'framer-motion';
 import {CheckCircleIcon} from '@heroicons/react/24/outline';
 import SignUpForm from "@/components/auth/SignUpForm";
 import {fadeInUp} from "@/data/constants/animations";
+import {Logo} from "@/components";
 
 export default function Page() {
     return (
@@ -38,6 +39,10 @@ function Benefits() {
                 variants={fadeInUp}
                 className={`max-w-md`}
             >
+                <div className={`bg-surface p-4 rounded-full mb-6 flex items-center justify-center`}>
+                    <Logo textColor={`text-text`}/>
+                </div>
+
                 <h2 className={`text-4xl font-bold mb-6 font-heading`}>
                     Join hundreds of Kenyan businesses managing inventory smarter
                 </h2>

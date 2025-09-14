@@ -13,7 +13,7 @@ export default function Page() {
                     "operatingSystem": "Web Browser",
                     "description": "Professional inventory management software designed for small and medium businesses in Kenya. Features real-time stock tracking, automated alerts, and comprehensive analytics.",
                     "url": "https://stoqera.co.ke",
-                    "image": "https://stoqera.co.ke/assets/images/finviq-logo-without-bg.webp",
+                    "image": "https://stoqera.co.ke/assets/images/stoqera-logo-mark.svg",
                     "offers": [
                         {
                             "@type": "Offer",
@@ -38,7 +38,7 @@ export default function Page() {
                         "@type": "Organization",
                         "name": "Stoqera",
                         "url": "https://stoqera.co.ke",
-                        "logo": "https://stoqera.co.ke/assets/images/finviq-logo-without-bg.webp",
+                        "logo": "https://stoqera.co.ke/assets/images/stoqera-logo-mark.svg",
                         "address": {
                             "@type": "PostalAddress",
                             "addressCountry": "KE",
@@ -66,7 +66,7 @@ export default function Page() {
                     "@type": "Organization",
                     "name": "Stoqera",
                     "url": "https://stoqera.co.ke",
-                    "logo": "https://stoqera.co.ke/assets/images/finviq-logo-without-bg.webp",
+                    "logo": "https://stoqera.co.ke/assets/images/stoqera-logo-mark.svg",
                     "description": "Leading provider of inventory management software for small and medium businesses in Kenya",
                     "address": {
                         "@type": "PostalAddress",

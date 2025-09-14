@@ -57,20 +57,12 @@ export default function StoqeraPreloader({theme = 'dark'}) {
                 {/* Logo container */}
                 <div className={`mb-8 flex justify-center`}>
                     <div className={`relative group`}>
-                        <div className={`size-20 bg-surface rounded-2xl flex items-center justify-center shadow-2xl`}>
-                            <Logo className={`size-12`}/>
+                        <div className={`p-4 bg-surface rounded-2xl flex items-center justify-center shadow-2xl`}>
+                            <Logo size={`lg`} textColor={`text-text`} layout={`vertical`} />
                         </div>
                     </div>
                 </div>
 
-                {/* Company name */}
-                <h1 className={`text-4xl font-bold font-heading mb-2 ${
-                    isDark
-                        ? 'bg-gradient-to-r from-teal-300 to-teal-100 bg-clip-text text-transparent'
-                        : 'bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent'
-                }`}>
-                    Stoqera
-                </h1>
                 <p className={`text-lg mb-12 font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                     Inventory Management System
                 </p>

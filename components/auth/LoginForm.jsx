@@ -207,11 +207,8 @@ function Header() {
     return (
         <header className={`sticky top-0 z-10 bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8`}>
             <div className={`flex flex-wrap justify-between items-center py-4 gap-4`}>
-                <div className={`flex items-center`}>
-                    <div className={`bg-background rounded-full size-10`}>
-                        <Logo/>
-                    </div>
-                    <span className={`ml-2 text-2xl font-bold text-gray-900 font-heading`}>Finviq</span>
+                <div className={`lg:hidden`}>
+                    <Logo/>
                 </div>
                 <div className={`w-full flex items-center justify-between gap-4`}>
                     <Link
