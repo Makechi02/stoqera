@@ -13,20 +13,20 @@
     --color-surface: #0F172A;
 }
 
+* {
+    @apply scroll-smooth scroll-m-8;
+}
+
 .auth-form-label {
     @apply block text-sm font-medium text-gray-700;
 }
 
 .auth-form-input-icon {
-    @apply pl-10 pr-4 py-3 w-full border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-600;
+    @apply block w-full pl-10 pr-3 py-3 border  rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200;
 }
 
 .auth-form-input {
     @apply px-4 py-3 w-full border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-600;
-}
-
-* {
-    @apply scroll-smooth scroll-m-8;
 }
 
 ::-webkit-scrollbar {
@@ -67,6 +67,10 @@
     @apply bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center gap-2 transition-colors;
 }
 
+.dashboard-table-heading {
+    @apply px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider;
+}
+
 @keyframes indeterminate {
     0% {
         transform: translateX(-100%);
@@ -86,16 +90,30 @@
 }
 
 @keyframes inventorySpin {
-    0% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(90deg) scale(0.9); }
-    50% { transform: rotate(180deg) scale(1.1); }
-    75% { transform: rotate(270deg) scale(0.9); }
-    100% { transform: rotate(360deg) scale(1); }
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(90deg) scale(0.9);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
+    75% {
+        transform: rotate(270deg) scale(0.9);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
 }
 
 @keyframes inventoryPulse {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 .inventory-loader {
