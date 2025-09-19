@@ -19,30 +19,25 @@ export default function Page() {
     const [isValidSession, setIsValidSession] = useState(false);
 
     useEffect(() => {
-        // Check if user has valid session from email link
         const supabase = createClient();
-        const checkSession = async () => {
-            const {data: {session}, error} = await supabase.auth.getSession();
-            if (session && !error) {
-                setIsValidSession(true);
-            } else {
-                // Redirect to forgot password if no valid session
-                router.push('/forgot-password');
-            }
-        };
 
-        // Handle auth state change (when user clicks email link)
-        const {data: {subscription}} = supabase.auth.onAuthStateChange(
-            async (event, session) => {
-                if (event === 'PASSWORD_RECOVERY') {
-                    setIsValidSession(true);
+        const init = async () => {
+            await supabase.auth.signOut();
+
+            // Handle auth state change (when user clicks the email link)
+            const {data: {subscription}} = supabase.auth.onAuthStateChange(
+                async (event, session) => {
+                    if (event === 'PASSWORD_RECOVERY') {
+                        setIsValidSession(true);
+                    }
                 }
-            }
-        );
+            );
 
-        checkSession();
 
-        return () => subscription.unsubscribe();
+            return () => subscription.unsubscribe();
+        }
+
+        init();
     }, [router]);
 
     const validatePassword = (pwd) => {
