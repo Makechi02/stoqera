@@ -1,3 +1,5 @@
+import Metrics from "@/app/metrics";
+
 export const metadata = {
     title: `Demo | Stoqera`,
     alternates: {
@@ -6,5 +8,12 @@ export const metadata = {
 }
 
 export default function Page() {
-    return <div>demo</div>
+    return (
+        <>
+            <main>
+                <h1>demo</h1>
+            </main>
+            <Metrics/>
+        </>
+    )
 }

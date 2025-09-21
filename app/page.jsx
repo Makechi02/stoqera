@@ -1,5 +1,6 @@
-import {CTA, Features, Footer, Header, Hero, Pricing} from "@/components/home";
+import {Contact, CTA, Features, Footer, Header, Hero, Pricing} from "@/components/home";
 import Script from "next/script";
+import Metrics from "@/app/metrics";
 
 export default function Page() {
     return (
@@ -90,8 +91,11 @@ export default function Page() {
                 {/*TODO: Add Testimonials*/}
                 {/*<Testimonials/>*/}
                 <CTA/>
+                <Contact/>
                 <Footer/>
             </main>
+
+            <Metrics/>
         </>
     );
 };

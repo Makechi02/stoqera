@@ -1,3 +1,5 @@
+import Metrics from "@/app/metrics";
+
 export const metadata = {
     title: `Register | Stoqera`,
     alternates: {
@@ -7,6 +9,9 @@ export const metadata = {
 
 export default function Layout({children}) {
     return (
-        <>{children}</>
+        <>
+            {children}
+            <Metrics/>
+        </>
     )
 }
