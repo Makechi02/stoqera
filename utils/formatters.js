@@ -34,3 +34,8 @@ export function formatDescriptionDate(dateString) {
         minute: '2-digit'
     });
 }
+
+export function formatTableDate(dateString) {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleString();
+}
