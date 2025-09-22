@@ -2,14 +2,8 @@
 
 import {useState} from 'react';
 import {motion} from 'framer-motion';
-import {
-    ArrowLeftIcon,
-    ArrowRightIcon,
-    EnvelopeIcon,
-    ExclamationTriangleIcon,
-    LockClosedIcon
-} from '@heroicons/react/24/outline';
-import {Logo} from "@/components";
+import {ArrowLeftIcon, EnvelopeIcon, ExclamationTriangleIcon, LockClosedIcon} from '@heroicons/react/24/outline';
+import {Logo, ProgressLoader} from "@/components";
 import Link from "next/link";
 import {TogglePasswordBtn} from "@/components/ui/buttons";
 import {createClient} from "@/lib/supabase/client";
@@ -59,7 +53,8 @@ export default function LoginForm() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         if (!validateForm()) return;
 
         setIsLoading(true);
@@ -103,7 +98,7 @@ export default function LoginForm() {
                             </div>
                         )}
 
-                        <div className={`space-y-6`}>
+                        <form className={`space-y-6`} onSubmit={handleSubmit}>
                             {/* Email */}
                             <div>
                                 <label className={`auth-form-label mb-2`}>Email Address</label>
@@ -170,27 +165,19 @@ export default function LoginForm() {
                             </div>
 
                             {/* Submit Button */}
-                            <button
-                                onClick={handleSubmit}
-                                disabled={isLoading}
-                                className={`w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 focus:ring-4 focus:ring-teal-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center`}
-                            >
+                            <button type={`submit`} disabled={isLoading} className={`auth-submit-btn`}>
                                 {isLoading ? (
-                                    <div className={`flex items-center`}>
-                                        <div
-                                            className={`animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2`}/>
+                                    <div className={`flex items-center justify-center gap-2`}>
+                                        <ProgressLoader/>
                                         Signing In...
                                     </div>
                                 ) : (
-                                    <>
-                                        Sign In
-                                        <ArrowRightIcon className={`size-5 ml-2`}/>
-                                    </>
+                                    <>Sign In</>
                                 )}
                             </button>
 
                             {/* TODO: Add Social Login */}
-                        </div>
+                        </form>
                     </div>
 
                     {/* Security Note */}

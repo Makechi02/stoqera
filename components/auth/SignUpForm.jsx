@@ -1,14 +1,12 @@
 'use client'
 
 import {motion} from 'framer-motion';
-import {Logo} from "@/components";
+import {Logo, ProgressLoader} from "@/components";
 import Link from "next/link";
 import {
     ArrowLeftIcon,
     BuildingOfficeIcon,
-    CheckIcon,
     EnvelopeIcon,
-    GlobeAltIcon,
     LockClosedIcon,
     MapPinIcon,
     PhoneIcon,
@@ -19,6 +17,7 @@ import {useState} from "react";
 import {fadeInUp} from "@/data/constants/animations";
 import {createClient} from "@/lib/supabase/client";
 import {useRouter} from "next/navigation";
+import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 
 export default function SignUpForm() {
     const supabase = createClient();
@@ -55,7 +54,6 @@ export default function SignUpForm() {
 
         // Organization fields
         organizationName: '',
-        organizationSlug: '',
         organizationEmail: '',
         phone: '',
         address: '',
@@ -72,27 +70,9 @@ export default function SignUpForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [slugAvailable, setSlugAvailable] = useState(null);
-
-    // Auto-generate slug from organization name
-    const generateSlug = (name) => {
-        return name
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-|-$/g, '');
-    };
 
     const handleInputChange = (field, value) => {
         setFormData(prev => ({...prev, [field]: value}));
-
-        // Auto-generate slug when organization name changes
-        if (field === 'organizationName') {
-            const slug = generateSlug(value);
-            setFormData(prev => ({...prev, organizationSlug: slug}));
-            setSlugAvailable(null); // Reset availability check
-        }
 
         // Clear specific error when user starts typing
         if (errors[field]) {
@@ -114,11 +94,6 @@ export default function SignUpForm() {
         // Organization validation
         if (!formData.organizationName.trim()) {
             newErrors.organizationName = 'Organization name is required';
-        }
-        if (!formData.organizationSlug.trim()) {
-            newErrors.organizationSlug = 'Organization URL is required';
-        } else if (!/^[a-z0-9-]+$/.test(formData.organizationSlug)) {
-            newErrors.organizationSlug = 'URL can only contain lowercase letters, numbers, and hyphens';
         }
 
         // Password validation
@@ -142,79 +117,56 @@ export default function SignUpForm() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const checkSlugAvailability = async () => {
-        if (!formData.organizationSlug) return;
-
-        // Simulate API call to check slug availability
-        setTimeout(() => {
-            // Mock check - in real implementation, call your API
-            const unavailableSlug = ['admin', 'api', 'www', 'test', 'demo'];
-            setSlugAvailable(!unavailableSlug.includes(formData.organizationSlug));
-        }, 500);
-    };
-
-    const createOrganization = async (formData) => {
-        const {data, error} = await supabase
-            .from('organizations')
-            .insert([{
-                name: formData.organizationName,
-                slug: formData.organizationSlug,
-                email: formData.organizationEmail,
-                phone: formData.phone,
-                address: formData.address,
-                is_active: false,
-                subscription_status: 'trial',
-                subscription_plan: 'basic',
-                settings: {
-                    company_size: formData.companySize,
-                    industry: formData.industry
-                }
-            }])
-            .select();
-
-        if (error) {
-            console.error('Error creating organization:', error);
-            return;
-        }
-
-        return data[0];
-    }
-
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         if (!validateForm()) return;
 
         setIsLoading(true);
 
-        const {data: result, error} = await supabase.auth.signUp({
-            email: formData.email,
-            password: formData.password
-        });
-
-        const organization = await createOrganization(formData);
-
-        if (!organization) {
-            console.error('Organization creation failed');
-            setIsLoading(false);
-            return;
-        }
-
-        if (result?.user) {
-            await supabase.from('profiles').insert([{
-                id: result.user.id,
-                organization_id: organization.id,
-                full_name: formData.fullName,
+        try {
+            const {data: authResult, error: authError} = await supabase.auth.signUp({
                 email: formData.email,
-            }]).eq('id', result.user.id);
+                password: formData.password
+            });
+
+            if (authError || !authResult?.user) {
+                showErrorToast('Error signing up. Please try again.');
+                console.error('Error signing up:', authError);
+                setIsLoading(false);
+                return;
+            }
+
+            const {data: result, error: functionError} = await supabase
+                .rpc('signup_organization_and_user', {
+                    org_name: formData.organizationName,
+                    user_id: authResult.user.id,
+                    user_email: formData.email,
+                    org_email: formData.organizationEmail || null,
+                    org_phone: formData.phone || null,
+                    org_address: formData.address || null,
+                    user_full_name: formData.fullName || null,
+                    company_size: formData.companySize || null,
+                    industry: formData.industry || null
+                });
+
+            if (functionError || !result?.success) {
+                showErrorToast('Error creating organization. Please try again.');
+                console.error('Error creating organization:', functionError || result?.error);
+                setIsLoading(false);
+                return;
+            }
+
+            showSuccessToast('Registration successful! Verify your email to continue.');
+            router.push('/login');
+
+        } catch (error) {
+            showErrorToast('An unexpected error occurred. Please try again.');
+            console.error('Unexpected error:', error);
+        } finally {
+            setIsLoading(false);
         }
-
-        setIsLoading(false);
-
-        if (error) {
-            console.error('Error signing up:', error);
-        }
-
-        router.push('/login');
     };
+
 
     return (
         <div className={`lg:absolute lg:left-1/2 right-0  bg-gradient-to-br from-teal-50 to-cyan-50 min-h-svh`}>
@@ -236,7 +188,7 @@ export default function SignUpForm() {
                             </p>
                         </div>
 
-                        <div className={`space-y-6`}>
+                        <form className={`space-y-6`} onSubmit={handleSubmit}>
                             {/* Personal Information Section */}
                             <div className={`bg-gray-50 rounded-lg p-6`}>
                                 <h3 className={`text-lg font-semibold text-gray-900 mb-4 flex items-center`}>
@@ -312,43 +264,6 @@ export default function SignUpForm() {
                                         </div>
                                         {errors.organizationName && (
                                             <p className={`mt-1 text-sm text-red-600`}>{errors.organizationName}</p>
-                                        )}
-                                    </div>
-
-                                    {/* Organization URL/Slug */}
-                                    <div>
-                                        <label className={`auth-form-label mb-2`}>Organization URL *</label>
-                                        <div className={`relative`}>
-                                            <GlobeAltIcon
-                                                className={`absolute left-3 top-1/2 transform -translate-y-1/2 size-5 text-gray-400`}
-                                            />
-                                            <div className={`flex`}>
-                                                {/*<span*/}
-                                                {/*    className={`inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm`}*/}
-                                                {/*>*/}
-                                                {/*    stoqera.co.ke*/}
-                                                {/*</span>*/}
-                                                <input
-                                                    type={`text`}
-                                                    value={formData.organizationSlug}
-                                                    onChange={(e) => handleInputChange('organizationSlug', e.target.value)}
-                                                    onBlur={checkSlugAvailability}
-                                                    className={`auth-form-input-icon ${errors.organizationSlug ? 'border-red-500' : 'border-gray-300'}`}
-                                                    placeholder={`acme-corp`}
-                                                />
-                                            </div>
-                                        </div>
-                                        {slugAvailable === true && (
-                                            <p className={`mt-1 text-sm text-green-600 flex items-center`}>
-                                                <CheckIcon className={`size-4 mr-1`}/>
-                                                URL is available
-                                            </p>
-                                        )}
-                                        {slugAvailable === false && (
-                                            <p className={`mt-1 text-sm text-red-600`}>URL is not available</p>
-                                        )}
-                                        {errors.organizationSlug && (
-                                            <p className={`mt-1 text-sm text-red-600`}>{errors.organizationSlug}</p>
                                         )}
                                     </div>
 
@@ -524,15 +439,10 @@ export default function SignUpForm() {
                             )}
 
                             {/* Submit Button */}
-                            <button
-                                onClick={handleSubmit}
-                                disabled={isLoading}
-                                className={`w-full bg-teal-600 text-white py-4 rounded-lg font-semibold hover:bg-teal-700 focus:ring-4 focus:ring-teal-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed`}
-                            >
+                            <button type={`submit`} disabled={isLoading} className={`auth-submit-btn`}>
                                 {isLoading ? (
-                                    <div className={`flex items-center justify-center`}>
-                                        <div
-                                            className={`animate-spin rounded-full size-5 border-b-2 border-white mr-2`}/>
+                                    <div className={`flex items-center justify-center gap-2`}>
+                                        <ProgressLoader/>
                                         Creating Your Account...
                                     </div>
                                 ) : (
@@ -541,7 +451,7 @@ export default function SignUpForm() {
                             </button>
 
                             {/* TODO: Add Social Sign Up */}
-                        </div>
+                        </form>
                     </div>
 
                     {/* Security Note */}

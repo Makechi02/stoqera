@@ -29,6 +29,10 @@
     @apply px-4 py-3 w-full border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-600;
 }
 
+.auth-submit-btn {
+    @apply w-full bg-teal-600 text-white py-4 rounded-lg font-semibold hover:bg-teal-700 focus:ring-4 focus:ring-teal-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed;
+}
+
 ::-webkit-scrollbar {
     @apply w-[7px];
 }
