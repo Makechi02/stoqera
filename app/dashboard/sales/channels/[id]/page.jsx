@@ -1,5 +1,5 @@
 import ChannelDetails from "@/components/dashboard/sales/channels/ChannelDetails";
-import {getSaleChannelById} from "@/lib/sales/querySales";
+import {getSaleChannelById} from "@/lib/sales/querySaleChannels";
 import {notFound} from "next/navigation";
 
 export default async function Page({params}) {

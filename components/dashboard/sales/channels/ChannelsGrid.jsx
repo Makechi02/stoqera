@@ -6,7 +6,7 @@ import {useSearchParams} from "next/navigation";
 import {formatDate} from "@/utils/formatters";
 import {useState} from "react";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
-import {deleteSalesChannel} from "@/lib/sales/querySales";
+import {deleteSalesChannel} from "@/lib/sales/querySaleChannels";
 import {DeleteModal} from "@/components/ui/modal";
 
 export default function ChannelsGrid({channels}) {
