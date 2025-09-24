@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Finviq.iml" filepath="$PROJECT_DIR$/.idea/Finviq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/stoqera.iml" filepath="$PROJECT_DIR$/.idea/stoqera.iml" />
     </modules>
   </component>
 </project>
