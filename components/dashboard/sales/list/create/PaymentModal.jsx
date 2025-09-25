@@ -1,25 +1,36 @@
 'use client'
 
-import {BanknotesIcon, CheckIcon, CreditCardIcon, DevicePhoneMobileIcon, XMarkIcon} from '@heroicons/react/24/outline';
-import {useState} from "react";
+import {CheckIcon, XMarkIcon} from '@heroicons/react/24/outline';
+import {useEffect, useState} from "react";
 import {formatCurrency} from "@/utils/formatters";
+import {getPaymentMethodsForCurrentOrganization} from "@/lib/sales/queryPaymentMethods";
+import {ProgressLoader} from "@/components";
 
 export default function PaymentModal({setShowPaymentModal, calculateTotal}) {
+    const [paymentMethods, setPaymentMethods] = useState([]);
     const [amountReceived, setAmountReceived] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState('cash');
-
-    const paymentMethods = [
-        {id: 'cash', name: 'Cash', icon: BanknotesIcon},
-        {id: 'card', name: 'Credit/Debit Card', icon: CreditCardIcon},
-        {id: 'mobile', name: 'Mobile Payment', icon: DevicePhoneMobileIcon},
-        {id: 'bank', name: 'Bank Transfer', icon: CreditCardIcon}
-    ];
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [paymentMethodType, setPaymentMethodType] = useState('cash');
+    const [loading, setLoading] = useState(true);
 
     const calculateChange = () => {
         const total = calculateTotal();
         const received = parseFloat(amountReceived) || 0;
         return Math.max(0, received - total);
     };
+
+    useEffect(() => {
+        setLoading(true);
+        const fetchPaymentMethods = async () => {
+            return await getPaymentMethodsForCurrentOrganization();
+        };
+
+        fetchPaymentMethods()
+            .then(response => setPaymentMethods(response))
+            .catch(error => console.error('Error fetching payment methods:', error))
+            .finally(() => setLoading(false));
+
+    }, []);
 
     const handleCompleteSale = () => {
         // Here you would save to Supabase
@@ -67,59 +78,69 @@ export default function PaymentModal({setShowPaymentModal, calculateTotal}) {
                     {/* Payment Method */}
                     <div>
                         <label className={`block text-sm font-medium text-slate-300 mb-3`}>Payment Method</label>
-                        <div className={`grid grid-cols-2 gap-3`}>
-                            {paymentMethods.map((method) => (
-                                <button
-                                    key={method.id}
-                                    onClick={() => setPaymentMethod(method.id)}
-                                    className={`p-3 rounded-lg border-2 transition-colors flex items-center space-x-2 ${
-                                        paymentMethod === method.id
-                                            ? 'border-teal-500 bg-teal-500/10 text-teal-400'
-                                            : 'border-slate-600 bg-slate-700 text-slate-300 hover:border-slate-500'
-                                    }`}
-                                >
-                                    <method.icon className={`size-5`}/>
-                                    <span className={`text-sm font-medium`}>{method.name}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                        {loading ? (
+                            <div className={`flex justify-center items-center h-20`}>
+                                <ProgressLoader size={`lg`}/>
+                            </div>
+                        ) : (
+                            <div className={`space-y-6`}>
+                                <div className={`grid grid-cols-2 gap-3`}>
+                                    {paymentMethods.map((method) => (
+                                        <button
+                                            key={method.id}
+                                            onClick={() => {
+                                                setPaymentMethod(method.id);
+                                                setPaymentMethodType(method.type);
+                                            }}
+                                            className={`py-2 px-3 rounded-lg border-2 transition-colors space-x-2 ${
+                                                paymentMethod === method.id
+                                                    ? 'border-teal-500 bg-teal-500/10 text-teal-400'
+                                                    : 'border-slate-600 bg-slate-700 text-slate-300 hover:border-slate-500'
+                                            }`}
+                                        >
+                                            <span className={`text-sm font-medium`}>{method.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
 
-                    {/* Amount Received */}
-                    {paymentMethod === 'cash' && (
-                        <div>
-                            <label className={`dashboard-form-label mb-2`}>Amount Received</label>
-                            <input
-                                type={`number`}
-                                value={amountReceived}
-                                onChange={(e) => setAmountReceived(e.target.value)}
-                                placeholder={calculateTotal().toFixed(2)}
-                                className={`dashboard-form-input border-slate-600`}
-                            />
-                            {amountReceived && parseFloat(amountReceived) >= calculateTotal() && (
-                                <p className={`mt-2 text-sm text-emerald-400`}>
-                                    Change: {formatCurrency(calculateChange())}
-                                </p>
-                            )}
-                        </div>
-                    )}
+                                {/* Amount Received */}
+                                {paymentMethodType === 'cash' && (
+                                    <div>
+                                        <label className={`dashboard-form-label mb-2`}>Amount Received</label>
+                                        <input
+                                            type={`number`}
+                                            value={amountReceived}
+                                            onChange={(e) => setAmountReceived(e.target.value)}
+                                            placeholder={calculateTotal().toFixed(2)}
+                                            className={`dashboard-form-input border-slate-600`}
+                                        />
+                                        {amountReceived && parseFloat(amountReceived) >= calculateTotal() && (
+                                            <p className={`mt-2 text-sm text-emerald-400`}>
+                                                Change: {formatCurrency(calculateChange())}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
 
-                    {/* Action Buttons */}
-                    <div className={`flex space-x-3`}>
-                        <button
-                            onClick={() => setShowPaymentModal(false)}
-                            className={`flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors`}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={handleCompleteSale}
-                            disabled={paymentMethod === 'cash' && (!amountReceived || parseFloat(amountReceived) < calculateTotal())}
-                            className={`flex-1 px-4 py-2 bg-teal-600 hover:bg-teal-700 disabled:bg-slate-600 disabled:cursor-not-allowed rounded-lg transition-colors flex items-center justify-center space-x-2`}
-                        >
-                            <CheckIcon className={`size-5`}/>
-                            <span>Complete Sale</span>
-                        </button>
+                                {/* Action Buttons */}
+                                <div className={`flex flex-wrap gap-3`}>
+                                    <button
+                                        onClick={() => setShowPaymentModal(false)}
+                                        className={`flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors`}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleCompleteSale}
+                                        disabled={paymentMethod === 'cash' && (!amountReceived || parseFloat(amountReceived) < calculateTotal())}
+                                        className={`flex-1 px-4 py-2 bg-teal-600 hover:bg-teal-700 disabled:bg-slate-600 disabled:cursor-not-allowed rounded-lg transition-colors flex items-center justify-center space-x-2`}
+                                    >
+                                        <CheckIcon className={`size-5`}/>
+                                        <span>Complete Sale</span>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
