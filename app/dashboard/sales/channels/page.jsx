@@ -1,5 +1,5 @@
 import ChannelsGrid from "@/components/dashboard/sales/channels/ChannelsGrid";
-import {getSalesChannelsForCurrentOrganization} from "@/lib/sales/querySales";
+import {getSalesChannelsForCurrentOrganization} from "@/lib/sales/querySaleChannels";
 import Link from "next/link";
 import {PlusIcon} from "@heroicons/react/24/outline";
 import ChannelsSearchBar from "@/components/dashboard/sales/channels/ChannelsSearchBar";
