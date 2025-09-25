@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import StockLevelsList from "@/components/dashboard/stock/StockLevelsList";
-import {getInventorySummaryForCurrentOrganization, getStockLevelsForCurrentOrganization} from "@/lib/queryStock";
+import {getInventorySummaryForCurrentOrganization, getStockLevelsForCurrentOrganization} from "@/lib/stock/queryStock";
 import {ArrowTrendingDownIcon, ArrowTrendingUpIcon, ExclamationTriangleIcon} from '@heroicons/react/24/outline';
 import {formatCurrency} from "@/utils/formatters";
 import {getLocationsForCurrentOrganization} from "@/lib/queryLocations";
