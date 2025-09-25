@@ -18,7 +18,7 @@ export default async function Page() {
                         </div>
                         <div className={`flex-1 flex justify-end`}>
                             <Link
-                                href={`/dashboard/sales/list/new`}
+                                href={`/dashboard/sales/list/create`}
                                 className={`bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors`}>
                                 <PlusIcon className={`size-5`}/>
                                 <span>New Sale</span>

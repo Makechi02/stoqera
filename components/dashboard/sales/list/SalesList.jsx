@@ -281,97 +281,81 @@ function SalesTable({sales}) {
                 </div>
             </div>
 
-            <div className="overflow-x-auto">
-                <table className="w-full">
-                    <thead className="bg-slate-700">
+            <div className={`overflow-x-auto`}>
+                <table className={`w-full`}>
+                    <thead className={`bg-slate-700`}>
                     <tr>
-                        <th className="px-6 py-3 text-left">
+                        <th className={`px-6 py-3 text-left`}>
                             <input
-                                type="checkbox"
+                                type={`checkbox`}
                                 checked={selectedSales.length === sales.length && sales.length > 0}
                                 onChange={handleSelectAll}
-                                className="w-4 h-4 text-teal-600 bg-slate-700 border-slate-600 rounded focus:ring-teal-500"
+                                className={`size-4 text-teal-600 bg-slate-700 border-slate-600 rounded focus:ring-teal-500`}
                             />
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Sale Number
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Customer
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Date
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Amount
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Payment
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Items
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                            Actions
-                        </th>
+                        <th className={`dashboard-table-heading text-left`}>Sale Number</th>
+                        <th className={`dashboard-table-heading text-left`}>Customer</th>
+                        <th className={`dashboard-table-heading text-left`}>Date</th>
+                        <th className={`dashboard-table-heading text-left`}>Amount</th>
+                        <th className={`dashboard-table-heading text-left`}>Status</th>
+                        <th className={`dashboard-table-heading text-left`}>Payment</th>
+                        <th className={`dashboard-table-heading text-left`}>Items</th>
+                        <th className={`dashboard-table-heading text-left`}>Actions</th>
                     </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-700">
+                    <tbody className={`divide-y divide-slate-700`}>
                     {sales.map((sale) => (
-                        <tr key={sale.id} className="hover:bg-slate-700/50 transition-colors">
-                            <td className="px-6 py-4">
+                        <tr key={sale.id} className={`hover:bg-slate-700/50 transition-colors`}>
+                            <td className={`px-6 py-4`}>
                                 <input
-                                    type="checkbox"
+                                    type={`checkbox`}
                                     checked={selectedSales.includes(sale.id)}
                                     onChange={() => handleSelectSale(sale.id)}
-                                    className="w-4 h-4 text-teal-600 bg-slate-700 border-slate-600 rounded focus:ring-teal-500"
+                                    className={`size-4 text-teal-600 bg-slate-700 border-slate-600 rounded focus:ring-teal-500`}
                                 />
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm font-medium text-white">{sale.sale_number}</div>
+                            <td className={`px-6 py-4 whitespace-nowrap`}>
+                                <div className={`text-sm font-medium text-white`}>{sale.sale_number}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className={`px-6 py-4 whitespace-nowrap`}>
                                 <div>
                                     <div
-                                        className="text-sm font-medium text-white">{sale.customer_name}</div>
+                                        className={`text-sm font-medium text-white`}>{sale.customer_name}</div>
                                     <div
-                                        className="text-sm text-slate-400 capitalize">{sale.customer_type.replace('_', ' ')}</div>
+                                        className={`text-sm text-slate-400 capitalize`}>{sale.customer_type.replace('_', ' ')}</div>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-slate-300">{formatDate(sale.sale_date)}</div>
+                            <td className={`px-6 py-4 whitespace-nowrap`}>
+                                <div className={`text-sm text-slate-300`}>{formatDate(sale.sale_date)}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className={`px-6 py-4 whitespace-nowrap`}>
                                 <div
-                                    className="text-sm font-medium text-white">{formatCurrency(sale.total_amount)}</div>
+                                    className={`text-sm font-medium text-white`}>{formatCurrency(sale.total_amount)}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(sale.status)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className={`px-6 py-4 whitespace-nowrap`}>{getStatusBadge(sale.status)}</td>
+                            <td className={`px-6 py-4 whitespace-nowrap`}>
                                 {getPaymentStatusBadge(sale.payment_status)}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-slate-300">{sale.items_count} items</div>
+                            <td className={`px-6 py-4 whitespace-nowrap`}>
+                                <div className={`text-sm text-slate-300`}>{sale.items_count} items</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center space-x-2">
+                            <td className={`px-6 py-4 whitespace-nowrap`}>
+                                <div className={`flex items-center space-x-2`}>
                                     <button
-                                        className="p-1 text-slate-400 hover:text-white transition-colors">
-                                        <EyeIcon className="w-4 h-4"/>
+                                        className={`p-1 text-slate-400 hover:text-white transition-colors`}>
+                                        <EyeIcon className={`size-4`}/>
                                     </button>
                                     <button
-                                        className="p-1 text-slate-400 hover:text-white transition-colors">
-                                        <PencilIcon className="w-4 h-4"/>
+                                        className={`p-1 text-slate-400 hover:text-white transition-colors`}>
+                                        <PencilIcon className={`size-4`}/>
                                     </button>
                                     <button
-                                        className="p-1 text-slate-400 hover:text-red-400 transition-colors">
-                                        <TrashIcon className="w-4 h-4"/>
+                                        className={`p-1 text-slate-400 hover:text-red-400 transition-colors`}>
+                                        <TrashIcon className={`size-4`}/>
                                     </button>
                                     <button
-                                        className="p-1 text-slate-400 hover:text-white transition-colors">
-                                        <EllipsisVerticalIcon className="w-4 h-4"/>
+                                        className={`p-1 text-slate-400 hover:text-white transition-colors`}>
+                                        <EllipsisVerticalIcon className={`size-4`}/>
                                     </button>
                                 </div>
                             </td>
@@ -381,31 +365,30 @@ function SalesTable({sales}) {
                 </table>
             </div>
 
-            {/* Pagination */}
-            <div className="px-6 py-4 border-t border-slate-700">
-                <div className="flex items-center justify-between">
-                    <div className="text-sm text-slate-400">
-                        Showing 1 to {sales.length} of {sales.length} results
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <button
-                            className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm hover:bg-slate-600 transition-colors">
-                            Previous
-                        </button>
-                        <button className="px-3 py-2 bg-teal-600 text-white rounded-lg text-sm">
-                            1
-                        </button>
-                        <button
-                            className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm hover:bg-slate-600 transition-colors">
-                            2
-                        </button>
-                        <button
-                            className="px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm hover:bg-slate-600 transition-colors">
-                            Next
-                        </button>
+            {sales.length !== 0 && (
+                <div className={`px-6 py-4 border-t border-slate-700`}>
+                    <div className={`flex items-center justify-between`}>
+                        <p className={`text-sm text-slate-400`}>Showing 1 to {sales.length} of {sales.length} results</p>
+                        <div className={`flex items-center space-x-2`}>
+                            <button
+                                className={`px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm hover:bg-slate-600 transition-colors`}>
+                                Previous
+                            </button>
+                            <button className={`px-3 py-2 bg-teal-600 text-white rounded-lg text-sm`}>
+                                1
+                            </button>
+                            <button
+                                className={`px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm hover:bg-slate-600 transition-colors`}>
+                                2
+                            </button>
+                            <button
+                                className={`px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm hover:bg-slate-600 transition-colors`}>
+                                Next
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }
