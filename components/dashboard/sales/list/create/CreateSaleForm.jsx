@@ -39,7 +39,6 @@ export default function CreateSaleForm() {
 
     return (
         <div>
-            {/* Header */}
             <div className={`border-b border-slate-700`}>
                 <div className={`py-4`}>
                     <div className={`flex flex-wrap items-center justify-between gap-4`}>
@@ -92,7 +91,6 @@ export default function CreateSaleForm() {
                 </div>
             </div>
 
-            {/* Payment Modal */}
             {showPaymentModal && (
                 <PaymentModal setShowPaymentModal={setShowPaymentModal} calculateTotal={calculateTotal}/>
             )}

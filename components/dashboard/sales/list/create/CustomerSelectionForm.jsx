@@ -2,12 +2,22 @@
 
 import {UserPlusIcon, XMarkIcon} from '@heroicons/react/24/outline';
 import {UserIcon} from '@heroicons/react/24/solid';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {ProgressLoader} from "@/components";
+import {getCustomersForCurrentOrganization} from "@/lib/queryCustomers";
+import Link from "next/link";
 
 export default function CustomerSelectionForm() {
     const [customer, setCustomer] = useState(null);
     const [showCustomerModal, setShowCustomerModal] = useState(false);
     const [customerType, setCustomerType] = useState('walk_in');
+
+    const getCustomerDisplayName = (customer) => {
+        if (customer.type === 'business') {
+            return customer.business_name || 'Unnamed Business';
+        }
+        return `${customer.first_name || ''} ${customer.last_name || ''}`.trim() || 'Unnamed Customer';
+    };
 
     return (
         <>
@@ -42,7 +52,7 @@ export default function CustomerSelectionForm() {
                         <div className={`p-3 bg-slate-700 rounded-lg`}>
                             <div className={`flex items-center justify-between`}>
                                 <div>
-                                    <p className={`font-medium text-white`}>{customer.name}</p>
+                                    <p className={`font-medium text-white`}>{getCustomerDisplayName(customer)}</p>
                                     <p className={`text-sm text-slate-400`}>{customer.email}</p>
                                     <p className={`text-sm text-slate-400`}>{customer.phone}</p>
                                 </div>
@@ -70,30 +80,33 @@ export default function CustomerSelectionForm() {
 
                 {/* Customer Selection Modal */}
                 {showCustomerModal && (
-                    <CustomerSelectionModal setCustomer={setCustomer} setShowCustomerModal={setShowCustomerModal}/>
+                    <CustomerSelectionModal
+                        setCustomer={setCustomer}
+                        setShowCustomerModal={setShowCustomerModal}
+                        getCustomerDisplayName={getCustomerDisplayName}
+                    />
                 )}
             </div>
         </>
     )
 }
 
-function CustomerSelectionModal({setShowCustomerModal, setCustomer}) {
-    const mockCustomers = [
-        {
-            id: '1',
-            name: 'John Doe',
-            email: 'john@example.com',
-            phone: '+1234567890',
-            type: 'regular'
-        },
-        {
-            id: '2',
-            name: 'Jane Smith',
-            email: 'jane@example.com',
-            phone: '+1234567891',
-            type: 'premium'
-        }
-    ];
+function CustomerSelectionModal({setShowCustomerModal, setCustomer, getCustomerDisplayName}) {
+    const [customers, setCustomers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(true);
+        const fetchCustomers = async () => {
+            return await getCustomersForCurrentOrganization();
+        };
+
+        fetchCustomers()
+            .then(response => setCustomers(response.customers))
+            .catch(error => console.error('Error fetching customers:', error))
+            .finally(() => setLoading(false));
+
+    }, []);
 
     return (
         <div className={`fixed inset-0 bg-black/50 flex items-center justify-center z-50`}>
@@ -111,28 +124,35 @@ function CustomerSelectionModal({setShowCustomerModal, setCustomer}) {
                 </div>
 
                 <div className={`p-6`}>
-                    <div className={`space-y-3 max-h-64 overflow-y-auto`}>
-                        {mockCustomers.map((cust) => (
-                            <button
-                                key={cust.id}
-                                onClick={() => {
-                                    setCustomer(cust);
-                                    setShowCustomerModal(false);
-                                }}
-                                className={`w-full p-3 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-left`}
-                            >
-                                <p className={`font-medium text-white`}>{cust.name}</p>
-                                <p className={`text-sm text-slate-400`}>{cust.email}</p>
-                                <p className={`text-sm text-slate-400`}>{cust.phone}</p>
-                            </button>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div className={`flex justify-center items-center h-20`}>
+                            <ProgressLoader size={`lg`}/>
+                        </div>
+                    ) : (
+                        <div className={`space-y-3 max-h-64 overflow-y-auto`}>
+                            {customers.map((cust) => (
+                                <button
+                                    key={cust.id}
+                                    onClick={() => {
+                                        setCustomer(cust);
+                                        setShowCustomerModal(false);
+                                    }}
+                                    className={`w-full p-3 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-left`}
+                                >
+                                    <p className={`font-medium text-white`}>{getCustomerDisplayName(cust)}</p>
+                                    <p className={`text-sm text-slate-400`}>{cust.email}</p>
+                                    <p className={`text-sm text-slate-400`}>{cust.phone}</p>
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
-                    <button
-                        className={`w-full mt-4 p-3 border-2 border-dashed border-slate-600 rounded-lg text-slate-400 hover:border-teal-500 hover:text-teal-500 transition-colors`}
+                    <Link
+                        href={`/dashboard/customers/create`}
+                        className={`inline-block w-full mt-4 p-3 border-2 border-dashed border-slate-600 rounded-lg text-slate-400 hover:border-teal-500 hover:text-teal-500 transition-colors`}
                     >
                         + Add New Customer
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
