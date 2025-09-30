@@ -17,7 +17,7 @@ export function formatPlanCurrency(price) {
 
 export function formatDate(dateString) {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString("en-KE", {
         year: "numeric",
         month: "short",
         day: "numeric",
@@ -26,11 +26,16 @@ export function formatDate(dateString) {
 
 export function formatDescriptionDate(dateString) {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('en-KE', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
     });
+}
+
+export function formatTableDate(dateString) {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleString();
 }

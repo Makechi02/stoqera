@@ -12,7 +12,7 @@ import {
 import {useState} from "react";
 import {formatCurrency} from "@/utils/formatters";
 import {useRouter} from "next/navigation";
-import {adjustStock} from "@/lib/queryStock";
+import {adjustStock} from "@/lib/stock/queryStock";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 
 // TODO: Handle product variants
