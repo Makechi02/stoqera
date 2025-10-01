@@ -29,7 +29,6 @@ export default function TransfersFilterBar() {
     const debouncedSearch = useDebounce(searchTerm, 500);
 
     useEffect(() => {
-        console.log(dateRange);
         const params = new URLSearchParams(searchParams.toString());
 
         if (debouncedSearch) {
