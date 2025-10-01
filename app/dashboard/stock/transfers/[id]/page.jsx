@@ -57,18 +57,18 @@ export default async function Page({params}) {
         <div className={`max-w-6xl mx-auto py-8`}>
             <div className={`mb-8`}>
                 <div className={`flex flex-wrap items-center justify-between gap-4`}>
-                    <div>
-                        <div className={`flex items-center`}>
-                            <BackBtn/>
+                    <div className={`flex items-center`}>
+                        <BackBtn/>
+                        <div>
                             <h1 className={`text-3xl font-bold font-heading`}>Transfer #{transfer.transfer_number}</h1>
-                        </div>
-                        <div className={`flex items-center mt-2`}>
-                            {getStatusIcon(transfer.status)}
-                            <span
-                                className={`ml-2 px-3 py-1 text-sm font-medium border rounded-full ${getStatusColor(transfer.status)}`}
-                            >
+                            <div className={`flex items-center mt-2`}>
+                                {getStatusIcon(transfer.status)}
+                                <span
+                                    className={`ml-2 px-3 py-1 text-sm font-medium border rounded-full ${getStatusColor(transfer.status)}`}
+                                >
                                 {transfer.status.charAt(0).toUpperCase() + transfer.status.slice(1)}
                             </span>
+                            </div>
                         </div>
                     </div>
 
