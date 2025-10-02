@@ -13,7 +13,7 @@ import {
     UserGroupIcon
 } from '@heroicons/react/24/outline';
 
-export default function DashboardQuickActions({pendingPurchaseOrders = 0, lowStockAlerts = 0}) {
+export default function DashboardQuickActions() {
     const router = useRouter();
 
     return (
@@ -34,7 +34,7 @@ export default function DashboardQuickActions({pendingPurchaseOrders = 0, lowSto
                 <DashboardQuickActionButton
                     icon={DocumentTextIcon}
                     label={`Purchase Orders`}
-                    badge={pendingPurchaseOrders}
+                    // badge={pendingPurchaseOrders}
                     onClick={() => router.push('/dashboard/purchases')}
                 />
                 <DashboardQuickActionButton
@@ -45,7 +45,7 @@ export default function DashboardQuickActions({pendingPurchaseOrders = 0, lowSto
                 <DashboardQuickActionButton
                     icon={ExclamationTriangleIcon}
                     label={`Stock Alerts`}
-                    badge={lowStockAlerts}
+                    // badge={lowStockAlerts}
                     onClick={() => router.push('/dashboard/stock/alerts')}
                 />
                 <DashboardQuickActionButton
