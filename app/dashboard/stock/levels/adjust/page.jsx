@@ -1,7 +1,7 @@
 import StockAdjustmentForm from "@/components/dashboard/stock/StockAdjustmentForm";
 import {BackBtn} from "@/components/ui/buttons";
 import {getLocationsForCurrentOrganization} from "@/lib/queryLocations";
-import {getProductsForCurrentOrganization} from "@/lib/queryProducts";
+import {getProductsForCurrentOrganization} from "@/lib/products/queryProducts";
 
 export default async function Page() {
     const locations = await getLocationsForCurrentOrganization();

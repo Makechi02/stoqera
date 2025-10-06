@@ -3,7 +3,7 @@
 import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import {useEffect, useState} from "react";
 import {formatCurrency} from "@/utils/formatters";
-import {getProductsForCurrentOrganization} from "@/lib/queryProducts";
+import {getProductsForCurrentOrganization} from "@/lib/products/queryProducts";
 import {ProgressLoader} from "@/components";
 
 export default function ProductsSearchForm({saleItems, setSaleItems}) {
