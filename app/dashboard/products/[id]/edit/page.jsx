@@ -1,7 +1,7 @@
 import {BackBtn} from "@/components/ui/buttons";
 import {getCategoriesForCurrentOrganization} from "@/lib/queryCategories";
 import ProductForm from "@/components/dashboard/products/ProductForm";
-import {getProductById} from "@/lib/queryProducts";
+import {getProductById} from "@/lib/products/queryProducts";
 
 export default async function Page({params}) {
     const {id} = await params;

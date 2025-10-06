@@ -69,7 +69,7 @@ export default function ProductsGrid({categories, products}) {
                     <h3 className={`text-xl font-semibold text-gray-300 mb-2`}>No products found</h3>
                     <p className={`text-gray-500`}>Try adjusting your search criteria or add a new product.</p>
                     <Link
-                        href={`/dashboard/products/new`}
+                        href={`/dashboard/products/create`}
                         className={`mt-4 bg-teal-600 hover:bg-teal-700 px-6 py-3 rounded-xl font-medium transition-colors inline-flex items-center mx-auto`}
                     >
                         <PlusIcon className={`size-5 mr-2`}/>
@@ -209,7 +209,7 @@ function GridProductCard({product}) {
 
                 <div className={`text-sm mb-3`}>
                     <span className={`text-gray-400`}>Brand: </span>
-                    <span className={`text-teal-400`}>{product.brand}</span>
+                    <span className={`text-teal-400`}>{product.brand || 'Unknown'}</span>
                 </div>
 
                 <div className={`flex items-center justify-between mb-4`}>
@@ -259,6 +259,9 @@ function GridProductCard({product}) {
 function ListProductCard({product}) {
     const stockStatus = getStockStatus(product);
 
+    const inventory = product.inventory[0];
+    const quantityAvailable = inventory?.quantity_available || 0;
+
     return (
         <div className={`bg-gray-800 rounded-xl border border-gray-700 p-6 hover:border-teal-500/50 transition-all`}>
             <div className={`flex flex-wrap items-center gap-6`}>
@@ -296,7 +299,7 @@ function ListProductCard({product}) {
                 <div className={`w-full sm:w-auto flex items-center gap-8 text-sm`}>
                     <div>
                         <span className={`text-gray-400`}>Stock: </span>
-                        <span className={`font-medium`}>{product.inventory[0].quantity_available}</span>
+                        <span className={`font-medium`}>{quantityAvailable}</span>
                     </div>
                     <div>
                         <span className={`text-gray-400`}>Price: </span>

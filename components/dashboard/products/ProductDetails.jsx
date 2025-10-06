@@ -20,43 +20,13 @@ import {formatCurrency, formatDescriptionDate} from "@/utils/formatters";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {toast} from "react-toastify";
-import {deleteProduct} from "@/lib/queryProducts";
+import {deleteProduct} from "@/lib/products/queryProducts";
 
 export default function ProductDetails({product}) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [selectedVariant, setSelectedVariant] = useState(null);
 
-    const variants = [
-        {
-            id: 'var-001',
-            sku: 'LAPTOP-001-SG-512',
-            name: 'Space Gray 512GB',
-            attributes: {color: 'Space Gray', storage: '512GB'},
-            cost_price: 1999.99,
-            selling_price: 2499.99,
-            is_active: true
-        },
-        {
-            id: 'var-002',
-            sku: 'LAPTOP-001-SG-1TB',
-            name: 'Space Gray 1TB',
-            attributes: {color: 'Space Gray', storage: '1TB'},
-            cost_price: 2199.99,
-            selling_price: 2699.99,
-            is_active: true
-        },
-        {
-            id: 'var-003',
-            sku: 'LAPTOP-001-SV-512',
-            name: 'Silver 512GB',
-            attributes: {color: 'Silver', storage: '512GB'},
-            cost_price: 1999.99,
-            selling_price: 2499.99,
-            is_active: true
-        }
-    ];
-
-    const currentStock = 25;
+    const currentStock = product.inventory[0]?.quantity_available || 0;
     const stockStatus = currentStock <= product.min_stock_level ? 'low' : currentStock >= product.max_stock_level ? 'high' : 'normal';
 
     const nextImage = () => {
@@ -68,7 +38,7 @@ export default function ProductDetails({product}) {
     };
 
     return (
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8`}>
+        <div className={`max-w-7xl mx-auto py-8`}>
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12`}>
                 {/* Product Images */}
                 <div className={`space-y-4`}>
@@ -151,12 +121,12 @@ export default function ProductDetails({product}) {
 
             {/* Low Stock Alert */}
             {stockStatus === 'low' && (
-                <div className="mt-8 bg-red-900/20 border border-red-800 rounded-lg p-4">
-                    <div className="flex items-center">
-                        <ExclamationTriangleIcon className="h-6 w-6 text-red-500 mr-3"/>
+                <div className={`mt-8 bg-red-900/20 border border-red-800 rounded-lg p-4`}>
+                    <div className={`flex items-center`}>
+                        <ExclamationTriangleIcon className={`size-6 text-red-500 mr-3`}/>
                         <div>
-                            <h4 className="font-semibold text-red-400">Low Stock Alert</h4>
-                            <p className="text-red-300 mt-1">
+                            <h4 className={`font-semibold text-red-400`}>Low Stock Alert</h4>
+                            <p className={`text-red-300 mt-1`}>
                                 This product is running low on stock. Current level ({currentStock}) is at or below
                                 the minimum threshold ({product.min_stock_level}).
                             </p>
@@ -184,8 +154,8 @@ function BasicInfo({product, stockStatus}) {
         <div>
             <div className={`flex items-center justify-between mb-4`}>
                 <div className={`flex items-center space-x-3`}>
-                    <span className="px-3 py-1 text-xs bg-teal-900/30 text-teal-400 rounded-full">
-                        {product.category}
+                    <span className={`px-3 py-1 text-xs bg-teal-900/30 text-teal-400 rounded-full`}>
+                        {product.category.name}
                     </span>
                     <span
                         className={`px-3 py-1 text-xs rounded-full ${getStockStatusColor(stockStatus)}`}
@@ -219,23 +189,19 @@ function BasicInfo({product, stockStatus}) {
 function VariantsGrid({variants, selectedVariant, setSelectedVariant}) {
     return (
         <div>
-            <h3 className="text-lg font-semibold mb-4">Variants</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <h3 className={`text-lg font-semibold mb-4`}>Variants</h3>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3`}>
                 {variants.map((variant) => (
                     <div
                         key={variant.id}
                         className={`p-4 rounded-lg border cursor-pointer transition-colors ${
-                            selectedVariant?.id === variant.id
-                                ? 'border-teal-500 bg-teal-900/20'
-                                : 'border-gray-700 hover:border-gray-600'
+                            selectedVariant?.id === variant.id ? 'border-teal-500 bg-teal-900/20' : 'border-gray-700 hover:border-gray-600'
                         }`}
                         onClick={() => setSelectedVariant(variant)}
                     >
-                        <div className="font-medium">{variant.name}</div>
-                        <div className="text-sm text-gray-400">{variant.sku}</div>
-                        <div className="text-teal-400 font-semibold mt-1">
-                            {formatCurrency(variant.selling_price)}
-                        </div>
+                        <p className={`font-medium`}>{variant.name}</p>
+                        <p className={`text-sm text-gray-400`}>{variant.sku}</p>
+                        <p className={`text-teal-400 font-semibold mt-1`}>{formatCurrency(variant.selling_price)}</p>
                     </div>
                 ))}
             </div>
@@ -264,44 +230,43 @@ function TagsGrid({tags}) {
 
 function StockInformation({product, currentStock, stockStatus}) {
     return (
-        <div className="bg-gray-800 rounded-2xl p-6">
-            <h3 className="text-xl font-semibold mb-6 flex items-center">
-                <CubeIcon className="h-6 w-6 mr-3 text-teal-400"/>
+        <div className={`bg-gray-800 rounded-2xl p-6`}>
+            <h3 className={`text-xl font-semibold mb-6 flex items-center`}>
+                <CubeIcon className={`size-6 mr-3 text-teal-400`}/>
                 Stock Information
             </h3>
-            <div className="space-y-4">
-                <div className="flex justify-between">
-                    <span className="text-gray-400">Current Stock:</span>
-                    <span className="font-semibold">{currentStock} {product.unit_of_measure}</span>
+            <div className={`space-y-4`}>
+                <div className={`flex justify-between`}>
+                    <span className={`text-gray-400`}>Current Stock:</span>
+                    <span className={`font-semibold`}>{currentStock} {product.unit_of_measure}</span>
                 </div>
-                <div className="flex justify-between">
-                    <span className="text-gray-400">Min Level:</span>
+                <div className={`flex justify-between`}>
+                    <span className={`text-gray-400`}>Min Level:</span>
                     <span>{product.min_stock_level} {product.unit_of_measure}</span>
                 </div>
-                <div className="flex justify-between">
-                    <span className="text-gray-400">Max Level:</span>
+                <div className={`flex justify-between`}>
+                    <span className={`text-gray-400`}>Max Level:</span>
                     <span>{product.max_stock_level} {product.unit_of_measure}</span>
                 </div>
-                <div className="flex justify-between">
-                    <span className="text-gray-400">Reorder Point:</span>
+                <div className={`flex justify-between`}>
+                    <span className={`text-gray-400`}>Reorder Point:</span>
                     <span>{product.reorder_point} {product.unit_of_measure}</span>
                 </div>
-                <div className="flex justify-between">
-                    <span className="text-gray-400">Reorder Quantity:</span>
+                <div className={`flex justify-between`}>
+                    <span className={`text-gray-400`}>Reorder Quantity:</span>
                     <span>{product.reorder_quantity} {product.unit_of_measure}</span>
                 </div>
 
                 {/* Stock Level Progress Bar */}
-                <div className="mt-6">
-                    <div className="flex justify-between text-sm text-gray-400 mb-2">
+                <div className={`mt-6`}>
+                    <div className={`flex justify-between text-sm text-gray-400 mb-2`}>
                         <span>Stock Level</span>
                         <span>{currentStock}/{product.max_stock_level}</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-3">
+                    <div className={`w-full bg-gray-700 rounded-full h-3`}>
                         <div
                             className={`h-3 rounded-full transition-all ${
-                                stockStatus === 'low' ? 'bg-red-500' :
-                                    stockStatus === 'high' ? 'bg-green-500' : 'bg-teal-500'
+                                stockStatus === 'low' ? 'bg-red-500' : stockStatus === 'high' ? 'bg-green-500' : 'bg-teal-500'
                             }`}
                             style={{width: `${(currentStock / product.max_stock_level) * 100}%`}}
                         />
@@ -328,20 +293,20 @@ function Specifications({product}) {
                     <span className={`text-gray-400`}>Unit:</span>
                     <span>{product.unit_of_measure}</span>
                 </div>
-                {product.weight && (
-                    <div className={`flex justify-between`}>
+
+                <div className={`flex justify-between`}>
                     <span className={`text-gray-400 flex items-center`}>
-                      <ScaleIcon className={`size-4 mr-1`}/>
-                      Weight:
+                        <ScaleIcon className={`size-4 mr-1`}/>
+                        Weight:
                     </span>
-                        <span>{product.weight} kg</span>
-                    </div>
-                )}
+                    <span>{product.weight} kg</span>
+                </div>
+
                 {product.dimensions && (
                     <div className={`flex justify-between`}>
                         <span className={`text-gray-400`}>Dimensions:</span>
                         <span className={`text-sm`}>
-                      {product.dimensions.length} × {product.dimensions.width} × {product.dimensions.height} cm
+                      {product.dimensions.length || 0} × {product.dimensions.width || 0} × {product.dimensions.height || 0} cm
                     </span>
                     </div>
                 )}

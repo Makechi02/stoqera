@@ -1,4 +1,4 @@
-import {getProductsForCurrentOrganization} from "@/lib/queryProducts";
+import {getProductsForCurrentOrganization} from "@/lib/products/queryProducts";
 import {CubeIcon, FunnelIcon, PlusIcon} from "@heroicons/react/24/outline";
 import ProductsGrid from "@/components/dashboard/products/ProductsGrid";
 import Link from "next/link";
@@ -20,7 +20,7 @@ export default async function Page(props) {
 
                     <div className={`flex-1 flex justify-end`}>
                         <Link
-                            href={`/dashboard/products/new`}
+                            href={`/dashboard/products/create`}
                             className={`sm:mt-0 inline-flex items-center px-4 py-2 bg-teal-600 hover:bg-teal-700 text-text rounded-lg font-medium transition-colors`}
                         >
                             <PlusIcon className={`size-5 mr-2`}/>

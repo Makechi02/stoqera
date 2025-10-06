@@ -2,7 +2,7 @@ import PurchaseOrderForm from "@/components/dashboard/purchases/PurchaseOrderFor
 import {BackBtn} from "@/components/ui/buttons";
 import {getLocationsForCurrentOrganization} from "@/lib/queryLocations";
 import {getSuppliersForCurrentOrganization} from "@/lib/querySuppliers";
-import {getProductsForCurrentOrganization} from "@/lib/queryProducts";
+import {getProductsForCurrentOrganization} from "@/lib/products/queryProducts";
 
 export default async function Page() {
     const products = await getProductsForCurrentOrganization();

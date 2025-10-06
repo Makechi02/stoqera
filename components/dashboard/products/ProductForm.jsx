@@ -11,7 +11,7 @@ import Link from "next/link";
 import {productCreationTips, productsFormTabs} from "@/data/constants/constants";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
-import {addProduct, updateProduct} from "@/lib/queryProducts";
+import {addProduct, updateProduct} from "@/lib/products/queryProducts";
 
 export default function ProductForm({categories, product = null}) {
     const router = useRouter();

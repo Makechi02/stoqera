@@ -24,7 +24,7 @@ export default function DashboardQuickActions({pendingPurchaseOrders = 0, lowSto
                     icon={PlusIcon}
                     label={`Add Product`}
                     variant={`primary`}
-                    onClick={() => router.push('/dashboard/products/new')}
+                    onClick={() => router.push('/dashboard/products/create')}
                 />
                 <DashboardQuickActionButton
                     icon={ShoppingCartIcon}

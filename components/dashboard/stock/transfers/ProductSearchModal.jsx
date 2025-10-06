@@ -34,7 +34,7 @@ export default function ProductSearchModal({products, formData, setFormData, set
                 variant_id: variant?.id,
                 product_name: product.name,
                 variant_name: variant?.name,
-                current_stock: product.inventory[0].quantity_available,
+                current_stock: product.inventory[0]?.quantity_available || 0,
                 quantity: 1
             };
             setFormData(prev => ({...prev, items: [...prev.items, newItem]}));
