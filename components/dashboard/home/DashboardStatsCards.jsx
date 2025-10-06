@@ -6,8 +6,11 @@ import {
     ExclamationTriangleIcon,
     UserGroupIcon
 } from "@heroicons/react/24/outline";
+import {use} from "react";
 
-export default function DashboardStatsCards({dashboardStats}) {
+export default function DashboardStatsCards({statsPromise}) {
+    const dashboardStats = use(statsPromise);
+
     return (
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`}>
             <StatCard
