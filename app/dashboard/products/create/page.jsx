@@ -1,12 +1,12 @@
-import AddProductForm from "@/components/dashboard/products/AddProductForm";
 import {BackBtn} from "@/components/ui/buttons";
 import {getCategoriesForProducts} from "@/lib/products/queryProducts";
+import ProductForm from "@/components/dashboard/products/ProductForm";
 
 export default async function Page() {
     const categories = await getCategoriesForProducts();
 
     return (
-        <div className={`max-w-7xl mx-auto py-4`}>
+        <div className={`max-w-7xl mx-auto`}>
             <div className={`flex items-center mb-8`}>
                 <BackBtn/>
                 <div>
@@ -15,7 +15,7 @@ export default async function Page() {
                 </div>
             </div>
 
-            <AddProductForm categories={categories}/>
+            <ProductForm categories={categories}/>
         </div>
     )
 }
