@@ -1,12 +1,9 @@
 import Link from "next/link";
 import {ArrowLeftIcon} from "@heroicons/react/24/outline";
 import LocationForm from "@/components/dashboard/locations/LocationForm";
-import {getCurrentOrganizationId} from "@/lib/queryOrganizations";
-import {getUsersForCurrentOrganization} from "@/lib/queryUsers";
+import {getUsersForCurrentOrganization} from "@/lib/users/queryUsers";
 
 export default async function Page() {
-
-    const organizationId = await getCurrentOrganizationId();
     const users = await getUsersForCurrentOrganization();
 
     return (
@@ -25,7 +22,7 @@ export default async function Page() {
                     </div>
                 </div>
 
-                <LocationForm organizationId={organizationId} users={users}/>
+                <LocationForm users={users}/>
             </div>
         </div>
     )

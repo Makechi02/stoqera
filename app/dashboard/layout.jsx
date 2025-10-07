@@ -1,7 +1,7 @@
 import Sidebar from "@/components/dashboard/Sidebar";
 import {notFound} from "next/navigation";
-import {getCurrentOrganization} from "@/lib/queryOrganizations";
-import {getCurrentLoggedInUser} from "@/lib/queryUsers";
+import {getCurrentOrganization} from "@/lib/organization/queryOrganizations";
+import {getCurrentLoggedInUser} from "@/lib/users/queryUsers";
 
 export async function generateMetadata() {
     const organization = await getCurrentOrganization();

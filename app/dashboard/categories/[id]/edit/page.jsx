@@ -1,4 +1,3 @@
-import {getCurrentOrganizationId} from "@/lib/queryOrganizations";
 import Link from "next/link";
 import {HiOutlineArrowLeft} from "react-icons/hi2";
 import CategoriesForm from "@/components/dashboard/categories/CategoriesForm";
@@ -13,7 +12,6 @@ export default async function Page({params}) {
     if (!category) notFound();
 
     const categories = await getCategoriesForCurrentOrganization();
-    const organizationId = await getCurrentOrganizationId();
 
     return (
         <div className={`min-h-screen bg-gray-900 text-gray-100`}>
@@ -31,7 +29,7 @@ export default async function Page({params}) {
                     <p className={`text-gray-400 mt-2`}>Update category information</p>
                 </div>
 
-                <CategoriesForm categories={categories} category={category} organizationId={organizationId}/>
+                <CategoriesForm categories={categories} category={category}/>
             </div>
         </div>
     )

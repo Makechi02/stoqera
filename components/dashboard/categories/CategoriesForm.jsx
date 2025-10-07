@@ -7,7 +7,7 @@ import {HiOutlineCloudArrowUp, HiOutlinePhoto, HiOutlineXMark} from "react-icons
 import {toast} from "react-toastify";
 import {addCategory, updateCategory} from "@/lib/queryCategories";
 
-export default function CategoriesForm({categories, category, organizationId}) {
+export default function CategoriesForm({categories, category}) {
     const params = useParams();
     const router = useRouter();
     const isEditing = !!params.id;
@@ -21,8 +21,7 @@ export default function CategoriesForm({categories, category, organizationId}) {
         parent_id: category?.parent_id || '',
         image_url: category?.image_url || '',
         is_active: category?.is_active || false,
-        sort_order: category?.sort_order || 1,
-        organization_id: organizationId,
+        sort_order: category?.sort_order || 1
     });
 
     const [errors, setErrors] = useState({});

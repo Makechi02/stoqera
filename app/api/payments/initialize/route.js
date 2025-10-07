@@ -1,8 +1,8 @@
 import {NextResponse} from 'next/server';
 import {PaystackService} from '@/lib/paystack/paystack';
 import {createClient} from "@/lib/supabase/server";
-import {getCurrentLoggedInUser} from "@/lib/queryUsers";
-import {getCurrentOrganization} from "@/lib/queryOrganizations";
+import {getCurrentLoggedInUser} from "@/lib/users/queryUsers";
+import {getCurrentOrganization} from "@/lib/organization/queryOrganizations";
 
 export async function POST(request) {
     try {
