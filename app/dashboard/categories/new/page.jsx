@@ -2,11 +2,9 @@ import CategoriesForm from "@/components/dashboard/categories/CategoriesForm";
 import Link from "next/link";
 import {HiOutlineArrowLeft} from "react-icons/hi2";
 import {getCategoriesForCurrentOrganization} from "@/lib/queryCategories";
-import {getCurrentOrganizationId} from "@/lib/queryOrganizations";
 
 export default async function Page() {
     const categories = await getCategoriesForCurrentOrganization();
-    const organizationId = await getCurrentOrganizationId();
 
     return (
         <div className={`min-h-screen bg-gray-900 text-gray-100`}>
@@ -24,7 +22,7 @@ export default async function Page() {
                     <p className={`text-gray-400 mt-2`}>Create a new category for your inventory</p>
                 </div>
 
-                <CategoriesForm categories={categories} organizationId={organizationId} />
+                <CategoriesForm categories={categories}/>
             </div>
         </div>
     )

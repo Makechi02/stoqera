@@ -18,7 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import LogoutModal from "@/components/dashboard/ui/modals/LogoutModal";
 import {useRouter} from "next/navigation";
-import {signOut} from "@/lib/queryUsers";
+import {signOut} from "@/lib/users/queryUsers";
 import {showErrorToast} from "@/utils/toastUtil";
 
 export default function Sidebar({organization, currentUser, children}) {
@@ -156,7 +156,7 @@ function TopBar({user, organization, toggleSidebar, handleSignOut}) {
                         {profileDropdownOpen && (
                             <ProfileDropdown
                                 user={user}
-                                             toggleProfileDropdown={toggleProfileDropdown}
+                                toggleProfileDropdown={toggleProfileDropdown}
                                 handleSignOut={handleSignOut}
                             />
                         )}
@@ -177,11 +177,10 @@ function ProfileDropdownToggler({toggleProfileDropdown, profileDropdownOpen, use
             <div className={`flex items-center gap-x-2`}>
                 {user.avatar_url ? (
                     <div className={`relative size-8`}>
-                        <Image
+                        <img
                             className={`rounded-full bg-gray-50 object-cover object-center`}
                             src={user.avatar_url}
                             alt={`Avatar of ${user.full_name}`}
-                            fill={true}
                         />
                     </div>
                 ) : (
@@ -201,7 +200,7 @@ function ProfileDropdownToggler({toggleProfileDropdown, profileDropdownOpen, use
 
 function ProfileDropdown({user, toggleProfileDropdown, handleSignOut}) {
     const profileMenuItems = [
-        {name: 'Your Profile', icon: <UserIcon/>, href: '/dashboard/profile'},
+        {name: 'Your Profile', icon: <UserIcon/>, href: '/dashboard/users/profile'},
         {name: 'Settings', icon: <CogIcon/>, href: '/dashboard/settings'},
         // {name: 'Security', icon: <ShieldCheckIcon/>, href: '/dashboard/security'},
         {name: 'Help & Support', icon: <QuestionMarkCircleIcon/>, href: '/help'},

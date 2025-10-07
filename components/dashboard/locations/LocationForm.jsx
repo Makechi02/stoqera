@@ -7,7 +7,7 @@ import {CheckIcon, ExclamationTriangleIcon} from '@heroicons/react/24/outline';
 import {toast} from "react-toastify";
 import {addLocation, updateLocation} from "@/lib/queryLocations";
 
-export default function LocationForm({organizationId, users, location = null, initialData = null}) {
+export default function LocationForm({users, location = null, initialData = null}) {
     const router = useRouter();
     const isEditing = !!location?.id;
 
@@ -136,7 +136,6 @@ export default function LocationForm({organizationId, users, location = null, in
         // Prepare data for API
         const submitData = {
             ...formData,
-            organization_id: organizationId,
             code: formData.code.toUpperCase(),
             settings: {
                 operating_hours: formData.operating_hours,

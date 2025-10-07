@@ -1,7 +1,7 @@
 import TransferDetails from "@/components/dashboard/stock/transfers/TransferDetails";
 import {fetchTransferWithDetails} from "@/lib/stock/queryStockTransfers";
 import {notFound} from "next/navigation";
-import {getCurrentLoggedInUser} from "@/lib/queryUsers";
+import {getCurrentLoggedInUser} from "@/lib/users/queryUsers";
 import {CheckCircleIcon, ClockIcon, PencilIcon, TruckIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import {BackBtn} from "@/components/ui/buttons";
 import Link from "next/link";
