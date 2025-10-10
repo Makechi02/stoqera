@@ -8,6 +8,7 @@ export default function Footer() {
             links: [
                 {name: 'Features', href: '#'},
                 {name: 'Pricing', href: '/pricing'},
+                {name: 'Demo', href: '/demo'},
                 // {name: 'API', href: '#'},
                 // {name: 'Security', href: '#'}
             ]

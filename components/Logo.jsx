@@ -28,7 +28,7 @@ export default function Logo({
             <div className={`flex ${layoutClasses} cursor-pointer justify-center`}>
                 <Image
                     src={`/assets/images/stoqera-logo-mark.svg`}
-                    alt={`Finviq logo`}
+                    alt={`Stoqera logo`}
                     width={40}
                     height={40}
                     className={`object-center object-cover ${sizeClasses[size]}`}
@@ -36,7 +36,8 @@ export default function Logo({
 
                 {showText && (
                     <div
-                        className={`${textSizes[size]} ${textColor} ${font} tracking-tight ${layout === 'vertical' ? 'mt-2' : ''}`}>
+                        className={`${textSizes[size]} ${textColor} ${font} tracking-tight ${layout === 'vertical' ? 'mt-2' : ''}`}
+                    >
                         Stoqera
                     </div>
                 )}
