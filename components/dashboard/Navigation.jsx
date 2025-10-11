@@ -1,18 +1,40 @@
 import {usePathname} from "next/navigation";
-import {getTenantAdminNavigation} from "@/data/constants/navigation";
+import {
+    getSuperAdminNavigation,
+    getTenantAdminNavigation,
+    getTenantManagerNavigation
+} from "@/data/constants/navigation";
 import Link from "next/link";
 import {useState} from "react";
 import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/24/outline";
 
-export function Navigation({setSidebarOpen}) {
-    const navigation = getTenantAdminNavigation();
+export function Navigation({setSidebarOpen, currentUser}) {
+    let navigation = [];
+    switch (currentUser.role) {
+        case 'superadmin':
+            navigation = getSuperAdminNavigation();
+            break;
+        case 'admin':
+            navigation = getTenantAdminNavigation();
+            break;
+        case 'manager':
+            navigation = getTenantManagerNavigation();
+            break;
+    }
 
     const pathname = usePathname();
 
     return (
         <nav className={`mt-4 px-4`}>
             {navigation.map((item, index) => {
-                const isActive = item.href === '/dashboard' ? pathname === item.href : pathname.startsWith(item.href);
+                let isActive;
+                switch (currentUser.role) {
+                    case 'superadmin':
+                        isActive = item.href === '/platform' ? pathname === item.href : pathname.startsWith(item.href);
+                        break;
+                    default:
+                        isActive = item.href === '/dashboard' ? pathname === item.href : pathname.startsWith(item.href);
+                }
 
                 const [showSubItems, setShowSubItems] = useState(false);
                 const toggleSubItems = () => setShowSubItems(prevState => !prevState);

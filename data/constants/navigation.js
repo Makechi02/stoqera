@@ -39,15 +39,15 @@ import {
     UsersIcon
 } from "@heroicons/react/24/outline";
 
-export function getSuperAdminNavigation(slug, location) {
+export function getSuperAdminNavigation() {
     return [
-        {name: 'Dashboard', icon: <HiOutlineChartBar/>, href: `/${slug}/${location}/dashboard`},
-        {name: 'Organizations', icon: <HiOutlineBuildingOffice/>, href: `/${slug}/${location}/dashboard/locations`},
-        {name: 'Subscription Plans', icon: <HiOutlineCreditCard/>, href: `/${slug}/${location}/dashboard/suppliers`},
-        {name: 'Platform Settings', icon: <HiOutlineCog/>, href: `/${slug}/${location}/dashboard/purchases`},
-        {name: 'System Notifications', icon: <HiOutlineBell/>, href: `/${slug}/${location}/dashboard/customers`},
-        {name: 'Audit Logs', icon: <HiOutlineDocumentText/>, href: `/${slug}/${location}/dashboard/customer-groups`},
-        {name: 'Usage Analytics', icon: <HiOutlineChartPie/>, href: `/${slug}/${location}/dashboard/users`}
+        {name: 'Dashboard', icon: <HiOutlineChartBar/>, href: `/platform`},
+        {name: 'Organizations', icon: <HiOutlineBuildingOffice/>, href: `/platform/organizations`},
+        {name: 'Subscription Plans', icon: <HiOutlineCreditCard/>, href: `/platform/plans`},
+        {name: 'Platform Settings', icon: <HiOutlineCog/>, href: `/platform/settings`},
+        {name: 'System Notifications', icon: <HiOutlineBell/>, href: `/platform/notifications`},
+        {name: 'Audit Logs', icon: <HiOutlineDocumentText/>, href: `/platform/logs`},
+        {name: 'Usage Analytics', icon: <HiOutlineChartPie/>, href: `/platform/usage`}
     ];
 }
 
@@ -95,7 +95,7 @@ export function getTenantAdminNavigation() {
     ];
 }
 
-export function getTenantManagerNavigation(slug, location) {
+export function getTenantManagerNavigation(slug = '', location = '') {
     return [
         {name: 'Dashboard', icon: <HiOutlineHome/>, href: `/${slug}/${location}/dashboard`},
         {name: 'Inventory',

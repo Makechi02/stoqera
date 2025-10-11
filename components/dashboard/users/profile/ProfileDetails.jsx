@@ -4,7 +4,7 @@ import {useState} from 'react';
 import ProfileTab from "@/components/dashboard/users/profile/ProfileTab";
 import OrganizationTab from "@/components/dashboard/users/profile/OrganizationTab";
 
-export default function ProfileDetails({user, organization}) {
+export default function ProfileDetails({user, organization = null}) {
     const [activeTab, setActiveTab] = useState('profile');
     const [saving, setSaving] = useState(false);
 

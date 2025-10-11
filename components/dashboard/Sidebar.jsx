@@ -14,14 +14,13 @@ import {
     UserIcon,
     XMarkIcon
 } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import Link from "next/link";
 import LogoutModal from "@/components/dashboard/ui/modals/LogoutModal";
 import {useRouter} from "next/navigation";
 import {signOut} from "@/lib/users/queryUsers";
 import {showErrorToast} from "@/utils/toastUtil";
 
-export default function Sidebar({organization, currentUser, children}) {
+export default function Sidebar({organization = null, currentUser, children}) {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const toggleSidebar = () => setSidebarOpen(prevState => !prevState);
@@ -72,7 +71,7 @@ export default function Sidebar({organization, currentUser, children}) {
                 </div>
 
                 <div className={`overflow-y-auto`}>
-                    <Navigation setSidebarOpen={setSidebarOpen}/>
+                    <Navigation setSidebarOpen={setSidebarOpen} currentUser={currentUser}/>
                 </div>
             </aside>
 
@@ -130,7 +129,11 @@ function TopBar({user, organization, toggleSidebar, handleSignOut}) {
             <div className={`h-6 w-px bg-gray-600 lg:hidden`}/>
 
             <div className={`flex flex-1 gap-x-4 self-stretch lg:gap-x-6`}>
-                <p className={`text-sm text-gray-400 flex-1 flex items-center uppercase`}>{organization.name}</p>
+                {organization ? (
+                    <p className={`text-sm text-gray-400 flex-1 flex items-center uppercase`}>{organization.name}</p>
+                ) : (
+                    <p className={`text-sm text-gray-400 flex-1 flex items-center uppercase`}>Stoqera</p>
+                )}
 
                 <div className={`flex items-center gap-x-4 lg:gap-x-6`}>
                     {/* Notifications */}
@@ -171,7 +174,7 @@ function ProfileDropdownToggler({toggleProfileDropdown, profileDropdownOpen, use
     return (
         <button
             type={`button`}
-            className={`flex items-center gap-x-2 p-1.5 text-sm leading-6 text-white hover:bg-gray-700 rounded-md transition-colors duration-150`}
+            className={`flex items-center gap-x-2 p-1.5 text-sm leading-6 hover:bg-gray-700 rounded-md transition-colors duration-150`}
             onClick={toggleProfileDropdown}
         >
             <div className={`flex items-center gap-x-2`}>
@@ -199,12 +202,22 @@ function ProfileDropdownToggler({toggleProfileDropdown, profileDropdownOpen, use
 }
 
 function ProfileDropdown({user, toggleProfileDropdown, handleSignOut}) {
-    const profileMenuItems = [
-        {name: 'Your Profile', icon: <UserIcon/>, href: '/dashboard/users/profile'},
-        {name: 'Settings', icon: <CogIcon/>, href: '/dashboard/settings'},
-        // {name: 'Security', icon: <ShieldCheckIcon/>, href: '/dashboard/security'},
-        {name: 'Help & Support', icon: <QuestionMarkCircleIcon/>, href: '/help'},
-    ];
+    let profileMenuItems;
+    switch (user.role) {
+        case 'superadmin':
+            profileMenuItems = [
+                {name: 'Your Profile', icon: <UserIcon/>, href: '/platform/profile'},
+                {name: 'Settings', icon: <CogIcon/>, href: '/platform/settings'}
+            ];
+            break;
+        default:
+            profileMenuItems = [
+                {name: 'Your Profile', icon: <UserIcon/>, href: '/dashboard/users/profile'},
+                {name: 'Settings', icon: <CogIcon/>, href: '/dashboard/settings'},
+                // {name: 'Security', icon: <ShieldCheckIcon/>, href: '/dashboard/security'},
+                {name: 'Help & Support', icon: <QuestionMarkCircleIcon/>, href: '/help'},
+            ]
+    }
 
     return (
         <div

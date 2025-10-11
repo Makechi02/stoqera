@@ -3,12 +3,13 @@
 import {useEffect, useState} from 'react';
 import {motion} from 'framer-motion';
 import {CheckCircleIcon, EyeIcon, EyeSlashIcon, LockClosedIcon} from '@heroicons/react/24/outline';
-import {useRouter} from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 import {createClient} from "@/lib/supabase/client";
 import {Logo, ProgressLoader} from "@/components";
 
 export default function Page() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -17,28 +18,66 @@ export default function Page() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [error, setError] = useState('');
     const [isValidSession, setIsValidSession] = useState(false);
+    const [isCheckingSession, setIsCheckingSession] = useState(true);
 
     useEffect(() => {
         const supabase = createClient();
 
         const init = async () => {
-            await supabase.auth.signOut();
+            try {
+                // Get the token_hash and type from URL
+                const token_hash = searchParams.get('token_hash') || searchParams.get('token');
+                const type = searchParams.get('type');
 
-            // Handle auth state change (when user clicks the email link)
-            const {data: {subscription}} = supabase.auth.onAuthStateChange(
-                async (event, session) => {
-                    if (event === 'PASSWORD_RECOVERY') {
+                // console.log('URL params:', { token_hash, type });
+
+                if (token_hash && type === 'recovery') {
+                    // Verify the OTP token
+                    const { data, error } = await supabase.auth.verifyOtp({
+                        token_hash,
+                        type: 'recovery',
+                    });
+
+                    // console.log('Verify OTP result:', { data, error });
+
+                    if (error) {
+                        console.error('OTP verification error:', error);
+                        setError('Invalid or expired reset link. Please request a new password reset.');
+                        setIsCheckingSession(false);
+                        return;
+                    }
+
+                    if (data?.session) {
+                        console.log('Valid session established');
                         setIsValidSession(true);
+                        setIsCheckingSession(false);
+                    } else {
+                        setError('Unable to verify reset link. Please request a new password reset.');
+                        setIsCheckingSession(false);
+                    }
+                } else {
+                    // Check if there's already a valid session (in case of page refresh)
+                    const { data: { session } } = await supabase.auth.getSession();
+
+                    console.log('Existing session:', session);
+
+                    if (session) {
+                        setIsValidSession(true);
+                        setIsCheckingSession(false);
+                    } else {
+                        setError('Invalid or expired reset link. Please request a new password reset.');
+                        setIsCheckingSession(false);
                     }
                 }
-            );
-
-
-            return () => subscription.unsubscribe();
+            } catch (err) {
+                console.error('Init error:', err);
+                setError('An error occurred. Please try again.');
+                setIsCheckingSession(false);
+            }
         }
 
         init();
-    }, [router]);
+    }, [searchParams]);
 
     const validatePassword = (pwd) => {
         if (pwd.length < 8) {
@@ -101,7 +140,11 @@ export default function Page() {
         router.push('/login');
     };
 
-    if (!isValidSession) {
+    const handleRequestNewLink = () => {
+        router.push('/forgot-password');
+    };
+
+    if (isCheckingSession) {
         return (
             <div
                 className={`min-h-svh bg-gradient-to-br from-slate-50 to-teal-50 flex items-center justify-center px-4 sm:px-6 lg:px-8`}>
@@ -111,6 +154,39 @@ export default function Page() {
                     </div>
                     <p className={`mt-4 text-gray-600`}>Verifying your reset link...</p>
                 </div>
+            </div>
+        );
+    }
+
+    if (!isValidSession && error) {
+        return (
+            <div
+                className={`min-h-svh bg-gradient-to-br from-slate-50 to-teal-50 flex items-center justify-center px-4 sm:px-6 lg:px-8`}>
+                <motion.div
+                    initial={{opacity: 0, scale: 0.9}}
+                    animate={{opacity: 1, scale: 1}}
+                    transition={{duration: 0.4}}
+                    className={`max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center`}
+                >
+                    <div className={`mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6`}>
+                        <LockClosedIcon className={`size-8 text-red-600`}/>
+                    </div>
+
+                    <h2 className={`text-2xl font-bold text-gray-900 mb-4 font-heading`}>
+                        Invalid Reset Link
+                    </h2>
+
+                    <p className={`text-gray-600 mb-8`}>
+                        {error}
+                    </p>
+
+                    <button
+                        onClick={handleRequestNewLink}
+                        className={`w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-teal-700 transition-colors duration-200`}
+                    >
+                        Request new reset link
+                    </button>
+                </motion.div>
             </div>
         );
     }
