@@ -7,8 +7,9 @@ import {CheckCircleIcon} from "@heroicons/react/24/solid";
 import {formatCurrency} from "@/utils/formatters";
 import {showErrorToast} from "@/utils/toastUtil";
 import {getPaymentMethodsForSales} from "@/lib/sales/querySales";
+import {ProgressLoader} from "@/components";
 
-export default function SalesPaymentModal({completeSale, setShowPaymentModal, total}) {
+export default function SalesPaymentModal({completeSale, setShowPaymentModal, total, isCreatingSale}) {
     const [loading, setLoading] = useState(true);
     const [paymentMethods, setPaymentMethods] = useState([]);
 
@@ -56,15 +57,37 @@ export default function SalesPaymentModal({completeSale, setShowPaymentModal, to
 
     // Complete sale
     const handleCompleteSale = () => {
-        if (balance <= 0.01) {
-            alert('Sale completed successfully!');
-
-            setPayments([]);
-            setNotes('');
-
-            completeSale();
+        let saleData = {
+            notes,
+            type: 'sale',
+            amount_paid: amountPaid,
+            payments
         }
+
+        if (balance <= 0.01) {
+            saleData = {
+                ...saleData,
+                status: 'completed',
+                payment_status: 'paid'
+            }
+        } else {
+            saleData = {
+                ...saleData,
+                status: 'confirmed',
+                payment_status: 'partial'
+            }
+        }
+
+        completeSale(saleData);
+        handleReset();
     };
+
+    const handleReset = () => {
+        setPayments([]);
+        setNotes('');
+        setSelectedPaymentMethod(null);
+        setPaymentAmount('');
+    }
 
     useEffect(() => {
         const fetchPaymentMethods = async () => {
@@ -198,13 +221,20 @@ export default function SalesPaymentModal({completeSale, setShowPaymentModal, to
                 {/* Complete Button */}
                 <button
                     onClick={handleCompleteSale}
-                    disabled={balance > 0.01}
-                    className={`w-full py-4 rounded-lg font-bold text-lg transition flex items-center justify-center gap-2 ${
-                        balance > 0.01 ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600 hover:bg-green-500'
-                    }`}
+                    disabled={!isCreatingSale && (amountPaid < 0.01)}
+                    className={`w-full py-4 rounded-lg font-bold text-lg transition flex items-center justify-center gap-2 disabled:bg-gray-600 disabled:cursor-not-allowed bg-green-600 hover:bg-green-500`}
                 >
-                    <CheckCircleIcon className={`size-6`}/>
-                    Complete Sale
+                    {isCreatingSale ? (
+                        <>
+                            <ProgressLoader />
+                            <span>Creating Sale...</span>
+                        </>
+                    ) : (
+                        <>
+                            <CheckCircleIcon className={`size-6`}/>
+                            <span>Complete Sale</span>
+                        </>
+                    )}
                 </button>
             </div>
         </CreateSalesModal>

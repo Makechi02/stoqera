@@ -2,9 +2,8 @@
 
 import CreateSalesModal from "@/components/dashboard/sales/list/create/CreateSalesModal";
 import {useEffect, useState} from "react";
-import {getCustomersForCurrentOrganization} from "@/lib/queryCustomers";
 import {ProgressLoader} from "@/components";
-import {getCustomerDisplayName} from "@/utils/customerUtils";
+import {getCustomersForSales} from "@/lib/sales/querySales";
 
 export default function CustomerSelectionModal({setCustomerType, setSelectedCustomer, customerType, setShowCustomerModal}) {
     const [customers, setCustomers] = useState([]);
@@ -13,11 +12,11 @@ export default function CustomerSelectionModal({setCustomerType, setSelectedCust
     useEffect(() => {
         setLoading(true);
         const fetchCustomers = async () => {
-            return await getCustomersForCurrentOrganization();
+            return await getCustomersForSales();
         };
 
         fetchCustomers()
-            .then(response => setCustomers(response.customers))
+            .then(response => setCustomers(response))
             .catch(error => console.error('Error fetching customers:', error))
             .finally(() => setLoading(false));
 
@@ -61,7 +60,7 @@ export default function CustomerSelectionModal({setCustomerType, setSelectedCust
                                         }}
                                         className={`w-full bg-gray-700 hover:bg-gray-600 rounded-lg p-4 text-left transition`}
                                     >
-                                        <p className={`font-semibold`}>{getCustomerDisplayName(customer)}</p>
+                                        <p className={`font-semibold`}>{customer.name}</p>
                                         <p className={`text-sm text-gray-400`}>{customer.phone}</p>
                                     </button>
                                 ))}

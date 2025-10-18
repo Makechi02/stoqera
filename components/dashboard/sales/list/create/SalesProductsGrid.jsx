@@ -43,28 +43,23 @@ export default function SalesProductsGrid({products, addToCart}) {
             </div>
 
             <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 2xl:grid-cols-5 gap-3 md:gap-4`}>
-                {products.map(product => {
-                    const inventory = product.inventory;
-                    const currentStock = inventory[0]?.quantity_available || 0;
-
-                    return (
-                        <button
-                            key={product.id}
-                            onClick={() => addToCart(product)}
-                            className={`bg-gray-800 rounded-lg p-3 md:p-4 hover:bg-gray-750 transition text-left group`}
+                {products.map(product => (
+                    <button
+                        key={product.id}
+                        onClick={() => addToCart(product)}
+                        className={`bg-gray-800 rounded-lg p-3 md:p-4 hover:bg-gray-750 transition text-left group`}
+                    >
+                        <div
+                            className={`aspect-square bg-gray-700 rounded-lg mb-3 flex items-center justify-center`}
                         >
-                            <div
-                                className={`aspect-square bg-gray-700 rounded-lg mb-3 flex items-center justify-center`}
-                            >
-                                <ShoppingCartIcon
-                                    className={`size-8 md:w-12 md:h-12 text-gray-600 group-hover:text-teal-400 transition`}/>
-                            </div>
-                            <h3 className={`font-semibold mb-1 text-sm md:text-base truncate`}>{product.name}</h3>
-                            <p className={`text-teal-400 font-bold text-base`}>{formatCurrency(product.selling_price)}</p>
-                            <p className={`text-xs text-gray-400`}>Stock: {currentStock}</p>
-                        </button>
-                    )
-                })}
+                            <ShoppingCartIcon
+                                className={`size-8 md:w-12 md:h-12 text-gray-600 group-hover:text-teal-400 transition`}/>
+                        </div>
+                        <h3 className={`font-semibold mb-1 text-sm md:text-base truncate`}>{product.name}</h3>
+                        <p className={`text-teal-400 font-bold text-base`}>{formatCurrency(product.selling_price)}</p>
+                        <p className={`text-xs text-gray-400`}>Stock: {product.stock}</p>
+                    </button>
+                ))}
             </div>
         </>
     )

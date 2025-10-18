@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {
     MinusIcon,
     PlusIcon,
@@ -10,7 +10,6 @@ import {
     UserIcon,
     XMarkIcon
 } from '@heroicons/react/24/outline';
-import {generateSaleNumber} from "@/utils/codeGenerators";
 import {BackBtn} from "@/components/ui/buttons";
 import CustomerSelectionModal from "@/components/dashboard/sales/list/create/CustomerSelectionModal";
 import {getCustomerDisplayName} from "@/utils/customerUtils";
@@ -18,10 +17,12 @@ import SalesProductsGrid from "@/components/dashboard/sales/list/create/SalesPro
 import {formatCurrency} from "@/utils/formatters";
 import SalesDiscountModal from "@/components/dashboard/sales/list/create/SalesDiscountModal";
 import SalesPaymentModal from "@/components/dashboard/sales/list/create/SalesPaymentModal";
+import {createSale} from "@/lib/sales/querySales";
+import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 
-export default function CreateSalePage({products}) {
+export default function CreateSalePage({products, saleNumber, currentLocation}) {
     // Sale state
-    const [saleNumber, setSaleNumber] = useState('');
+    const [isCreatingSale, setIsCreatingSale] = useState(false);
     const [saleItems, setSaleItems] = useState([]);
     const [customerType, setCustomerType] = useState('walk_in');
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -67,7 +68,47 @@ export default function CreateSalePage({products}) {
         setSaleItems(saleItems.filter(item => item.id !== itemId));
     };
 
-    const completeSale = () => {
+    const completeSale = async (saleData) => {
+        const submitData = {
+            sale_number: saleNumber,
+            customer_id: selectedCustomer?.id || null,
+            customer_type: customerType,
+            status: saleData.status || 'draft',
+            type: saleData.type || 'sale',
+            sales_channel_id: saleData.sales_channel_id,
+            subtotal: subtotal,
+            discount_amount: discount.type === 'amount' ? discount.value : 0,
+            discount_percentage: discount.type === 'percentage' ? discount.value : 0,
+            tax_amount: saleData.tax_amount || 0,
+            tax_percentage: saleData.tax_percentage || 0,
+            total_amount: total,
+            payment_status: saleData.payment_status || 'paid',
+            amount_paid: saleData.amount_paid,
+            notes: saleData.notes,
+            internal_notes: saleData.internal_notes,
+            items: saleItems,
+            payments: saleData.payments
+        }
+
+        console.log(submitData);
+
+        setIsCreatingSale(true);
+
+        try {
+            const createdSale = await createSale(submitData);
+            if (createdSale) {
+                showSuccessToast('Sale created successfully.');
+                handleReset();
+            }
+        } catch (error) {
+            console.error('Error creating sale:', error);
+            showErrorToast('Error creating sale. Please try again later.');
+        } finally {
+            setIsCreatingSale(false);
+        }
+    };
+
+    const handleReset = () => {
         setSaleItems([]);
         setDiscount({type: 'percentage', value: 0});
         setShowPaymentModal(false);
@@ -75,12 +116,6 @@ export default function CreateSalePage({products}) {
         setSelectedCustomer(null);
         setShowCart(false);
     }
-
-
-    useEffect(() => {
-        const saleNo = generateSaleNumber();
-        setSaleNumber(saleNo);
-    }, []);
 
     return (
         <div>
@@ -100,7 +135,7 @@ export default function CreateSalePage({products}) {
 
                     <div className={`flex items-center gap-3`}>
                         <div className={`hidden md:block text-right`}>
-                            <p className={`text-sm text-gray-400`}>Main Store</p>
+                            <p className={`text-sm text-gray-400`}>{currentLocation.name}</p>
                         </div>
                         <button
                             onClick={() => setShowCart(!showCart)}
@@ -215,6 +250,7 @@ export default function CreateSalePage({products}) {
                     completeSale={completeSale}
                     setShowPaymentModal={setShowPaymentModal}
                     total={total}
+                    isCreatingSale={isCreatingSale}
                 />
             )}
         </div>
