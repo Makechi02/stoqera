@@ -18,3 +18,9 @@ export function generateTransferNumber() {
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
     return `TR-${timestamp}-${random}`;
 }
+
+export function generateSaleNumber() {
+    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `INV-${timestamp}-${random}`;
+}

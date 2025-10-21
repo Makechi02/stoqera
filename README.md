@@ -1,77 +1,84 @@
-# Finviq Inventory Management System - Frontend
+<div align="center" style="margin-top: 20px">
+  <img src="./public/assets/images/stoqera-logo-mark.svg" alt="Stoqera Logo" width="150"/>
 
-This repository contains the frontend of **Finviq Inventory Management System** built using **Next.js**. The frontend interacts with the backend API (built using **Spring Boot**) to manage items, categories, suppliers, users, and other inventory-related operations.
+# Stoqera
+
+A modern Inventory Management System SaaS built for businesses to efficiently track and manage their stock.
+</div>
+
+## Tech Stack
+
+- **Framework:** Next.js
+- **Database:** Supabase
+- **Styling:** Tailwind CSS
+- **Icons:** Heroicons
 
 ## Features
 
-- User authentication (with JWT integration).
-- Inventory management (items, categories, suppliers).
-- Pagination and search functionality for items.
-- Item filtering by category, price, and other attributes.
-- CRUD operations for items, categories, and users.
-- Responsive design with mobile and desktop views.
-- Integration with the Spring Boot API backend.
-- Reports and Analytics
+- **Location Management** - Organize inventory across multiple locations
+- **Product Management** - Add, edit, and track product details
+- **Categories** - Organize products with custom categories
+- **Customer Management** - Maintain customer records and history
+- **Sales Tracking** - Record and monitor sales transactions
+- **Purchase Orders** - Manage supplier purchases and incoming stock
+- **Supplier Management** - Track supplier information and relationships
+- **Reports & Analytics** - Generate insights from inventory and sales data
+- Real-time inventory updates
+- User authentication and authorization
+- Responsive design
 
-## Access Finviq
+## Getting Started
 
-Finviq is a subscription-based Inventory Management System designed for businesses. To access the platform and explore its features, please visit [Finviq's official site](https://finviq.vercel.app).
+### Prerequisites
 
-### Subscription Plans
+- Node.js 18+ installed
+- Supabase account and project
 
-Finviq offers flexible subscription plans tailored to different business needs. Learn more about our pricing [here](https://finviq.vercel.app).
+### Installation
 
-### Request a Demo
+1. Clone the repository
+```bash
+git clone https://github.com/Makechi02/stoqera.git
+cd stoqera
+```
 
-Interested in Finviq? Request a demo by visiting [our demo page](https://finviq.vercel.app) or contacting us at [support@finviq.com](mailto:makechieric9@gmail.com).
+2. Install dependencies
+```bash
+npm install
+```
 
-## Key Pages
+3. Set up environment variables
+```bash
+cp .env.example .env.local
+```
 
-- **/**: Home page
-- **/accounts/login**: User login page
-- **/dashboard/admin**: Main dashboard after login
-- **/dashboard/admin/items**: Item management (list, add, edit, delete)
-- **/dashboard/admin/categories**: Category management
-- **/dashboard/admin/suppliers**: Supplier management
-- **/dashboard/admin/users**: User management
-- **/dashboard/admin/profile**: Update user profile
+Add your Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-## Why Choose Finviq?
+4. Run the development server
+```bash
+npm run dev
+```
 
-- **Streamlined Operations**: Simplify inventory management tasks and reduce errors.
-- **Scalable Solution**: Adaptable for small businesses and large enterprises.
-- **Comprehensive Insights**: Gain actionable analytics to optimize inventory.
-- **24/7 Support**: Reliable customer support for uninterrupted operations.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## Technologies Used
+## Project Structure
 
-- **Next.js** for frontend development.
-- **React** for building interactive UIs.
-- **Tailwind CSS** for modern, responsive styling.
-- **Spring Boot** for backend API development.
-- **MongoDB** for database management.
-
-## Performance Highlights
-
-- **99.9% Uptime**: Reliable and robust architecture.
-- **Fast Load Times**: Optimized frontend for seamless performance.
-- **Secure Transactions**: Enhanced security with JWT authentication.
-
-## Support Channels
-
-For any questions or support requests, reach out to us:
-
-- **Email**: [support@finviq.com](mailto:makechieric9@gmail.com)
-- **Phone**: [+254 716 862 131](tel:+254716862131)
-
-## Contributing
-
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/my-feature`.
-3. Commit your changes: `git commit -m 'Add some feature'`.
-4. Push to the branch: `git push origin feature/my-feature`.
-5. Open a pull request.
+```
+stoqera/
+├── app/           # Next.js app directory
+├── components/    # React components
+├── lib/           # Utility functions and Supabase client
+├── public/        # Static assets
+```
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details
+
+## Support
+
+For issues and questions, please open an issue in the repository.

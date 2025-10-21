@@ -1,9 +1,17 @@
-import CreateSaleForm from "@/components/dashboard/sales/list/create/CreateSaleForm";
+import CreateSalePage from "@/components/dashboard/sales/list/create/CreateSalePage";
+import {generateSaleNumber, getActiveProducts} from "@/lib/sales/querySales";
+import {getCurrentLocation} from "@/lib/queryLocations";
 
-export default function Page() {
+export default async function Page({searchParams}) {
+    const {search} = await searchParams;
+    const products = await getActiveProducts(search);
+    const currentLocation = await getCurrentLocation();
+
+    const saleNumber = await generateSaleNumber();
+
     return (
         <div>
-            <CreateSaleForm/>
+            <CreateSalePage products={products} saleNumber={saleNumber} currentLocation={currentLocation}/>
         </div>
     )
 }

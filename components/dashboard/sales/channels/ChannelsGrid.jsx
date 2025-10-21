@@ -43,14 +43,12 @@ export default function ChannelsGrid({channels}) {
             {channels.length === 0 ? (
                 <div className={`bg-gray-800 rounded-lg p-12 text-center`}>
                     <div className={`text-gray-400 text-lg`}>
-                        {searchTerm || typeFilter || statusFilter
-                            ? 'No channels match your filters'
-                            : 'No sales channels found'}
+                        {searchTerm || typeFilter || statusFilter ? 'No channels match your filters' : 'No sales channels found'}
                     </div>
                     {!searchTerm && !typeFilter && !statusFilter && (
                         <Link
-                            href={`/dashboard/sales-channels/create`}
-                            className={`mt-4 bg-teal-600 hover:bg-teal-700 text-text px-6 py-3 rounded-lg flex items-center gap-2 mx-auto transition-colors`}
+                            href={`/dashboard/sales/channels/create`}
+                            className={`inline-flex mt-4 bg-teal-600 hover:bg-teal-700 text-text px-6 py-3 rounded-lg items-center gap-2 mx-auto transition-colors`}
                         >
                             <PlusIcon className={`size-5`}/>
                             Create Your First Channel

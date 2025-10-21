@@ -19,7 +19,7 @@ export default function TransfersList({transfersPromise}) {
                             <th className={`dashboard-table-heading text-left`}>Requested By</th>
                             <th className={`dashboard-table-heading text-left`}>Items</th>
                             <th className={`dashboard-table-heading text-left`}>Date</th>
-                            <th className={`dashboard-table-heading text-left`}>Actions</th>
+                            <th className={`dashboard-table-heading text-right`}>Actions</th>
                         </tr>
                         </thead>
                         <tbody className={`divide-y divide-gray-700`}>
