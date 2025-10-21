@@ -1,14 +1,16 @@
-import SalesList from "@/components/dashboard/sales/list/SalesList";
 import Link from "next/link";
-import {PlusIcon} from "@heroicons/react/24/outline";
-import React from "react";
-import {getSalesForCurrentOrganization} from "@/lib/sales/querySales";
+import {DocumentTextIcon} from "@heroicons/react/24/outline";
+import {getSalesForCurrentOrganization, getSaleStatsForCurrentOrganization} from "@/lib/sales/querySales";
+import SalesDashboard from "@/components/dashboard/sales/list/SalesDashboard";
 
-export default async function Page() {
-    const sales = await getSalesForCurrentOrganization();
+export default async function Page({searchParams}) {
+    const {search, filter} = await searchParams;
+
+    const sales = await getSalesForCurrentOrganization({searchTerm: search, statusFilter: filter});
+    const stats = await getSaleStatsForCurrentOrganization();
 
     return (
-        <div>
+        <div className={`max-w-7xl mx-auto`}>
             <div className={`border-b border-slate-700`}>
                 <div className={`py-4`}>
                     <div className={`flex flex-wrap items-center justify-between gap-4`}>
@@ -20,7 +22,7 @@ export default async function Page() {
                             <Link
                                 href={`/dashboard/sales/list/create`}
                                 className={`bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors`}>
-                                <PlusIcon className={`size-5`}/>
+                                <DocumentTextIcon className={`size-5`}/>
                                 <span>New Sale</span>
                             </Link>
                         </div>
@@ -28,7 +30,7 @@ export default async function Page() {
                 </div>
             </div>
 
-            <SalesList sales={sales}/>
+            <SalesDashboard sales={sales} stats={stats}/>
         </div>
     )
 }

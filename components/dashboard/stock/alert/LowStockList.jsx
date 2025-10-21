@@ -292,12 +292,12 @@ function AlertsTable({alerts}) {
         <table className={`min-w-full divide-y divide-gray-700`}>
             <thead className={`bg-gray-700`}>
             <tr>
-                <th className={`dashboard-table-heading`}>Product</th>
-                <th className={`dashboard-table-heading`}>Location</th>
-                <th className={`dashboard-table-heading`}>Stock Level</th>
-                <th className={`dashboard-table-heading`}>Alert Level</th>
-                <th className={`dashboard-table-heading`}>Created</th>
-                <th className={`dashboard-table-heading`}>Status</th>
+                <th className={`dashboard-table-heading text-left`}>Product</th>
+                <th className={`dashboard-table-heading text-left`}>Location</th>
+                <th className={`dashboard-table-heading text-left`}>Stock Level</th>
+                <th className={`dashboard-table-heading text-left`}>Alert Level</th>
+                <th className={`dashboard-table-heading text-left`}>Created</th>
+                <th className={`dashboard-table-heading text-left`}>Status</th>
                 <th className={`dashboard-table-heading text-right`}>Actions</th>
             </tr>
             </thead>
