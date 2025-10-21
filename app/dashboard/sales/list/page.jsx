@@ -6,7 +6,7 @@ import SalesDashboard from "@/components/dashboard/sales/list/SalesDashboard";
 export default async function Page({searchParams}) {
     const {search, filter} = await searchParams;
 
-    const sales = await getSalesForCurrentOrganization({searchTerm: search, statusFilter: filter});
+    const salesData = await getSalesForCurrentOrganization({searchTerm: search, statusFilter: filter});
     const stats = await getSaleStatsForCurrentOrganization();
 
     return (
@@ -30,7 +30,7 @@ export default async function Page({searchParams}) {
                 </div>
             </div>
 
-            <SalesDashboard sales={sales} stats={stats}/>
+            <SalesDashboard salesData={salesData} stats={stats}/>
         </div>
     )
 }

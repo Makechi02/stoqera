@@ -22,8 +22,9 @@ import Link from "next/link";
 import {DeleteModal} from "@/components/ui/modal";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
 import {deleteSale} from "@/lib/sales/querySales";
+import {useRouter, useSearchParams} from "next/navigation";
 
-export default function SalesDashboard({sales, stats}) {
+export default function SalesDashboard({salesData, stats}) {
     const [selectedSales, setSelectedSales] = useState([]);
 
     return (
@@ -35,7 +36,7 @@ export default function SalesDashboard({sales, stats}) {
                 <BulkActionsBar selectedSales={selectedSales} setSelectedSales={setSelectedSales}/>
             )}
 
-            <SalesTable sales={sales} selectedSales={selectedSales} setSelectedSales={setSelectedSales}/>
+            <SalesTable salesData={salesData} selectedSales={selectedSales} setSelectedSales={setSelectedSales}/>
         </div>
     );
 };
@@ -94,26 +95,28 @@ function BulkActionsBar({selectedSales, setSelectedSales}) {
     )
 }
 
-function SalesTable({sales, selectedSales, setSelectedSales}) {
-    const [openDropdown, setOpenDropdown] = useState(null);
+function SalesTable({salesData, selectedSales, setSelectedSales}) {
+    const {sales, count, hasNextPage, hasPrevPage, totalPages, limit, currentPage} = salesData;
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5);
+const searchParams = useSearchParams();
+const router = useRouter();
+
+    const [openDropdown, setOpenDropdown] = useState(null);
+    const [page, setPage] = useState(searchParams.get('page') || 1);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [deleteModal, setDeleteModal] = useState({open: false, data: null});
 
     // Pagination
-    const totalPages = Math.ceil(sales.length / itemsPerPage);
+    const itemsPerPage = limit;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentSales = sales.slice(startIndex, endIndex);
 
     // Selection handlers
     const toggleSelectAll = () => {
-        if (selectedSales.length === currentSales.length) {
+        if (selectedSales.length === sales.length) {
             setSelectedSales([]);
         } else {
-            setSelectedSales(currentSales.map(sale => sale.id));
+            setSelectedSales(sales.map(sale => sale.id));
         }
     };
 
@@ -123,8 +126,8 @@ function SalesTable({sales, selectedSales, setSelectedSales}) {
         );
     };
 
-    const isAllSelected = currentSales.length > 0 && selectedSales.length === currentSales.length;
-    const isSomeSelected = selectedSales.length > 0 && selectedSales.length < currentSales.length;
+    const isAllSelected = sales.length > 0 && selectedSales.length === sales.length;
+    const isSomeSelected = selectedSales.length > 0 && selectedSales.length < sales.length;
 
     const handlePrintSale = (saleId) => {
         alert(`Printing sale: ${saleId}`);
@@ -181,6 +184,18 @@ function SalesTable({sales, selectedSales, setSelectedSales}) {
         }
     }
 
+    const handleNextPage = () => {
+        if (hasNextPage) {
+            setPage(prevState => Math.min(totalPages, prevState + 1));
+        }
+    }
+
+    const handlePrevPage = () => {
+        if (hasPrevPage) {
+            setPage(prevState => Math.max(1, prevState - 1));
+        }
+    }
+
     // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -191,6 +206,18 @@ function SalesTable({sales, selectedSales, setSelectedSales}) {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [openDropdown]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams);
+
+        if (page !== 1) {
+            params.set('page', page);
+        } else {
+            params.delete('page');
+        }
+
+        router.replace(`?${params.toString()}`);
+    }, [page, searchParams, router]);
 
     return (
         <>
@@ -223,7 +250,7 @@ function SalesTable({sales, selectedSales, setSelectedSales}) {
                         </tr>
                         </thead>
                         <tbody className={`divide-y divide-gray-800`}>
-                        {currentSales.map((sale) => (
+                        {sales.map((sale) => (
                             <tr key={sale.id} className={`hover:bg-gray-800/50 transition-colors`}>
                                 <td className={`px-4 py-4`}>
                                     <button
@@ -332,40 +359,46 @@ function SalesTable({sales, selectedSales, setSelectedSales}) {
                 </div>
 
                 {/* Pagination */}
-                <div className={`px-4 py-3 bg-gray-800 border-t border-gray-700 flex items-center justify-between`}>
-                    <div className={`text-sm text-gray-400`}>
-                        Showing {startIndex + 1} to {Math.min(endIndex, sales.length)} of {sales.length} sales
-                    </div>
+                <div className={`px-4 py-3 bg-gray-800 border-t border-gray-700 flex flex-wrap items-center justify-between gap-4`}>
+                    <p className={`text-sm text-gray-400`}>
+                        Showing {startIndex + 1} to {Math.min(endIndex, count)} of {count} sales
+                    </p>
                     <div className={`flex items-center gap-2`}>
-                        <button
-                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                            disabled={currentPage === 1}
-                            className={`p-2 rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
-                        >
-                            <ChevronLeftIcon className={`size-5 text-gray-400`}/>
-                        </button>
+                        {hasPrevPage && (
+                            <button
+                                onClick={handlePrevPage}
+                                disabled={currentPage === 1}
+                                className={`p-2 rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
+                            >
+                                <ChevronLeftIcon className={`size-5 text-gray-400`}/>
+                            </button>
+                        )}
 
-                        <div className={`flex gap-1`}>
-                            {Array.from({length: totalPages}, (_, i) => i + 1).map(page => (
-                                <button
-                                    key={page}
-                                    onClick={() => setCurrentPage(page)}
-                                    className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                                        currentPage === page ? 'bg-teal-600 text-white' : 'text-gray-400 hover:bg-gray-700'
-                                    }`}
-                                >
-                                    {page}
-                                </button>
-                            ))}
-                        </div>
+                        {totalPages > 1 && (
+                            <div className={`flex gap-1`}>
+                                {Array.from({length: totalPages}, (_, i) => i + 1).map(pages => (
+                                    <button
+                                        key={pages}
+                                        onClick={() => setPage(pages)}
+                                        className={`px-3 py-1 rounded-lg text-sm transition-colors ${
+                                            currentPage === pages ? 'bg-teal-600 text-white' : 'text-gray-400 hover:bg-gray-700'
+                                        }`}
+                                    >
+                                        {pages}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
 
-                        <button
-                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                            disabled={currentPage === totalPages}
-                            className={`p-2 rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
-                        >
-                            <ChevronRightIcon className={`size-5 text-gray-400`}/>
-                        </button>
+                        {hasNextPage && (
+                            <button
+                                onClick={handleNextPage}
+                                disabled={currentPage === totalPages}
+                                className={`p-2 rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors`}
+                            >
+                                <ChevronRightIcon className={`size-5 text-gray-400`}/>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
