@@ -1,101 +1,163 @@
 'use client'
 
 import {useState} from 'react';
-import {
-    MinusIcon,
-    PlusIcon,
-    ReceiptPercentIcon,
-    ShoppingCartIcon,
-    TrashIcon,
-    UserIcon,
-    XMarkIcon
-} from '@heroicons/react/24/outline';
-import {BackBtn} from "@/components/ui/buttons";
-import CustomerSelectionModal from "@/components/dashboard/sales/list/create/CustomerSelectionModal";
+import {BanknotesIcon, CalculatorIcon, CheckIcon, PlusIcon, UserIcon, XMarkIcon} from '@heroicons/react/24/outline';
 import {getCustomerDisplayName} from "@/utils/customerUtils";
-import SalesProductsGrid from "@/components/dashboard/sales/list/create/SalesProductsGrid";
-import {formatCurrency} from "@/utils/formatters";
+import CustomerSelectionModal from "@/components/dashboard/sales/list/create/CustomerSelectionModal";
+import SalesProductsList from "@/components/dashboard/sales/list/create/SalesProductsList";
+import SaleItemsCart from "@/components/dashboard/sales/list/create/SaleItemsCart";
 import SalesDiscountModal from "@/components/dashboard/sales/list/create/SalesDiscountModal";
+import {formatCurrency} from "@/utils/formatters";
+import {ReceiptPercentIcon} from "@heroicons/react/16/solid";
 import SalesPaymentModal from "@/components/dashboard/sales/list/create/SalesPaymentModal";
-import {createSale} from "@/lib/sales/querySales";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
+import {createSale} from "@/lib/sales/querySales";
+import {ProgressLoader} from "@/components";
+import {useRouter} from "next/navigation";
 
-export default function CreateSalePage({products, saleNumber, currentLocation}) {
-    // Sale state
-    const [isCreatingSale, setIsCreatingSale] = useState(false);
+export default function CreateSalePage({generatedSaleNumber, products}) {
+    const router = useRouter();
+
     const [saleItems, setSaleItems] = useState([]);
-    const [customerType, setCustomerType] = useState('walk_in');
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [discount, setDiscount] = useState({type: 'percentage', value: 0});
+    const [isCreatingSale, setIsCreatingSale] = useState(false);
 
-    // UI state
-    const [showCart, setShowCart] = useState(false);
+    const [showProductSearch, setShowProductSearch] = useState(false);
     const [showCustomerModal, setShowCustomerModal] = useState(false);
     const [showDiscountModal, setShowDiscountModal] = useState(false);
+
+    const [discount, setDiscount] = useState({type: 'percentage', value: 0});
+    const [customerType, setCustomerType] = useState('walk_in');
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+    // Sale details
+    const [saleNumber, setSaleNumber] = useState(generatedSaleNumber);
+    const [taxPercentage, setTaxPercentage] = useState(0);
+    const [notes, setNotes] = useState('');
+
+    // Payment tracking
+    const [payments, setPayments] = useState([]);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [currentPayment, setCurrentPayment] = useState({
+        method: null,
+        amount: 0,
+        reference: ''
+    });
 
-    // Calculations
-    const subtotal = saleItems.reduce((sum, item) => sum + (item.selling_price * item.quantity), 0);
-    const discountAmount = discount.type === 'percentage' ? (subtotal * discount.value / 100) : discount.value;
-    const total = subtotal - discountAmount;
+    // Add a product to sale
+    const addProductToSale = (product) => {
+        const existingItem = saleItems.find(item => item.product_id === product.id);
 
-    // Add product to the cart
-    const addToCart = (product) => {
-        const existingItem = saleItems.find(item => item.id === product.id);
         if (existingItem) {
             setSaleItems(saleItems.map(item =>
-                item.id === product.id ? {...item, quantity: item.quantity + 1} : item
+                item.product_id === product.id
+                    ? {...item, quantity: item.quantity + 1}
+                    : item
             ));
         } else {
-            setSaleItems([...saleItems, {...product, quantity: 1}]);
+            setSaleItems([...saleItems, {
+                product_id: product.id,
+                name: product.name,
+                sku: product.sku,
+                quantity: 1,
+                unit_price: product.selling_price,
+                original_price: product.selling_price,
+                cost_price: product.cost_price,
+                stock: product.stock
+            }]);
         }
-        setShowCart(true);
     };
 
-    // Update quantity
-    const updateQuantity = (itemId, newQuantity) => {
-        if (newQuantity <= 0) {
-            setSaleItems(saleItems.filter(item => item.id !== itemId));
+    // Calculate totals
+    const calculateTotals = () => {
+        const subtotal = saleItems.reduce((sum, item) =>
+            sum + (item.quantity * item.unit_price), 0
+        );
+
+        let discountAmount;
+        if (discount.type === 'percentage') {
+            discountAmount = (subtotal * discount.value) / 100;
         } else {
-            setSaleItems(saleItems.map(item =>
-                item.id === itemId ? {...item, quantity: newQuantity} : item
-            ));
+            discountAmount = discount.value;
         }
+
+        const afterDiscount = subtotal - discountAmount;
+        const taxAmount = (afterDiscount * taxPercentage) / 100;
+        const total = afterDiscount + taxAmount;
+
+        const totalCost = saleItems.reduce((sum, item) =>
+            sum + (item.quantity * item.cost_price), 0
+        );
+        const profit = total - totalCost;
+
+        const amountPaid = payments.reduce((sum, payment) => sum + payment.amount, 0);
+        const amountDue = total - amountPaid;
+
+        return {subtotal, discountAmount, taxAmount, total, totalCost, profit, amountPaid, amountDue};
     };
 
-    // Remove item
-    const removeItem = (itemId) => {
-        setSaleItems(saleItems.filter(item => item.id !== itemId));
+    const totals = calculateTotals();
+
+    const handleAddPayment = (payment) => {
+        setPayments([...payments, payment]);
+        handleClosePaymentModal();
+    }
+
+    const handleClosePaymentModal = () => {
+        setCurrentPayment({
+            method: null,
+            amount: 0,
+            reference: ''
+        });
+
+        setShowPaymentModal(false);
+    }
+
+    // Remove payment
+    const removePayment = (paymentId) => {
+        setPayments(payments.filter(p => p.id !== paymentId));
     };
 
-    const completeSale = async (saleData) => {
-        const submitData = {
+    // Quick pay the remaining amount
+    const payRemainingAmount = () => {
+        setCurrentPayment({
+            ...currentPayment,
+            amount: totals.amountDue
+        });
+        setShowPaymentModal(true);
+    };
+
+    // Handle form submission
+    const handleSubmit = async () => {
+        if (totals.amountDue > 0) {
+            const confirm = window.confirm(
+                `There is an outstanding balance of ${formatCurrency(totals.amountDue)}. Do you want to continue?`
+            );
+            if (!confirm) return;
+        }
+
+        const paymentStatus = totals.amountDue === 0 ? 'paid' :
+            totals.amountPaid > 0 ? 'partial' : 'pending';
+
+        const saleData = {
             sale_number: saleNumber,
-            customer_id: selectedCustomer?.id || null,
+            status: paymentStatus === 'paid' ? 'completed' : 'confirmed',
+            customer_id: selectedCustomer?.id,
             customer_type: customerType,
-            status: saleData.status || 'draft',
-            type: saleData.type || 'sale',
-            sales_channel_id: saleData.sales_channel_id,
-            subtotal: subtotal,
-            discount_amount: discount.type === 'amount' ? discount.value : 0,
-            discount_percentage: discount.type === 'percentage' ? discount.value : 0,
-            tax_amount: saleData.tax_amount || 0,
-            tax_percentage: saleData.tax_percentage || 0,
-            total_amount: total,
-            payment_status: saleData.payment_status || 'paid',
-            amount_paid: saleData.amount_paid,
-            notes: saleData.notes,
-            internal_notes: saleData.internal_notes,
+            subtotal: totals.subtotal,
+            discount_amount: totals.discountAmount,
+            tax_amount: totals.taxAmount,
+            total_amount: totals.total,
+            payment_status: paymentStatus,
+            amount_paid: totals.amountPaid,
+            notes: notes,
             items: saleItems,
-            payments: saleData.payments
-        }
-
-        console.log(submitData);
+            payments: payments
+        };
 
         setIsCreatingSale(true);
 
         try {
-            const createdSale = await createSale(submitData);
+            const createdSale = await createSale(saleData);
             if (createdSale) {
                 showSuccessToast('Sale created successfully.');
                 handleReset();
@@ -114,116 +176,263 @@ export default function CreateSalePage({products, saleNumber, currentLocation}) 
         setShowPaymentModal(false);
         setCustomerType('walk_in');
         setSelectedCustomer(null);
-        setShowCart(false);
+    };
+
+    const handleCancel = () => {
+        handleReset();
+
+        router.back();
     }
 
     return (
         <div>
-            {/* Header */}
-            <div className={`border-b border-gray-700 py-4`}>
-                <div className={`flex items-center justify-between`}>
-                    <div className={`flex items-center`}>
-                        <BackBtn/>
-                        <div className={`flex items-center gap-3`}>
-                            <ShoppingCartIcon className={`size-6 md:size-8 text-teal-400`}/>
+            <div className={`max-w-7xl mx-auto py-6`}>
+                <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6`}>
+                    {/* Main Sale Area */}
+                    <div className={`lg:col-span-2 space-y-6`}>
+                        <button
+                            onClick={() => setShowCustomerModal(true)}
+                            className={`w-full bg-gray-800 rounded-lg p-4 mb-6 text-left hover:bg-gray-750 transition`}
+                        >
+                            <div className={`flex items-center justify-between`}>
+                                <div className={`flex items-center gap-3`}>
+                                    <UserIcon className={`size-5 text-teal-400`}/>
+                                    <div>
+                                        <p className={`text-sm text-gray-400`}>Customer</p>
+                                        <p className={`font-semibold`}>
+                                            {customerType === 'walk_in' ? 'Walk-in Customer' : getCustomerDisplayName(selectedCustomer) || 'Select Customer'}
+                                        </p>
+                                    </div>
+                                </div>
+                                <span className={`text-teal-400`}>Change</span>
+                            </div>
+                        </button>
+
+                        {/* Sale Number & Customer */}
+                        <div className={`bg-gray-800 rounded-xl p-6 border border-gray-700`}>
+                            {/* Sale Number */}
                             <div>
-                                <h1 className={`text-2xl md:text-3xl font-bold font-heading`}>New Sale</h1>
-                                <p className={`text-xs md:text-sm text-gray-400`}>Sale #{saleNumber}</p>
+                                <label className={`dashboard-form-label mb-2`}>Sale Number</label>
+                                <input
+                                    type={`text`}
+                                    value={saleNumber}
+                                    onChange={(e) => setSaleNumber(e.target.value)}
+                                    className={`dashboard-form-input border-gray-600`}
+                                    placeholder={`INV-2025-001`}
+                                />
                             </div>
                         </div>
+
+                        <SalesProductsList products={products} addToCart={addProductToSale}/>
+                        <SaleItemsCart saleItems={saleItems} setSaleItems={setSaleItems}/>
                     </div>
 
-                    <div className={`flex items-center gap-3`}>
-                        <div className={`hidden md:block text-right`}>
-                            <p className={`text-sm text-gray-400`}>{currentLocation.name}</p>
-                        </div>
-                        <button
-                            onClick={() => setShowCart(!showCart)}
-                            className={`lg:hidden relative p-2 bg-teal-600 rounded-lg`}
-                        >
-                            <ShoppingCartIcon className={`size-6`}/>
-                            {saleItems.length > 0 && (
-                                <span
-                                    className={`absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center`}
+                    {/* Summary Panel - Sticky */}
+                    <div className={`lg:col-span-1`}>
+                        <div className={`bg-gray-800 rounded-xl border border-gray-700 lg:sticky lg:top-6`}>
+                            <div className={`p-4 border-b border-gray-700 flex items-center gap-2`}>
+                                <CalculatorIcon className={`size-5 text-teal-400`}/>
+                                <h2 className={`text-lg font-semibold`}>Summary</h2>
+                            </div>
+
+                            <div className={`p-4 space-y-4`}>
+                                <button
+                                    onClick={() => setShowDiscountModal(true)}
+                                    className={`w-full bg-gray-700 hover:bg-gray-600 rounded-lg p-3 flex items-center justify-between transition`}
                                 >
-                                    {saleItems.length}
-                                </span>
-                            )}
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div className={`flex h-[calc(100vh-88px)]`}>
-                {/* Left side - Products */}
-                <div className={`flex-1 p-4 md:p-6 overflow-y-auto`}>
-                    {/* Customer Selection Button */}
-                    <button
-                        onClick={() => setShowCustomerModal(true)}
-                        className={`w-full bg-gray-800 rounded-lg p-4 mb-6 text-left hover:bg-gray-750 transition`}
-                    >
-                        <div className={`flex items-center justify-between`}>
-                            <div className={`flex items-center gap-3`}>
-                                <UserIcon className={`size-5 text-teal-400`}/>
-                                <div>
-                                    <p className={`text-sm text-gray-400`}>Customer</p>
-                                    <p className={`font-semibold`}>
-                                        {customerType === 'walk_in' ? 'Walk-in Customer' : getCustomerDisplayName(selectedCustomer) || 'Select Customer'}
+                                    <div className={`flex items-center gap-2`}>
+                                        <ReceiptPercentIcon className={`size-5 text-teal-400`}/>
+                                        <span className={`font-semibold`}>Discount</span>
+                                    </div>
+                                    <p className={`text-teal-400`}>
+                                        {totals.discountAmount > 0 ? `${formatCurrency(totals.discountAmount)}` : 'Add'}
                                     </p>
+                                </button>
+
+                                {/* Tax */}
+                                <div>
+                                    <label className={`dashboard-form-label mb-2`}>Tax (%)</label>
+                                    <input
+                                        type={`number`}
+                                        min={0}
+                                        step={0.01}
+                                        value={taxPercentage}
+                                        onChange={(e) => setTaxPercentage(parseFloat(e.target.value) || 0)}
+                                        className={`dashboard-form-input border-gray-600`}
+                                        placeholder={`0.00`}
+                                    />
+                                </div>
+
+                                {/* Divider */}
+                                <div className={`border-t border-gray-700 pt-4 space-y-3`}>
+                                    <div className={`flex justify-between text-sm`}>
+                                        <p className={`text-gray-400`}>Subtotal</p>
+                                        <p className={`text-gray-100`}>{formatCurrency(totals.subtotal)}</p>
+                                    </div>
+
+                                    {totals.discountAmount > 0 && (
+                                        <div className={`flex justify-between text-sm`}>
+                                            <p className={`text-gray-400`}>Discount</p>
+                                            <p className={`text-red-400`}>-{formatCurrency(totals.discountAmount)}</p>
+                                        </div>
+                                    )}
+
+                                    {totals.taxAmount > 0 && (
+                                        <div className={`flex justify-between text-sm`}>
+                                            <p className={`text-gray-400`}>Tax ({taxPercentage}%)</p>
+                                            <p className={`text-gray-100`}>{formatCurrency(totals.taxAmount)}</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Total */}
+                                <div className={`border-t border-gray-700 pt-4`}>
+                                    <div className={`flex justify-between items-center`}>
+                                        <p className={`text-lg font-semibold`}>Total</p>
+                                        <p className={`text-2xl font-bold text-teal-400`}>
+                                            {formatCurrency(totals.total)}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Payments Section */}
+                                <div className={`border-t border-gray-700 pt-4`}>
+                                    <div className={`flex items-center justify-between mb-3`}>
+                                        <h3 className={`text-sm font-medium text-gray-300 flex items-center gap-2`}>
+                                            <BanknotesIcon className={`size-4`}/>
+                                            Payments
+                                        </h3>
+                                        <button
+                                            onClick={() => setShowPaymentModal(true)}
+                                            disabled={saleItems.length === 0 || totals.amountDue <= 0}
+                                            className={`text-sm px-3 py-1 bg-teal-600 hover:bg-teal-500 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1`}
+                                        >
+                                            <PlusIcon className={`size-4`}/>
+                                            Add Payment
+                                        </button>
+                                    </div>
+
+                                    {/* Payment List */}
+                                    {payments.length > 0 && (
+                                        <div className={`space-y-2 mb-3`}>
+                                            {payments.map(payment => (
+                                                <div
+                                                    key={payment.id}
+                                                    className={`bg-gray-700 rounded-lg p-3 flex items-center justify-between`}
+                                                >
+                                                    <div className={`flex-1`}>
+                                                        <p className={`text-sm font-medium text-gray-100`}>
+                                                            {payment.method.name}
+                                                        </p>
+                                                        {payment.reference && (
+                                                            <p className={`text-xs text-gray-400`}>
+                                                                Ref: {payment.reference}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    <div className={`flex items-center gap-2`}>
+                                                        <p className={`text-sm font-semibold text-green-400`}>
+                                                            {formatCurrency(payment.amount)}
+                                                        </p>
+                                                        <button
+                                                            onClick={() => removePayment(payment.id)}
+                                                            className={`p-1 text-gray-400 hover:text-red-400 transition-colors`}
+                                                        >
+                                                            <XMarkIcon className={`size-4`}/>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Payment Summary */}
+                                    <div className={`bg-gray-750 rounded-lg p-3 space-y-2`}>
+                                        <div className={`flex justify-between text-sm`}>
+                                            <p className={`text-gray-400`}>Amount Paid</p>
+                                            <p className={`text-green-400 font-semibold`}>
+                                                {formatCurrency(totals.amountPaid)}
+                                            </p>
+                                        </div>
+                                        <div className={`flex justify-between text-sm`}>
+                                            <p className={`text-gray-400`}>Amount Due</p>
+                                            <p
+                                                className={`font-semibold ${totals.amountDue > 0 ? 'text-yellow-400' : 'text-gray-400'}`}
+                                            >
+                                                {formatCurrency(totals.amountDue)}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Quick Pay Remaining */}
+                                    {totals.amountDue > 0 && (
+                                        <button
+                                            onClick={payRemainingAmount}
+                                            className={`w-full mt-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 rounded-lg transition-colors text-sm font-medium`}
+                                        >
+                                            Pay Remaining {formatCurrency(totals.amountDue)}
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Profit Summary */}
+                                {saleItems.length > 0 && (
+                                    <div className={`bg-gray-750 rounded-lg p-4 border border-gray-600`}>
+                                        <p className={`text-sm text-gray-400 mb-2`}>Expected Profit</p>
+                                        <p
+                                            className={`text-xl font-bold ${totals.profit >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                                        >
+                                            {formatCurrency(totals.profit)}
+                                        </p>
+                                        <p className={`text-xs text-gray-400 mt-1`}>
+                                            Cost: {formatCurrency(totals.totalCost)}
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Notes */}
+                                <div>
+                                    <label className={`dashboard-form-label mb-2`}>Notes (Optional)</label>
+                                    <textarea
+                                        value={notes}
+                                        onChange={(e) => setNotes(e.target.value)}
+                                        rows={3}
+                                        className={`dashboard-form-input border-gray-600 resize-none`}
+                                        placeholder={`Add any notes about this sale...`}
+                                    />
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className={`border-t border-gray-700 pt-4 space-y-3`}>
+                                    <button
+                                        onClick={handleSubmit}
+                                        disabled={isCreatingSale || saleItems.length === 0}
+                                        className={`dashboard-submit-btn justify-center w-full`}
+                                    >
+                                        {isCreatingSale ? (
+                                            <>
+                                                <ProgressLoader/>
+                                                <span>Creating sale...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <CheckIcon className={`size-5`}/>
+                                                Complete Sale
+                                            </>
+                                        )}
+                                    </button>
+                                    <button
+                                        onClick={handleCancel}
+                                        className={`dashboard-cancel-btn justify-center w-full`}
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
-                            <span className={`text-teal-400`}>Change</span>
                         </div>
-                    </button>
-
-                    <SalesProductsGrid products={products} addToCart={addToCart}/>
-                </div>
-
-                {/* Right side - Cart (Desktop) */}
-                <div className={`hidden lg:flex w-96 bg-gray-800 border-l border-gray-700 flex-col`}>
-                    <CartContent
-                        saleItems={saleItems}
-                        updateQuantity={updateQuantity}
-                        removeItem={removeItem}
-                        subtotal={subtotal}
-                        discountAmount={discountAmount}
-                        total={total}
-                        onDiscountClick={() => setShowDiscountModal(true)}
-                        onPaymentClick={() => setShowPaymentModal(true)}
-                    />
-                </div>
-            </div>
-
-            {/* Mobile Cart Drawer */}
-            {showCart && (
-                <div
-                    className={`lg:hidden fixed inset-0 z-50 bg-black/50`}
-                    onClick={() => setShowCart(false)}
-                >
-                    <div
-                        className={`absolute right-0 top-0 h-full w-full sm:w-96 bg-gray-800 shadow-xl flex flex-col`}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className={`p-4 border-b border-gray-700 flex items-center justify-between`}>
-                            <h2 className={`font-bold text-lg`}>Cart ({saleItems.length})</h2>
-                            <button onClick={() => setShowCart(false)} className={`p-2`}>
-                                <XMarkIcon className={`size-6`}/>
-                            </button>
-                        </div>
-
-                        <CartContent
-                            saleItems={saleItems}
-                            updateQuantity={updateQuantity}
-                            removeItem={removeItem}
-                            subtotal={subtotal}
-                            discountAmount={discountAmount}
-                            total={total}
-                            onDiscountClick={() => setShowDiscountModal(true)}
-                            onPaymentClick={() => setShowPaymentModal(true)}
-                        />
                     </div>
                 </div>
-            )}
+            </div>
 
             {showCustomerModal && (
                 <CustomerSelectionModal
@@ -234,137 +443,32 @@ export default function CreateSalePage({products, saleNumber, currentLocation}) 
                 />
             )}
 
-            {/* Discount Modal */}
             {showDiscountModal && (
                 <SalesDiscountModal
                     setShowDiscountModal={setShowDiscountModal}
                     discount={discount}
                     setDiscount={setDiscount}
-                    subtotal={subtotal}
+                    subtotal={totals.subtotal}
                 />
             )}
 
             {/* Payment Modal */}
-            {showPaymentModal && (
-                <SalesPaymentModal
-                    completeSale={completeSale}
-                    setShowPaymentModal={setShowPaymentModal}
-                    total={total}
-                    isCreatingSale={isCreatingSale}
+            <SalesPaymentModal
+                isOpen={showPaymentModal}
+                onClose={handleClosePaymentModal}
+                onAddPayment={handleAddPayment}
+                maxAmount={totals.amountDue}
+                currentPayment={currentPayment}
+                setCurrentPayment={setCurrentPayment}
+            />
+
+            {/* Click outside to close search */}
+            {showProductSearch && (
+                <div
+                    className="fixed inset-0 z-0"
+                    onClick={() => setShowProductSearch(false)}
                 />
             )}
         </div>
-    );
-}
-
-// Cart Content Component
-function CartContent({
-                         saleItems,
-                         updateQuantity,
-                         removeItem,
-                         subtotal,
-                         discountAmount,
-                         total,
-                         onDiscountClick,
-                         onPaymentClick
-                     }) {
-    return (
-        <>
-            <div className={`flex-1 overflow-y-auto p-4 md:p-6`}>
-                <h2 className={`font-bold text-lg mb-4 lg:block hidden`}>Cart ({saleItems.length})</h2>
-
-                {saleItems.length === 0 ? (
-                    <div className={`text-center py-12 text-gray-400`}>
-                        <ShoppingCartIcon className={`size-16 mx-auto mb-4 text-gray-600`}/>
-                        <p>No items in cart</p>
-                        <p className={`text-sm mt-2`}>Add products to start a sale</p>
-                    </div>
-                ) : (
-                    <div className={`space-y-3`}>
-                        {saleItems.map(item => (
-                            <div key={item.id} className={`bg-gray-700 rounded-lg p-3`}>
-                                <div className={`flex justify-between items-start mb-3`}>
-                                    <h3 className={`font-semibold flex-1 text-sm md:text-base`}>{item.name}</h3>
-                                    <button
-                                        onClick={() => removeItem(item.id)}
-                                        className={`text-red-400 hover:text-red-300 p-1`}
-                                    >
-                                        <TrashIcon className={`size-4`}/>
-                                    </button>
-                                </div>
-                                <div className={`flex items-center justify-between`}>
-                                    <div className={`flex items-center gap-2`}>
-                                        <button
-                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                            className={`size-8 bg-gray-600 rounded flex items-center justify-center hover:bg-gray-500`}
-                                        >
-                                            <MinusIcon className={`size-4`}/>
-                                        </button>
-                                        <span className={`w-10 text-center font-semibold`}>{item.quantity}</span>
-                                        <button
-                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                            className={`size-8 bg-teal-600 rounded flex items-center justify-center hover:bg-teal-500`}
-                                        >
-                                            <PlusIcon className={`size-4`}/>
-                                        </button>
-                                    </div>
-                                    <div className={`text-right`}>
-                                        <p className={`text-xs text-gray-400`}>
-                                            @ {formatCurrency(item.selling_price)}
-                                        </p>
-                                        <p className={`font-bold text-teal-400`}>
-                                            {formatCurrency(item.selling_price * item.quantity)}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-
-            {saleItems.length > 0 && (
-                <div className={`border-t border-gray-700 p-4 md:p-6 space-y-4`}>
-                    {/* Discount Button */}
-                    <button
-                        onClick={onDiscountClick}
-                        className={`w-full bg-gray-700 hover:bg-gray-600 rounded-lg p-3 flex items-center justify-between transition`}
-                    >
-                        <div className={`flex items-center gap-2`}>
-                            <ReceiptPercentIcon className={`size-5 text-teal-400`}/>
-                            <span className={`font-semibold`}>Discount</span>
-                        </div>
-                        <p className={`text-teal-400`}>
-                            {discountAmount > 0 ? `${formatCurrency(discountAmount)}` : 'Add'}
-                        </p>
-                    </button>
-
-                    {/* Summary */}
-                    <div className={`space-y-2`}>
-                        <div className={`flex justify-between text-sm`}>
-                            <p className={`text-gray-400`}>Subtotal</p>
-                            <p>{formatCurrency(subtotal)}</p>
-                        </div>
-                        {discountAmount > 0 && (
-                            <div className={`flex justify-between text-sm text-teal-400`}>
-                                <p>Discount</p>
-                                <p>- {formatCurrency(discountAmount)}</p>
-                            </div>
-                        )}
-                        <div className={`flex justify-between text-xl font-bold pt-2 border-t border-gray-700`}>
-                            <p>Total</p>
-                            <p className={`text-teal-400`}>{formatCurrency(total)}</p>
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={onPaymentClick}
-                        className={`w-full bg-teal-600 hover:bg-teal-500 py-4 rounded-lg font-bold text-lg transition`}
-                    >
-                        Proceed to Payment
-                    </button>
-                </div>
-            )}
-        </>
     );
 }
