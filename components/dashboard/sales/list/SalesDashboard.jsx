@@ -17,7 +17,7 @@ import {
 import {formatCurrency, formatTableDate} from "@/utils/formatters";
 import SalesStatsGrid from "@/components/dashboard/sales/list/SalesStatsGrid";
 import SalesSearchBar from "@/components/dashboard/sales/list/SalesSearchBar";
-import {getCustomerDisplayName} from "@/utils/customerUtils";
+import {getSalePaymentStatusColor, getSaleStatusColor} from "@/utils/sales/saleUtils";
 import Link from "next/link";
 import {DeleteModal} from "@/components/ui/modal";
 import {showErrorToast, showSuccessToast} from "@/utils/toastUtil";
@@ -98,8 +98,8 @@ function BulkActionsBar({selectedSales, setSelectedSales}) {
 function SalesTable({salesData, selectedSales, setSelectedSales}) {
     const {sales, count, hasNextPage, hasPrevPage, totalPages, limit, currentPage} = salesData;
 
-const searchParams = useSearchParams();
-const router = useRouter();
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
     const [openDropdown, setOpenDropdown] = useState(null);
     const [page, setPage] = useState(searchParams.get('page') || 1);
@@ -137,34 +137,6 @@ const router = useRouter();
     const handleRefundSale = (saleId) => {
         alert(`Processing refund for sale: ${saleId}`);
         setOpenDropdown(null);
-    };
-
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 'completed':
-                return 'bg-teal-500/20 text-teal-400';
-            case 'draft':
-                return 'bg-gray-500/20 text-gray-400';
-            case 'cancelled':
-                return 'bg-red-500/20 text-red-400';
-            default:
-                return 'bg-blue-500/20 text-blue-400';
-        }
-    };
-
-    const getPaymentStatusColor = (status) => {
-        switch (status) {
-            case 'paid':
-                return 'bg-teal-500/20 text-teal-400';
-            case 'partial':
-                return 'bg-yellow-500/20 text-yellow-400';
-            case 'pending':
-                return 'bg-orange-500/20 text-orange-400';
-            case 'overdue':
-                return 'bg-red-500/20 text-red-400';
-            default:
-                return 'bg-gray-500/20 text-gray-400';
-        }
     };
 
     const handleDelete = async (saleId) => {
@@ -237,7 +209,8 @@ const router = useRouter();
                                 >
                                     {isAllSelected && <CheckIcon className={`size-3 text-white`}/>}
                                     {isSomeSelected && !isAllSelected &&
-                                        <span className={`w-2 h-0.5 bg-white rounded`}/>}
+                                        <span className={`w-2 h-0.5 bg-white rounded`}/>
+                                    }
                                 </button>
                             </th>
                             <th className={`dashboard-table-heading text-left`}>Invoice</th>
@@ -269,7 +242,7 @@ const router = useRouter();
                                     <p className={`text-xs text-gray-400`}>{sale.items_count} items</p>
                                 </td>
                                 <td className={`px-4 py-4`}>
-                                    <p className={`text-sm text-gray-300`}>{getCustomerDisplayName(sale.customer)}</p>
+                                    <p className={`text-sm text-gray-300`}>{sale.customer.name}</p>
                                     <p className={`text-xs text-gray-500 capitalize`}>
                                         {sale.customer_type.replace('_', ' ')}
                                     </p>
@@ -277,14 +250,14 @@ const router = useRouter();
                                 <td className={`px-4 py-4 text-sm text-gray-300`}>{formatTableDate(sale.sale_date)}</td>
                                 <td className={`px-4 py-4`}>
                                     <span
-                                        className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${getStatusColor(sale.status)}`}
+                                        className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${getSaleStatusColor(sale.status)}`}
                                     >
                                         {sale.status}
                                     </span>
                                 </td>
                                 <td className={`px-4 py-4`}>
                                     <span
-                                        className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${getPaymentStatusColor(sale.payment_status)}`}
+                                        className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${getSalePaymentStatusColor(sale.payment_status)}`}
                                     >
                                         {sale.payment_status}
                                     </span>
@@ -359,7 +332,9 @@ const router = useRouter();
                 </div>
 
                 {/* Pagination */}
-                <div className={`px-4 py-3 bg-gray-800 border-t border-gray-700 flex flex-wrap items-center justify-between gap-4`}>
+                <div
+                    className={`px-4 py-3 bg-gray-800 border-t border-gray-700 flex flex-wrap items-center justify-between gap-4`}
+                >
                     <p className={`text-sm text-gray-400`}>
                         Showing {startIndex + 1} to {Math.min(endIndex, count)} of {count} sales
                     </p>
